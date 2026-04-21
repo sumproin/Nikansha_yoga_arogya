@@ -32,11 +32,11 @@ export default function Home() {
       <main>
         <Hero />
         <About />
-        {/* <Classes />
+        <Classes />
         <Schedule />
         <Trainers />
         <Testimonials />
-        <Contact /> */}
+        <Contact />
       </main>
 
       <Footer />
