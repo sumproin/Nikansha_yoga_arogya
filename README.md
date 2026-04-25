@@ -1,2 +1,2 @@
-Nikansh Yoga Arogya & wellness studio
+Nikansh YogaArogya & wellness studio
 website.
