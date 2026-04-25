@@ -1,13 +1,50 @@
 globalThis.__BUILD_MANIFEST = {
   "pages": {
-    "/_app": []
+    "/_app": [
+      "static/chunks/0cnm_next_dist_compiled_0u_8ze6._.js",
+      "static/chunks/0cnm_next_dist_shared_lib_0gtahbs._.js",
+      "static/chunks/0cnm_next_dist_client_0pibo80._.js",
+      "static/chunks/0cnm_next_dist_0anzndj._.js",
+      "static/chunks/0cnm_next_app_0bcm~wi.js",
+      "static/chunks/[next]_entry_page-loader_ts_0usr76p._.js",
+      "static/chunks/0cnm_react-dom_0mprf4u._.js",
+      "static/chunks/0cnm_0~r8sup._.js",
+      "static/chunks/[root-of-the-server]__0igcxpa._.js",
+      "static/chunks/Videos_nikansha_nikansha_frontend_pages__app_07xvfw~._.js",
+      "static/chunks/turbopack-Videos_nikansha_nikansha_frontend_pages__app_08i-o-n._.js"
+    ],
+    "/_error": [
+      "static/chunks/0cnm_next_dist_compiled_0u_8ze6._.js",
+      "static/chunks/0cnm_next_dist_shared_lib_078x_1c._.js",
+      "static/chunks/0cnm_next_dist_client_0pibo80._.js",
+      "static/chunks/0cnm_next_dist_0fksm1-._.js",
+      "static/chunks/[next]_entry_page-loader_ts_0eqs5a_._.js",
+      "static/chunks/0cnm_react-dom_0mprf4u._.js",
+      "static/chunks/0cnm_0~r8sup._.js",
+      "static/chunks/[root-of-the-server]__0a5lo6s._.js",
+      "static/chunks/Videos_nikansha_nikansha_frontend_pages__error_07xvfw~._.js",
+      "static/chunks/turbopack-Videos_nikansha_nikansha_frontend_pages__error_02l~1ii._.js"
+    ]
   },
   "devFiles": [],
-  "polyfillFiles": [],
+  "polyfillFiles": [
+    "static/chunks/0cnm_next_dist_build_polyfills_polyfill-nomodule.js"
+  ],
   "lowPriorityFiles": [
     "static/development/_buildManifest.js",
     "static/development/_ssgManifest.js",
     "static/development/_clientMiddlewareManifest.js"
   ],
-  "rootMainFiles": []
+  "rootMainFiles": [
+    "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_0v1wl86._.js",
+    "static/chunks/0cnm_next_dist_compiled_next-devtools_index_0e2ueds.js",
+    "static/chunks/0cnm_next_dist_compiled_react-dom_0~5awi2._.js",
+    "static/chunks/0cnm_next_dist_compiled_react-server-dom-turbopack_01h6htv._.js",
+    "static/chunks/0cnm_next_dist_compiled_067870d._.js",
+    "static/chunks/0cnm_next_dist_client_0t.rz.b._.js",
+    "static/chunks/0cnm_next_dist_0a99e4w._.js",
+    "static/chunks/0cnm_@swc_helpers_cjs_11c52o2._.js",
+    "static/chunks/Videos_nikansha_nikansha_frontend_0rqeker._.js",
+    "static/chunks/turbopack-Videos_nikansha_nikansha_frontend_0v5zf0b._.js"
+  ]
 };

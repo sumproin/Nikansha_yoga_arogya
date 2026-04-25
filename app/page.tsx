@@ -9,6 +9,7 @@ import Trainers from "@/components/Trainers";
 import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import Chatbot from "@/components/Chatbot";
 import { motion, useScroll, useSpring } from "motion/react";
 
 export default function Home() {
@@ -40,6 +41,7 @@ export default function Home() {
       </main>
 
       <Footer />
+      <Chatbot />
 
       {/* Custom Cursor / Accent Elements */}
       <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-[-1] overflow-hidden">

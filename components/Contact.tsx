@@ -1,17 +1,63 @@
 "use client";
 
+import { useState, type FormEvent } from "react";
 import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 
+type ContactForm = {
+  fullName: string;
+  email: string;
+  interest: string;
+  message: string;
+};
+
+const initialForm: ContactForm = {
+  fullName: "",
+  email: "",
+  interest: "Vinyasa Flow",
+  message: "",
+};
+
 export default function Contact() {
+  const [form, setForm] = useState<ContactForm>(initialForm);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setSubmitting(true);
+    setError(null);
+    setSuccess(null);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      if (!response.ok) {
+        const body = (await response.json().catch(() => null)) as { message?: string } | null;
+        throw new Error(body?.message || "Failed to send message.");
+      }
+
+      setSuccess("Your message has been sent successfully.");
+      setForm(initialForm);
+    } catch (submitError) {
+      setError(submitError instanceof Error ? submitError.message : "Failed to send message.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   return (
     <section id="contact" className="py-24 bg-cream">
       <div className="container mx-auto px-6">
         <div className="bg-white rounded-[3rem] shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-2">
-          {/* Form Side */}
           <div className="p-12 md:p-16">
             <motion.span
               initial={{ opacity: 0 }}
@@ -22,20 +68,41 @@ export default function Contact() {
               Get in Touch
             </motion.span>
             <h2 className="text-4xl font-serif mb-8">Begin Your Journey Today.</h2>
-            <form className="space-y-6">
+
+            {error ? <p className="text-sm text-destructive mb-4">{error}</p> : null}
+            {success ? <p className="text-sm text-secondary mb-4">{success}</p> : null}
+
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-muted-foreground ml-1">Full Name</label>
-                  <Input placeholder="John Doe" className="rounded-xl bg-cream/50 border-none h-12 focus-visible:ring-primary" />
+                  <Input
+                    required
+                    placeholder="John Doe"
+                    value={form.fullName}
+                    onChange={(event) => setForm((prev) => ({ ...prev, fullName: event.target.value }))}
+                    className="rounded-xl bg-cream/50 border-none h-12 focus-visible:ring-primary"
+                  />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-muted-foreground ml-1">Email Address</label>
-                  <Input type="email" placeholder="john@example.com" className="rounded-xl bg-cream/50 border-none h-12 focus-visible:ring-primary" />
+                  <Input
+                    required
+                    type="email"
+                    placeholder="john@example.com"
+                    value={form.email}
+                    onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))}
+                    className="rounded-xl bg-cream/50 border-none h-12 focus-visible:ring-primary"
+                  />
                 </div>
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium text-muted-foreground ml-1">Interested In</label>
-                <select className="w-full rounded-xl bg-cream/50 border-none h-12 px-3 text-sm focus:ring-2 focus:ring-primary outline-none">
+                <select
+                  className="w-full rounded-xl bg-cream/50 border-none h-12 px-3 text-sm focus:ring-2 focus:ring-primary outline-none"
+                  value={form.interest}
+                  onChange={(event) => setForm((prev) => ({ ...prev, interest: event.target.value }))}
+                >
                   <option>Vinyasa Flow</option>
                   <option>Hatha Yoga</option>
                   <option>Ashtanga Power</option>
@@ -45,17 +112,26 @@ export default function Contact() {
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium text-muted-foreground ml-1">Your Message</label>
-                <Textarea placeholder="How can we help you?" className="rounded-xl bg-cream/50 border-none min-h-[150px] focus-visible:ring-primary" />
+                <Textarea
+                  required
+                  minLength={10}
+                  placeholder="How can we help you?"
+                  value={form.message}
+                  onChange={(event) => setForm((prev) => ({ ...prev, message: event.target.value }))}
+                  className="rounded-xl bg-cream/50 border-none min-h-[150px] focus-visible:ring-primary"
+                />
               </div>
-              <Button className="w-full rounded-full py-7 text-lg bg-primary hover:bg-primary/90 text-white transition-all shadow-lg shadow-primary/20">
-                Send Message
+              <Button
+                type="submit"
+                disabled={submitting}
+                className="w-full rounded-full py-7 text-lg bg-primary hover:bg-primary/90 text-white transition-all shadow-lg shadow-primary/20"
+              >
+                {submitting ? "Sending..." : "Send Message"}
               </Button>
             </form>
           </div>
 
-          {/* Info Side */}
           <div className="bg-teal p-12 md:p-16 text-white flex flex-col justify-between relative overflow-hidden">
-            {/* Background Pattern */}
             <div className="absolute top-0 right-0 w-64 h-64 opacity-10 pointer-events-none translate-x-1/2 -translate-y-1/2">
               <svg viewBox="0 0 100 100" className="w-full h-full fill-white">
                 <path d="M50 0 L100 50 L50 100 L0 50 Z" />

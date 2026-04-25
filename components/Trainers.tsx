@@ -1,113 +1,123 @@
 "use client";
 
 import { motion } from "motion/react";
-import { Instagram, Twitter, Linkedin } from "lucide-react";
+import { Award, HeartPulse, Leaf, Sparkles } from "lucide-react";
 
-const trainers = [
-  {
-    name: "Aria Sharma",
-    role: "Lead Vinyasa Instructor",
-    bio: "With over 10 years of experience in India and Bali, Aria brings a soulful, flowing energy to every class.",
-    image: "https://images.unsplash.com/photo-1594381898411-846e7d193883?auto=format&fit=crop&q=80&w=800",
-    color: "bg-saffron/20",
-  },
-  {
-    name: "Kaelen Voss",
-    role: "Hatha & Meditation Specialist",
-    bio: "Kaelen focuses on the therapeutic aspects of yoga, helping students find stillness in a busy world.",
-    image: "https://images.unsplash.com/photo-1552196564-97c84b138723?auto=format&fit=crop&q=80&w=800",
-    color: "bg-teal/20",
-  },
-  {
-    name: "Maya Chen",
-    role: "Ashtanga Master",
-    bio: "Maya's classes are dynamic and challenging, designed to build heat, strength, and unwavering focus.",
-    image: "https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&q=80&w=800",
-    color: "bg-lavender/20",
-  },
+const specialties = [
+  "Hatha Yoga",
+  "Vinyasa Yoga",
+  "Pranayama",
+  "Meditation",
+  "Therapeutic Yoga",
+  "Nutrition Guidance",
 ];
 
 export default function Trainers() {
   return (
     <section id="trainers" className="py-24 bg-cream relative overflow-hidden">
-      {/* Decorative Lotus Pattern */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] opacity-[0.03] pointer-events-none">
-        <svg viewBox="0 0 100 100" className="w-full h-full fill-primary">
-          <path d="M50 0C50 0 60 30 90 30C90 30 60 40 50 70C50 70 40 40 10 40C10 40 40 30 50 0ZM50 100C50 100 40 70 10 70C10 70 40 60 50 30C50 30 60 60 90 60C90 60 60 70 50 100Z" />
-        </svg>
-      </div>
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top_right,rgba(42,157,143,0.12),transparent_45%),radial-gradient(circle_at_bottom_left,rgba(244,162,97,0.16),transparent_40%)]" />
 
       <div className="container mx-auto px-6 relative z-10">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-          <div className="max-w-2xl">
-            <motion.span
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="text-primary font-medium tracking-widest uppercase text-sm mb-4 block"
-            >
-              Meet Our Guides
-            </motion.span>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="text-4xl md:text-5xl font-serif"
-            >
-              Guided by <span className="italic">Wisdom</span>, <br />
-              Inspired by Passion.
-            </motion.h2>
-          </div>
-          <motion.p
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <motion.span
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-primary font-medium tracking-widest uppercase text-sm mb-4 block"
+          >
+            Our Trainer
+          </motion.span>
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            className="text-muted-foreground max-w-sm text-right"
+            transition={{ delay: 0.2 }}
+            className="text-4xl md:text-5xl font-serif"
           >
-            Our instructors are more than just teachers—they are dedicated practitioners committed to your growth.
-          </motion.p>
+            Yogacharya <span className="italic">Nikansha</span>
+          </motion.h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          {trainers.map((trainer, index) => (
-            <motion.div
-              key={trainer.name}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.2, duration: 0.6 }}
-              className="group"
-            >
-              <div className="relative mb-8">
-                <div className={`absolute inset-0 ${trainer.color} rounded-full scale-90 group-hover:scale-100 transition-transform duration-500 blur-2xl opacity-50`} />
-                <div className="relative z-10 aspect-square rounded-full overflow-hidden border-8 border-white shadow-2xl">
-                  <img
-                    src={trainer.image}
-                    alt={trainer.name}
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100"
-                    referrerPolicy="no-referrer"
-                  />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="max-w-6xl mx-auto rounded-[2.2rem] bg-white border border-earth/20 shadow-xl p-8 md:p-12"
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start">
+            <div className="lg:col-span-2">
+              <div className="aspect-[4/5] rounded-[2rem] overflow-hidden border-4 border-cream shadow-lg">
+                <img
+                  src="/trainimg.jpeg"
+                  alt="Yogacharya Nikansha"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="mt-6 flex flex-wrap gap-2">
+                {specialties.map((item) => (
+                  <span key={item} className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wide rounded-full bg-cream border border-earth/20">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="lg:col-span-3">
+              <p className="text-primary uppercase tracking-[0.18em] text-sm font-semibold mb-2">Yoga & Wellness Expert</p>
+              <h3 className="font-serif text-3xl md:text-4xl font-bold mb-6">A Holistic Path to Strength, Calm, and Balance.</h3>
+
+              <div className="space-y-5 text-muted-foreground leading-relaxed">
+                <p>
+                  A certified yoga instructor trained in Rishikesh, Yogacharya Nikansha is devoted to enhancing physical vitality and mental
+                  well-being through holistic, mindful practices rooted in authentic yogic traditions.
+                </p>
+                <p>
+                  Holding a Master&apos;s Degree in Yoga, she brings depth of knowledge and a refined, therapeutic approach to every session,
+                  combining classical wisdom with modern wellness needs.
+                </p>
+                <p>
+                  She specializes in addressing lifestyle disorders, joint pain, and stress through highly personalized, result-oriented programs.
+                </p>
+                <p>
+                  As a Certified Dietician, Nikansha offers an integrated path to wellness by blending yoga, nutrition, and conscious living,
+                  empowering individuals to restore balance and build a sustainable healthy lifestyle.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+                <div className="rounded-2xl bg-cream p-4 border border-earth/15 flex items-start gap-3">
+                  <Award className="text-primary mt-0.5" size={18} />
+                  <div>
+                    <p className="font-semibold">Professional Training</p>
+                    <p className="text-sm text-muted-foreground">Certified in Rishikesh with academic mastery in Yoga.</p>
+                  </div>
                 </div>
-                {/* Social Links */}
-                <div className="absolute bottom-4 right-4 z-20 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-x-4 group-hover:translate-x-0">
-                  <button className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-primary hover:text-white transition-colors">
-                    <Instagram size={18} />
-                  </button>
-                  <button className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-primary hover:text-white transition-colors">
-                    <Twitter size={18} />
-                  </button>
+                <div className="rounded-2xl bg-cream p-4 border border-earth/15 flex items-start gap-3">
+                  <HeartPulse className="text-secondary mt-0.5" size={18} />
+                  <div>
+                    <p className="font-semibold">Therapeutic Focus</p>
+                    <p className="text-sm text-muted-foreground">Programs for stress relief, joint care, and lifestyle disorders.</p>
+                  </div>
+                </div>
+                <div className="rounded-2xl bg-cream p-4 border border-earth/15 flex items-start gap-3">
+                  <Leaf className="text-teal mt-0.5" size={18} />
+                  <div>
+                    <p className="font-semibold">Mind-Body Integration</p>
+                    <p className="text-sm text-muted-foreground">Balances movement, breathwork, meditation, and mindfulness.</p>
+                  </div>
+                </div>
+                <div className="rounded-2xl bg-cream p-4 border border-earth/15 flex items-start gap-3">
+                  <Sparkles className="text-saffron mt-0.5" size={18} />
+                  <div>
+                    <p className="font-semibold">Diet + Yoga Guidance</p>
+                    <p className="text-sm text-muted-foreground">A complete approach for long-term wellness and resilience.</p>
+                  </div>
                 </div>
               </div>
-              <div className="text-center">
-                <h3 className="text-2xl font-serif font-bold mb-2">{trainer.name}</h3>
-                <p className="text-primary font-medium text-sm uppercase tracking-wider mb-4">{trainer.role}</p>
-                <p className="text-muted-foreground leading-relaxed italic">"{trainer.bio}"</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -5,9 +5,6 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function Hero() {
   const ref = useRef(null);
@@ -45,7 +42,7 @@ export default function Hero() {
       >
         <div className="absolute inset-0 bg-black/30 z-10" />
         <img
-          src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=2000"
+          src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=2000"
           alt="Yoga at sunrise"
           className="w-full h-full object-cover"
           referrerPolicy="no-referrer"
@@ -58,8 +55,10 @@ export default function Hero() {
           Find Your Inner Peace
         </span>
         <h1 ref={titleRef} className="text-5xl md:text-7xl font-serif text-white mb-8 leading-[1.1] tracking-tight">
-          NIKANSHA <span className="italic text-primary">YOGAAROGYA</span> <br />
-          STUDIO & WELLNESS
+          Nikansha <span className="italic text-primary">YogaArogya</span> <br />
+           <p className="text-2xl md:text-4xl text-white/80 mt-4 font-light tracking-wide">
+            & Wellness Studio
+          </p>
         </h1>
         <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto font-light leading-relaxed">
           Experience the ancient art of yoga in a modern sanctuary. Join our community and embark on a journey of self-discovery and holistic wellness.
@@ -69,11 +68,8 @@ export default function Hero() {
             onClick={() => {
               const target = document.querySelector("#about");
               if (target) {
-                gsap.to(window, {
-                  duration: 1.2,
-                  scrollTo: { y: target, offsetY: 80 },
-                  ease: "power4.inOut",
-                });
+                const top = (target as HTMLElement).getBoundingClientRect().top + window.scrollY - 80;
+                window.scrollTo({ top, behavior: "smooth" });
               }
             }}
             size="lg" 
@@ -85,11 +81,8 @@ export default function Hero() {
             onClick={() => {
               const target = document.querySelector("#schedule");
               if (target) {
-                gsap.to(window, {
-                  duration: 1.2,
-                  scrollTo: { y: target, offsetY: 80 },
-                  ease: "power4.inOut",
-                });
+                const top = (target as HTMLElement).getBoundingClientRect().top + window.scrollY - 80;
+                window.scrollTo({ top, behavior: "smooth" });
               }
             }}
             size="lg" 
