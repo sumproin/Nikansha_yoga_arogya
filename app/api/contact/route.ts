@@ -47,7 +47,7 @@ export async function POST(request: Request) {
       from: contactFromEmail,
       to: contactToEmail,
       replyTo: email,
-      subject: `New Contact Form Message: ${interest || "General Inquiry"}`,
+      subject: `New Contact Form Message: ${contactFromEmail || "General Inquiry"}`,
       text: [
         `Name: ${fullName}`,
         `Email: ${email}`,
