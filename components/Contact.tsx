@@ -69,9 +69,6 @@ export default function Contact() {
             </motion.span>
             <h2 className="text-4xl font-serif mb-8">Begin Your Journey Today.</h2>
 
-            {error ? <p className="text-sm text-destructive mb-4">{error}</p> : null}
-            {success ? <p className="text-sm text-secondary mb-4">{success}</p> : null}
-
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
@@ -129,6 +126,9 @@ export default function Contact() {
                 {submitting ? "Sending..." : "Send Message"}
               </Button>
             </form>
+
+            {error ? <p className="text-sm text-destructive mt-4">{error}</p> : null}
+            {success ? <p className="text-sm text-secondary mt-4">{success}</p> : null}
           </div>
 
           <div className="bg-teal p-12 md:p-16 text-white flex flex-col justify-between relative overflow-hidden">
