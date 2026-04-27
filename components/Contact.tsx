@@ -10,14 +10,14 @@ import { MapPin, Phone, Mail, Clock } from "lucide-react";
 type ContactForm = {
   fullName: string;
   email: string;
-  interest: string;
+  phone: string;
   message: string;
 };
 
 const initialForm: ContactForm = {
   fullName: "",
   email: "",
-  interest: "Vinyasa Flow",
+  phone: "",
   message: "",
 };
 
@@ -94,18 +94,16 @@ export default function Contact() {
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-muted-foreground ml-1">Interested In</label>
-                <select
-                  className="w-full rounded-xl bg-cream/50 border-none h-12 px-3 text-sm focus:ring-2 focus:ring-primary outline-none"
-                  value={form.interest}
-                  onChange={(event) => setForm((prev) => ({ ...prev, interest: event.target.value }))}
-                >
-                  <option>Vinyasa Flow</option>
-                  <option>Hatha Yoga</option>
-                  <option>Ashtanga Power</option>
-                  <option>Meditation</option>
-                  <option>Teacher Training</option>
-                </select>
+                <label className="text-sm font-medium text-muted-foreground ml-1">Contact Number</label>
+                <Input
+                  required
+                  type="tel"
+                  inputMode="tel"
+                  placeholder="+91 98765 43210"
+                  value={form.phone}
+                  onChange={(event) => setForm((prev) => ({ ...prev, phone: event.target.value }))}
+                  className="rounded-xl bg-cream/50 border-none h-12 focus-visible:ring-primary"
+                />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium text-muted-foreground ml-1">Your Message</label>

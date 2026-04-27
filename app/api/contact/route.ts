@@ -6,17 +6,22 @@ export const runtime = "nodejs";
 type ContactPayload = {
   fullName?: string;
   email?: string;
-  interest?: string;
+  phone?: string;
   message?: string;
 };
 
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as ContactPayload;
-    const { fullName, email, interest, message } = body;
+    const { fullName, email, phone, message } = body;
 
-    if (!fullName || !email || !message) {
-      return NextResponse.json({ message: "fullName, email and message are required." }, { status: 400 });
+    if (!fullName || !email || !phone || !message) {
+      return NextResponse.json({ message: "fullName, email, phone and message are required." }, { status: 400 });
+    }
+
+    const phoneRegex = /^[+\d][\d\s\-().]{6,19}$/;
+    if (!phoneRegex.test(phone.trim())) {
+      return NextResponse.json({ message: "Please enter a valid contact number." }, { status: 400 });
     }
 
     const smtpHost = process.env.SMTP_HOST;
@@ -51,7 +56,7 @@ export async function POST(request: Request) {
       text: [
         `Name: ${fullName}`,
         `Email: ${email}`,
-        `Interest: ${interest || "Not specified"}`,
+        `Contact Number: ${phone}`,
         "",
         "Message:",
         message,
@@ -60,7 +65,7 @@ export async function POST(request: Request) {
         <h2>New Contact Form Message</h2>
         <p><strong>Name:</strong> ${fullName}</p>
         <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Interest:</strong> ${interest || "Not specified"}</p>
+        <p><strong>Contact Number:</strong> ${phone}</p>
         <p><strong>Message:</strong></p>
         <p>${message.replace(/\n/g, "<br/>")}</p>
       `,
