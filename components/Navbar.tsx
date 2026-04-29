@@ -47,11 +47,11 @@ export default function Navbar() {
       <div className="container mx-auto px-6 flex items-center justify-between">
         <a href="/" className="flex items-center gap-2 group">
           <img
-            src={isScrolled ? "/mainlogo2.png" : "/mainlogo.png"}
+            src={isScrolled ? "/mainlogo2.png" : "/mainlogo2.png"}
             alt="Nikansha Yogaarogya logo"
             className={`${isScrolled
-                ? "w-40 h-24 rounded-full object-cover border border-primary/20"
-                : "w-40 h-24 bg-transparent"
+                ? "w-60 h-40 rounded-full object-cover border border-primary/20 "
+                : "w-60 h-40 rounded-full object-cover border border-primary/20"
               }`}
           />
         </a>

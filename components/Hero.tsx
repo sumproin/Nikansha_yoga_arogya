@@ -42,7 +42,7 @@ export default function Hero() {
       >
         <div className="absolute inset-0 bg-black/30 z-10" />
         <img
-          src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=2000"
+          src="/yogabg.webp"
           alt="Yoga at sunrise"
           className="w-full h-full object-cover"
           referrerPolicy="no-referrer"
@@ -109,13 +109,6 @@ export default function Hero() {
           <ChevronDown size={24} className="opacity-60" />
         </motion.div>
       </motion.div>
-
-      {/* Decorative Mandala Accent */}
-      <div className="absolute -bottom-32 -right-32 w-96 h-96 opacity-10 pointer-events-none">
-        <svg viewBox="0 0 200 200" className="w-full h-full text-white fill-current">
-          <path d="M100 0C100 0 110 40 150 40C150 40 160 0 200 0C200 0 190 40 150 80C150 80 190 90 190 130C190 130 150 120 150 160C150 160 160 200 120 200C120 200 110 160 70 160C70 160 40 200 0 200C0 200 10 160 50 120C50 120 10 110 10 70C10 70 50 80 50 40C50 40 40 0 80 0C80 0 90 40 100 0Z" />
-        </svg>
-      </div>
     </section>
   );
 }
