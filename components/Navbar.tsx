@@ -2,11 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { CircleUserRound, Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const navLinks = [
+  { name: "Home", href: "#home" },
   { name: "About", href: "#about" },
   { name: "Classes", href: "#classes" },
   { name: "Schedule", href: "#schedule" },
@@ -17,20 +17,26 @@ const navLinks = [
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 24);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const scrollToSection = (e: React.MouseEvent<HTMLElement>, href: string) => {
     e.preventDefault();
+    if (href === "#home") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
     const target = document.querySelector(href);
     if (target) {
-      const top = (target as HTMLElement).getBoundingClientRect().top + window.scrollY - 80;
+      const top = (target as HTMLElement).getBoundingClientRect().top + window.scrollY - 96;
       window.scrollTo({ top, behavior: "smooth" });
     }
   };
@@ -39,86 +45,113 @@ export default function Navbar() {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-          ? "bg-background/80 backdrop-blur-md border-b py-1 shadow-sm"
-          : "bg-transparent py-2"
-        }`}
+      className="fixed inset-x-0 top-0 z-[70]"
     >
-      <div className="container mx-auto px-6 flex items-center justify-between">
-        <a href="/" className="flex items-center gap-2 group">
+      <div
+        className={`absolute inset-0 h-[86px] border-b backdrop-blur-md transition-colors duration-300 lg:h-[118px] ${
+          isScrolled
+            ? "border-[#d2a55c4d] bg-[#0a0807e6]"
+            : "border-[#d2a55c38] bg-[#0a0807bd]"
+        }`}
+      />
+
+      <div className="relative z-[2] mx-auto flex h-[86px] max-w-[1420px] items-center justify-center px-4 lg:h-[118px] lg:px-[26px]">
+        <a
+          href="#home"
+          className={`absolute ${isScrolled ? "top-1 h-[110px] w-[186px]" : "top-10 h-[140px] w-[228px]"} transition-all duration-300 left-6 hidden  overflow-hidden rounded-full border border-[#d2a55c94] bg-[#1c1714] shadow-[0_10px_35px_rgba(0,0,0,0.34)] lg:flex`}
+          onClick={(e) => scrollToSection(e, "#home")}
+          aria-label="Go to home section"
+        >
           <img
-            src={isScrolled ? "/mainlogo2.png" : "/mainlogo2.png"}
+            src="/mainlogo.png"
             alt="Nikansha Yogaarogya logo"
-            className={`${isScrolled
-                ? "w-60 h-40 rounded-full object-cover border border-primary/20 "
-                : "w-60 h-40 rounded-full object-cover border border-primary/20"
-              }`}
+            className="h-full w-full scale-105 object-cover"
           />
         </a>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a
+        <div className="hidden items-center gap-8 xl:gap-10 lg:flex">
+          {navLinks.map((link, index) => (
+            <button
               key={link.name}
-              href={link.href}
+              type="button"
               onClick={(e) => scrollToSection(e, link.href)}
-              className="text-sm font-medium hover:text-primary transition-colors relative group"
+              className={`group cursor-pointer relative border-0 bg-transparent p-0 text-sm font-normal leading-none tracking-[0.01em] transition-colors ${
+                index === 0 ? "text-[#d7aa63]" : "text-white/90 hover:text-[#d7aa63]"
+              }`}
             >
               {link.name}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full" />
-            </a>
+              <span
+                className={`absolute -bottom-[10px] left-0 h-[2px] bg-[#d7aa63] transition-all ${
+                  index === 0 ? "w-full" : "w-0 group-hover:w-full"
+                }`}
+              />
+            </button>
           ))}
-          <Button
+        </div>
+
+        <div className="absolute right-6 top-1/2 hidden -translate-y-1/2 items-center gap-6 lg:flex">
+          <button
+            type="button"
             onClick={() => {
-              const target = document.querySelector("#schedule");
+              const target = document.querySelector("#contact");
               if (target) {
-                const top = (target as HTMLElement).getBoundingClientRect().top + window.scrollY - 80;
+                const top = (target as HTMLElement).getBoundingClientRect().top + window.scrollY - 96;
                 window.scrollTo({ top, behavior: "smooth" });
               }
             }}
-            className="rounded-full px-6 bg-secondary hover:bg-secondary/90 text-white"
+            className="cursor-pointer rounded-2xl border-0 bg-[#d7aa63] px-7 py-3.5 text-[17px] font-semibold text-[#15110d] transition hover:brightness-105"
           >
             Book a Class
-          </Button>
-          <a href="/admin" className="text-sm font-semibold text-primary hover:underline underline-offset-4">
-            Admin
-          </a>
+          </button>
         </div>
 
-        {/* Mobile Nav */}
-        <div className="md:hidden">
-          <Sheet>
-            <SheetTrigger className="inline-flex size-9 items-center justify-center rounded-md hover:bg-muted transition-colors" aria-label="Open menu">
+        <div className="flex w-full items-center justify-between lg:hidden">
+          <a
+            href="#home"
+            onClick={(e) => scrollToSection(e, "#home")}
+            className="inline-flex h-[54px] w-[54px] overflow-hidden rounded-full border border-[#d2a55c94] bg-[#1c1714]"
+            aria-label="Go to home section"
+          >
+            <img src="/mainlogo.png" alt="Nikansha Yogaarogya logo" className="h-full w-full scale-110 object-cover" />
+          </a>
+
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <SheetTrigger className="inline-flex h-[42px] w-[42px] items-center justify-center rounded-full border border-[#d2a55c66] bg-[#0a0807a6] text-[#f5e9d8]" aria-label="Open menu">
               <Menu className="w-6 h-6" />
               <span className="sr-only">Open menu</span>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-              <div className="flex flex-col gap-8 mt-12">
+            <SheetContent side="right" className="w-[min(330px,86vw)] border-l border-[#d2a55c4d] bg-[#120f0d] pt-11 text-[#f8f3eb]">
+              <div className="flex flex-col gap-4 px-4">
                 {navLinks.map((link) => (
-                  <a
+                  <button
                     key={link.name}
-                    href={link.href}
-                    onClick={(e) => scrollToSection(e, link.href)}
-                    className="text-2xl font-serif hover:text-primary transition-colors"
+                    type="button"
+                    onClick={(e) => {
+                      scrollToSection(e, link.href);
+                      setIsOpen(false);
+                    }}
+                    className="border-0 bg-transparent text-left font-serif text-[30px] text-[#f8f3eb]"
                   >
                     {link.name}
-                  </a>
+                  </button>
                 ))}
-                <Button
+                <button
+                  type="button"
                   onClick={() => {
                     const target = document.querySelector("#schedule");
                     if (target) {
-                      const top = (target as HTMLElement).getBoundingClientRect().top + window.scrollY - 80;
+                      const top = (target as HTMLElement).getBoundingClientRect().top + window.scrollY - 96;
                       window.scrollTo({ top, behavior: "smooth" });
                     }
+                    setIsOpen(false);
                   }}
-                  className="rounded-full w-full bg-primary text-white py-6 text-lg"
+                  className="mt-2 rounded-[14px] border-0 bg-[#d7aa63] px-5 py-4 text-[17px] font-semibold text-[#18130e]"
                 >
                   Book a Class
-                </Button>
-                <a href="/admin" className="text-lg font-serif text-primary hover:underline underline-offset-4">
+                </button>
+                <a href="/admin" className="mt-1 inline-flex justify-center items-center gap-2 text-base text-[#d7aa63]">
                   Admin
+                  <CircleUserRound size={18} />
                 </a>
               </div>
             </SheetContent>

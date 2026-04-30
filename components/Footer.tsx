@@ -4,7 +4,7 @@ import { Leaf, Instagram, Facebook, Twitter, Youtube } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-white pt-24 pb-12 border-t">
+    <footer className="border-t border-earth/20 bg-cream/70 pb-12 pt-24">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           <div className="space-y-6">
@@ -19,16 +19,16 @@ export default function Footer() {
               NIKANSHA YOGAAROGYA STUDIO & WELLNESS is a modern sanctuary dedicated to the art of yoga and mindful living. Join us to awaken your soul and transform your life.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-cream flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all">
+              <a href="#" className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/20 bg-card text-primary transition-all hover:bg-primary hover:text-primary-foreground">
                 <Instagram size={20} />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-cream flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all">
+              <a href="#" className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/20 bg-card text-primary transition-all hover:bg-primary hover:text-primary-foreground">
                 <Facebook size={20} />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-cream flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all">
+              <a href="#" className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/20 bg-card text-primary transition-all hover:bg-primary hover:text-primary-foreground">
                 <Twitter size={20} />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-cream flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all">
+              <a href="#" className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/20 bg-card text-primary transition-all hover:bg-primary hover:text-primary-foreground">
                 <Youtube size={20} />
               </a>
             </div>
@@ -63,9 +63,9 @@ export default function Footer() {
               <input
                 type="email"
                 placeholder="Your email"
-                className="bg-cream border-none rounded-full px-4 py-2 w-full focus:ring-2 focus:ring-primary outline-none text-sm"
+                className="w-full rounded-full border border-earth/20 bg-card px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
               />
-              <button className="bg-primary text-white p-2 rounded-full hover:bg-primary/90 transition-all" type="button">
+              <button className="rounded-full bg-primary p-2 text-primary-foreground transition-all hover:bg-primary/90" type="button">
                 <Leaf size={18} />
               </button>
             </form>

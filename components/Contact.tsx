@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { MapPin, Phone, Mail } from "lucide-react";
 
 type ContactForm = {
   fullName: string;
@@ -20,6 +20,9 @@ const initialForm: ContactForm = {
   phone: "",
   message: "",
 };
+
+const googleMapsLink = "https://maps.app.goo.gl/F43tUAZDya6dp9Fq7";
+const mapEmbedSrc = "https://maps.google.com/maps?q=F-1605%20Rishabh%20Cloud%209%2C%20Indirapuram%2C%20Ghaziabad&t=&z=15&ie=UTF8&iwloc=&output=embed";
 
 export default function Contact() {
   const [form, setForm] = useState<ContactForm>(initialForm);
@@ -57,7 +60,7 @@ export default function Contact() {
   return (
     <section id="contact" className="py-24 bg-cream">
       <div className="container mx-auto px-6">
-        <div className="bg-white rounded-[3rem] shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-2">
+        <div className="grid grid-cols-1 overflow-hidden rounded-[3rem] border border-earth/20 bg-card shadow-2xl lg:grid-cols-2">
           <div className="p-12 md:p-16">
             <motion.span
               initial={{ opacity: 0 }}
@@ -78,7 +81,7 @@ export default function Contact() {
                     placeholder="John Doe"
                     value={form.fullName}
                     onChange={(event) => setForm((prev) => ({ ...prev, fullName: event.target.value }))}
-                    className="rounded-xl bg-cream/50 border-none h-12 focus-visible:ring-primary"
+                    className="h-12 rounded-xl border border-earth/20 bg-cream/60 focus-visible:ring-primary"
                   />
                 </div>
                 <div className="space-y-2">
@@ -89,7 +92,7 @@ export default function Contact() {
                     placeholder="john@example.com"
                     value={form.email}
                     onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))}
-                    className="rounded-xl bg-cream/50 border-none h-12 focus-visible:ring-primary"
+                    className="h-12 rounded-xl border border-earth/20 bg-cream/60 focus-visible:ring-primary"
                   />
                 </div>
               </div>
@@ -102,7 +105,7 @@ export default function Contact() {
                   placeholder="+91 98765 43210"
                   value={form.phone}
                   onChange={(event) => setForm((prev) => ({ ...prev, phone: event.target.value }))}
-                  className="rounded-xl bg-cream/50 border-none h-12 focus-visible:ring-primary"
+                  className="h-12 rounded-xl border border-earth/20 bg-cream/60 focus-visible:ring-primary"
                 />
               </div>
               <div className="space-y-2">
@@ -113,25 +116,25 @@ export default function Contact() {
                   placeholder="How can we help you?"
                   value={form.message}
                   onChange={(event) => setForm((prev) => ({ ...prev, message: event.target.value }))}
-                  className="rounded-xl bg-cream/50 border-none min-h-[150px] focus-visible:ring-primary"
+                  className="min-h-[150px] rounded-xl border border-earth/20 bg-cream/60 focus-visible:ring-primary"
                 />
               </div>
               <Button
                 type="submit"
                 disabled={submitting}
-                className="w-full rounded-full py-7 text-lg bg-primary hover:bg-primary/90 text-white transition-all shadow-lg shadow-primary/20"
+                className="w-full rounded-full bg-primary py-7 text-lg text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:bg-primary/90"
               >
                 {submitting ? "Sending..." : "Send Message"}
               </Button>
             </form>
 
             {error ? <p className="text-sm text-destructive mt-4">{error}</p> : null}
-            {success ? <p className="text-sm text-secondary mt-4">{success}</p> : null}
+            {success ? <p className="text-sm text-primary mt-4">{success}</p> : null}
           </div>
 
-          <div className="bg-teal p-12 md:p-16 text-white flex flex-col justify-between relative overflow-hidden">
+          <div className="relative flex flex-col justify-between overflow-hidden bg-[linear-gradient(150deg,#0f0b08_0%,#261b13_50%,#3c2a1d_100%)] p-12 text-[#f6ecdf] md:p-16">
             <div className="absolute top-0 right-0 w-64 h-64 opacity-10 pointer-events-none translate-x-1/2 -translate-y-1/2">
-              <svg viewBox="0 0 100 100" className="w-full h-full fill-white">
+              <svg viewBox="0 0 100 100" className="h-full w-full fill-primary">
                 <path d="M50 0 L100 50 L50 100 L0 50 Z" />
               </svg>
             </div>
@@ -140,48 +143,62 @@ export default function Contact() {
               <h3 className="text-3xl font-serif mb-12">Contact Information</h3>
               <div className="space-y-8">
                 <div className="flex items-start gap-6">
-                  <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-primary/30 bg-primary/20 text-primary">
                     <MapPin size={24} />
                   </div>
                   <div>
                     <h4 className="font-bold text-lg mb-1">Our Sanctuary</h4>
-                    <p className="text-white/70">123 Serenity Lane, Wellness District<br />San Francisco, CA 94103</p>
+                    <p className="text-[#ebdcc8]/80">F-1605 Rishabh Cloud 9, Indirapuram<br />Ghaziabad</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-6">
-                  <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-primary/30 bg-primary/20 text-primary">
                     <Phone size={24} />
                   </div>
                   <div>
                     <h4 className="font-bold text-lg mb-1">Call Us</h4>
-                    <p className="text-white/70">+1 (555) 123-4567</p>
+                    <p className="text-[#ebdcc8]/80">+91 9217746084</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-6">
-                  <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-primary/30 bg-primary/20 text-primary">
                     <Mail size={24} />
                   </div>
                   <div>
                     <h4 className="font-bold text-lg mb-1">Email Us</h4>
-                    <p className="text-white/70">hello@pranayoga.com</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-6">
-                  <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-                    <Clock size={24} />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-lg mb-1">Studio Hours</h4>
-                    <p className="text-white/70">Mon - Fri: 6:00 AM - 9:00 PM<br />Sat - Sun: 8:00 AM - 6:00 PM</p>
+                    <a href="mailto:nikansha@zohomail.in" className="text-[#ebdcc8]/80 underline-offset-4 hover:underline">
+                      nikansha@zohomail.in
+                    </a>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="mt-12 pt-12 border-t border-white/10">
-              <p className="text-white/50 text-sm">Follow our journey on social media for daily inspiration and studio updates.</p>
+            <div className="mt-12 border-t border-primary/20 pt-12">
+              <p className="text-sm text-[#ddc7aa]/70">Visit our studio in Indirapuram, Ghaziabad for personalized classes and wellness guidance.</p>
             </div>
           </div>
+        </div>
+
+        <div className="mt-10 overflow-hidden rounded-[2rem] border border-earth/20 bg-card shadow-xl">
+          <div className="flex flex-col gap-3 border-b border-earth/20 px-6 py-5 md:flex-row md:items-center md:justify-between">
+            <h3 className="font-serif text-2xl">Find Us on the Map</h3>
+            <a
+              href={googleMapsLink}
+              target="_blank"
+              rel="noreferrer"
+              className="text-sm font-semibold text-primary underline underline-offset-4 hover:text-earth"
+            >
+              Open in Google Maps
+            </a>
+          </div>
+          <iframe
+            title="Nikansha Yogaarogya Studio Location"
+            src={mapEmbedSrc}
+            className="h-[340px] w-full border-0 md:h-[420px]"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
         </div>
       </div>
     </section>

@@ -2,113 +2,139 @@
 
 import { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
-import { Button } from "@/components/ui/button";
-import { ChevronDown } from "lucide-react";
+import { CalendarDays, CircleArrowDown, Flower2, HeartHandshake, Leaf, Sparkles, Users } from "lucide-react";
 import gsap from "gsap";
+
+const benefits = [
+  { icon: Flower2, title: "Expert Instructors", description: "Learn from experienced and certified yoga professionals." },
+  { icon: HeartHandshake, title: "Holistic Approach", description: "Nurture your body, mind, and spirit in every session." },
+  { icon: Users, title: "Supportive Community", description: "Be part of a like-minded community that uplifts and inspires." },
+  { icon: Leaf, title: "Peaceful Environment", description: "A serene space designed to help you relax and reconnect." },
+];
 
 export default function Hero() {
   const ref = useRef(null);
-  const titleRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.06]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from(".hero-content > *", {
-        y: 50,
+        y: 36,
         opacity: 0,
-        duration: 1,
-        stagger: 0.2,
+        duration: 0.95,
+        stagger: 0.12,
         ease: "power4.out",
-        delay: 0.5
+        delay: 0.22,
       });
     }, ref);
-
     return () => ctx.revert();
   }, []);
 
-  return (
-    <section ref={ref} className="relative h-screen w-full overflow-hidden flex items-center justify-center">
-      {/* Background Image with Parallax */}
-      <motion.div
-        style={{ y, scale }}
-        className="absolute inset-0 z-0"
-      >
-        <div className="absolute inset-0 bg-black/30 z-10" />
-        <img
-          src="/yogabg.webp"
-          alt="Yoga at sunrise"
-          className="w-full h-full object-cover"
-          referrerPolicy="no-referrer"
-        />
-      </motion.div>
+  const scrollToSection = (selector: string) => {
+    const target = document.querySelector(selector);
+    if (target) {
+      const top = (target as HTMLElement).getBoundingClientRect().top + window.scrollY - 96;
+      window.scrollTo({ top, behavior: "smooth" });
+    }
+  };
 
-      {/* Content */}
-      <div className="relative z-20 text-center px-6 max-w-4xl hero-content">
-        <span className="inline-block text-white/90 uppercase tracking-[0.3em] text-sm mb-6 font-medium">
-          Find Your Inner Peace
-        </span>
-        <h1 ref={titleRef} className="text-5xl md:text-7xl font-serif text-white mb-8 leading-[1.1] tracking-tight">
-          Nikansha <span className="italic text-primary">YogaArogya</span> <br />
-           <p className="text-2xl md:text-4xl text-white/80 mt-4 font-light tracking-wide">
-            & Wellness Studio
+  return (
+    <section id="home" ref={ref} className="relative min-h-svh overflow-hidden bg-[#0c0906] text-[#fbf6ef]">
+      <motion.div style={{ y, scale }} className="absolute inset-0">
+        <img src="/yogabg.webp" alt="Woman practicing yoga in studio" className="h-full w-full object-cover object-center-top saturate-[0.86] contrast-[0.94]" />
+      </motion.div>
+      <div className="absolute inset-0 z-[1] bg-[linear-gradient(104deg,rgba(6,5,4,0.84)_0%,rgba(11,8,5,0.72)_36%,rgba(16,12,8,0.56)_58%,rgba(14,11,7,0.8)_100%)]" />
+      {/* <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_78%_42%,rgba(210,165,92,0.16),transparent_38%),radial-gradient(circle_at_5%_44%,rgba(0,0,0,0.35),transparent_40%)]" /> */}
+      <div className="absolute inset-x-0 bottom-0 z-[1] h-[290px] bg-gradient-to-t from-[rgba(11,8,6,0.92)] to-[rgba(11,8,6,0.03)]" />
+
+      <div className="relative z-[2] mx-auto flex max-w-[1340px] items-end justify-between gap-6 px-4 pb-[324px] pt-[124px] lg:px-[26px] lg:pb-[294px] lg:pt-[128px] xl:pb-[258px] xl:pt-[98px]">
+        <div className="hero-content max-w-[690px]">
+          <div className="mb-6 inline-flex items-center gap-3">
+            <span className="text-sm font-semibold tracking-[0.16em] text-[#d7aa63] lg:text-sm">FIND YOUR INNER PEACE</span>
+            <span className="inline-flex w-[86px] items-center justify-center border-b border-[#d7aa638f] pb-[2px] text-[#d7aa63f2]">
+              <Sparkles size={12} />
+            </span>
+          </div>
+
+          <h1 className="font-serif text-[clamp(4.2rem,10vw,6.5rem)] font-medium leading-[0.92] tracking-[-0.015em] text-[#f7f3ed]">
+            Nikansha <span className="block text-[#d7aa63]">YogaArogya</span>
+          </h1>
+
+          <p className="mt-4 font-serif text-[clamp(1.15rem,6vw,3.15rem)] leading-none text-[#f1ece5]">&amp; Wellness Studio</p>
+          <span className="mt-2 block w-[180px] border-b border-[#d7aa6394]" />
+
+          <p className="mt-6 max-w-full text-base leading-[1.52] text-[rgba(245,241,234,0.92)] lg:max-w-[82%] lg:text-[clamp(0.65rem,1.8vw,1.15rem)] xl:max-w-[610px] xl:text-[clamp(0.7rem,1vw,1.35rem)]">
+            Experience the ancient art of yoga in a modern sanctuary. Join our community and embark on a journey of self-discovery and holistic wellness.
           </p>
-        </h1>
-        <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto font-light leading-relaxed">
-          Experience the ancient art of yoga in a modern sanctuary. Join our community and embark on a journey of self-discovery and holistic wellness.
-        </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Button 
-            onClick={() => {
-              const target = document.querySelector("#about");
-              if (target) {
-                const top = (target as HTMLElement).getBoundingClientRect().top + window.scrollY - 80;
-                window.scrollTo({ top, behavior: "smooth" });
-              }
-            }}
-            size="lg" 
-            className="rounded-full px-10 py-7 text-lg bg-primary hover:bg-primary/90 text-white shadow-xl shadow-primary/20 cursor-pointer"
-          >
-            Start Your Journey
-          </Button>
-          <Button 
-            onClick={() => {
-              const target = document.querySelector("#schedule");
-              if (target) {
-                const top = (target as HTMLElement).getBoundingClientRect().top + window.scrollY - 80;
-                window.scrollTo({ top, behavior: "smooth" });
-              }
-            }}
-            size="lg" 
-            variant="outline" 
-            className="rounded-full px-10 py-7 text-lg border-white text-black hover:bg-white/10 backdrop-blur-sm cursor-pointer"
-          >
-            View Schedule
-          </Button>
+
+          <div className="mt-8 flex w-[min(94vw,420px)] flex-col gap-4 lg:w-auto lg:flex-row lg:flex-wrap lg:items-center">
+            <button
+              type="button"
+              onClick={() => scrollToSection("#contact")}
+              className="inline-flex w-full items-center cursor-pointer justify-center gap-2 rounded-full border border-[#d7aa63d1] bg-[#d7aa63] px-5 py-3 text-lg font-semibold text-[#1d1510] transition hover:-translate-y-px hover:brightness-105 lg:w-auto"
+            >
+              <Flower2 size={20} />
+              Start Your Journey
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollToSection("#schedule")}
+              className="inline-flex w-full items-center cursor-pointer justify-center gap-2 rounded-full border border-[#d7aa63d1] bg-[rgba(4,3,2,0.26)] px-5 py-3 text-lg text-[#f6f2eb] transition hover:-translate-y-px hover:bg-[rgba(4,3,2,0.44)] lg:w-auto"
+            >
+              <CalendarDays size={20} />
+              View Schedule
+            </button>
+          </div>
+        </div>
+
+        <div className="relative mt-10 hidden w-[min(40vw,570px)] aspect-square xl:flex xl:items-center xl:justify-center" aria-hidden>
+
+          {/* Circle */}
+          <div className="absolute inset-0 rounded-full border-2 border-[rgba(215,170,99,0.2)] " />
+
+          {/* Logo */}
+          <img
+            src="/mainlogo.png"
+            alt=""
+            className="h-[60%] w-[60%] object-contain opacity-[0.2] saturate-[0.7]"
+          />
+
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <motion.div
+      <motion.button
+        type="button"
+        onClick={() => scrollToSection("#about")}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2, duration: 1 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 text-white flex flex-col items-center gap-2"
+        transition={{ delay: 1.15, duration: 0.8 }}
+        className="absolute bottom-[200px] left-1/2 z-[3] flex -translate-x-1/2 flex-col items-center gap-2 border-0 bg-transparent text-xs tracking-[0.12em] text-[#d7aa63] lg:bottom-[264px] lg:text-[13px] xl:bottom-[228px]"
       >
-        <span className="text-[10px] uppercase tracking-widest opacity-60">Scroll to explore</span>
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-        >
-          <ChevronDown size={24} className="opacity-60" />
-        </motion.div>
-      </motion.div>
+        <motion.span animate={{ y: [0, 7, 0] }} transition={{ repeat: Infinity, duration: 2 }}>
+          <CircleArrowDown size={30} />
+        </motion.span>
+        <span>SCROLL TO EXPLORE</span>
+      </motion.button>
+
+      {/* <div className="absolute inset-x-0 bottom-0 z-[3] border-t border-[#d7aa6385] bg-[rgba(13,10,8,0.85)] backdrop-blur-[3px]">
+        <div className="mx-auto grid max-w-[1340px] grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
+          {benefits.map((benefit, index) => {
+            const Icon = benefit.icon;
+            return (
+              <div key={benefit.title} className={`relative px-3 py-4 text-center lg:px-5 lg:py-5 ${index < benefits.length - 1 ? "xl:after:absolute xl:after:right-0 xl:after:top-[20%] xl:after:bottom-[20%] xl:after:w-px xl:after:bg-[rgba(215,170,99,0.28)]" : ""}`}>
+                <span className="mx-auto mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full border border-[#d7aa637a] text-[#d7aa63] lg:h-[62px] lg:w-[62px]">
+                  <Icon size={24} />
+                </span>
+                <h3 className="font-serif text-xl leading-tight text-[#d7aa63] lg:text-[29px]">{benefit.title}</h3>
+                <p className="mx-auto mt-2 max-w-[290px] text-sm leading-[1.45] text-[rgba(246,241,235,0.9)] lg:text-base lg:leading-[1.58]">{benefit.description}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div> */}
     </section>
   );
 }
+

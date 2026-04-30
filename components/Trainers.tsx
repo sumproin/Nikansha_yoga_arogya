@@ -14,19 +14,21 @@ const specialties = [
 
 export default function Trainers() {
   return (
-    <section id="trainers" className="py-24 bg-cream relative overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top_right,rgba(42,157,143,0.12),transparent_45%),radial-gradient(circle_at_bottom_left,rgba(244,162,97,0.16),transparent_40%)]" />
+    <section id="trainers" className="relative overflow-hidden bg-cream py-24">
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top_right,rgba(215,170,99,0.18),transparent_45%),radial-gradient(circle_at_bottom_left,rgba(75,52,33,0.14),transparent_40%)]" />
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <motion.span
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-primary font-medium tracking-widest uppercase text-sm mb-4 block"
-          >
-            Our Trainer
-          </motion.span>
+         <motion.span
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="mb-4 inline-block text-sm font-medium tracking-[0.2em] text-amber-700 uppercase relative"
+      >
+        <span className="absolute -left-6 top-1/2 -translate-y-1/2 w-4 h-px bg-amber-600/50"></span>
+        Our Trainer
+        <span className="absolute -right-6 top-1/2 -translate-y-1/2 w-4 h-px bg-amber-600/50"></span>
+      </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -43,7 +45,7 @@ export default function Trainers() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="max-w-6xl mx-auto rounded-[2.2rem] bg-white border border-earth/20 shadow-xl p-8 md:p-12"
+          className="mx-auto max-w-6xl rounded-[2.2rem] border border-earth/20 bg-card p-8 shadow-xl md:p-12"
         >
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start">
             <div className="lg:col-span-2">
@@ -56,7 +58,7 @@ export default function Trainers() {
               </div>
               <div className="mt-6 flex flex-wrap gap-2">
                 {specialties.map((item) => (
-                  <span key={item} className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wide rounded-full bg-cream border border-earth/20">
+                  <span key={item} className="rounded-full border border-earth/20 bg-background/85 px-3 py-1.5 text-xs font-semibold tracking-wide uppercase">
                     {item}
                   </span>
                 ))}

@@ -218,7 +218,7 @@ export default function AdminPage() {
   if (!token) {
     return (
       <main className="min-h-screen bg-cream px-6 py-12">
-        <div className="max-w-lg mx-auto bg-white rounded-3xl shadow-lg border border-earth/20 p-8">
+        <div className="max-w-lg mx-auto bg-card rounded-3xl shadow-lg border border-earth/20 p-8">
           <h1 className="font-serif text-4xl mb-2">Admin Login</h1>
           <p className="text-muted-foreground mb-6">Sign in to manage timetable routines and testimonial approvals.</p>
 
@@ -278,7 +278,7 @@ export default function AdminPage() {
 
           <TabsContent value="schedule">
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-              <div className="bg-white rounded-3xl border border-earth/20 p-6">
+              <div className="bg-card rounded-3xl border border-earth/20 p-6">
                 <h2 className="font-serif text-2xl mb-2">{editingScheduleId ? "Edit Routine" : "Add Routine"}</h2>
                 <p className="text-sm text-muted-foreground mb-5">Create and maintain timetable entries from this panel.</p>
                 {scheduleError ? <p className="text-sm text-destructive mb-4">{scheduleError}</p> : null}
@@ -360,7 +360,7 @@ export default function AdminPage() {
                 </form>
               </div>
 
-              <div className="bg-white rounded-3xl border border-earth/20 p-6">
+              <div className="bg-card rounded-3xl border border-earth/20 p-6">
                 <h2 className="font-serif text-2xl mb-5">Current Timetable</h2>
                 {loadingSchedule ? <p className="text-muted-foreground">Loading schedule...</p> : null}
                 <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">
@@ -391,7 +391,7 @@ export default function AdminPage() {
 
           <TabsContent value="testimonials">
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-              <div className="bg-white rounded-3xl border border-earth/20 p-6">
+              <div className="bg-card rounded-3xl border border-earth/20 p-6">
                 <h2 className="font-serif text-2xl mb-2">Pending Approvals</h2>
                 <p className="text-sm text-muted-foreground mb-5">Approve to publish testimonial on website instantly.</p>
                 {testimonialError ? <p className="text-sm text-destructive mb-4">{testimonialError}</p> : null}
@@ -422,7 +422,7 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              <div className="bg-white rounded-3xl border border-earth/20 p-6">
+              <div className="bg-card rounded-3xl border border-earth/20 p-6">
                 <h2 className="font-serif text-2xl mb-5">All Testimonials</h2>
                 <Textarea
                   value={reviewNote}

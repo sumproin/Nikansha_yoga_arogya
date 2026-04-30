@@ -71,17 +71,19 @@ export default function Testimonials() {
   }
 
   return (
-    <section id="testimonials" className="py-24 bg-white overflow-hidden">
+    <section id="testimonials" className="overflow-hidden bg-background py-24">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <motion.span
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-primary font-medium tracking-widest uppercase text-sm mb-4 block"
-          >
-            Voices of Our Community
-          </motion.span>
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="mb-4 inline-block text-sm font-medium tracking-[0.2em] text-amber-700 uppercase relative"
+      >
+        <span className="absolute -left-6 top-1/2 -translate-y-1/2 w-4 h-px bg-amber-600/50"></span>
+        Voices of Our Community
+        <span className="absolute -right-6 top-1/2 -translate-y-1/2 w-4 h-px bg-amber-600/50"></span>
+      </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -97,7 +99,7 @@ export default function Testimonials() {
         </div>
 
         {error ? <p className="text-center text-destructive mb-6">{error}</p> : null}
-        {success ? <p className="text-center text-secondary mb-8">{success}</p> : null}
+        {success ? <p className="text-center text-primary mb-8">{success}</p> : null}
 
         <div className="max-w-3xl mx-auto mb-16">
           <div className="flex justify-center mb-5">
@@ -107,7 +109,7 @@ export default function Testimonials() {
           </div>
 
           {showForm ? (
-            <form onSubmit={handleSubmit} className="bg-cream p-6 md:p-8 rounded-3xl border border-earth/10">
+            <form onSubmit={handleSubmit} className="rounded-3xl border border-earth/15 bg-cream p-6 md:p-8">
               <h3 className="font-serif text-2xl mb-5">Write a Testimonial</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <label className="text-sm flex flex-col gap-1">
@@ -155,9 +157,9 @@ export default function Testimonials() {
               {marqueeItems.map((item, index) => (
                 <article
                   key={`${item._id}-${index}`}
-                  className="bg-cream p-8 rounded-[2rem] relative group hover:bg-primary/5 transition-colors duration-500 w-[320px] sm:w-[360px] mx-3 shrink-0"
+                  className="relative mx-3 w-[320px] shrink-0 rounded-[2rem] border border-earth/15 bg-cream p-8 transition-colors duration-500 group hover:bg-primary/10 sm:w-[360px]"
                 >
-                  <div className="absolute -top-4 -left-4 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-500">
+                  <div className="absolute -top-4 -left-4 flex h-12 w-12 items-center justify-center rounded-full bg-card text-primary shadow-md transition-colors duration-500 group-hover:bg-primary group-hover:text-primary-foreground">
                     <Quote size={20} />
                   </div>
                   <p className="text-base text-muted-foreground mb-6 leading-relaxed italic">&quot;{item.message}&quot;</p>

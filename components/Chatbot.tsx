@@ -65,7 +65,7 @@ export default function Chatbot() {
     }
 
     if (normalized.includes("beginner") || normalized.includes("new to yoga")) {
-      return "For beginners, Hatha Yoga and Gentle Flow are great starting options. These focus on posture, breath, and safe alignment.";
+      return "For beginners, Hatha Yoga and Meditation are great starting options. You can gradually move to Vinyasa Flow as your confidence builds.";
     }
 
     if (normalized.includes("vinyasa") || normalized.includes("hatha") || normalized.includes("ashtanga")) {
@@ -73,7 +73,7 @@ export default function Chatbot() {
     }
 
     if (normalized.includes("theme") || normalized.includes("design") || normalized.includes("color")) {
-      return "The website theme uses a calm wellness palette: saffron, teal, cream, and earthy tones to reflect balance and mindfulness.";
+      return "The website theme uses a rich brown-and-gold palette with warm cream accents to reflect calm, balance, and grounding.";
     }
 
     if (normalized.includes("trainer") || normalized.includes("nikansha")) {
@@ -99,17 +99,17 @@ export default function Chatbot() {
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        className="fixed bottom-5 right-5 z-[80] rounded-full bg-primary text-white p-4 shadow-xl hover:bg-primary/90 transition-colors"
+        className="fixed bottom-5 right-5 z-[80] rounded-full bg-primary p-4 text-primary-foreground shadow-xl transition-colors hover:bg-primary/90"
         aria-label="Toggle chatbot"
       >
         {open ? <X size={22} /> : <MessageCircle size={22} />}
       </button>
 
       {open ? (
-        <section className="fixed bottom-24 right-5 z-[80] w-[92vw] max-w-[380px] rounded-2xl border border-earth/20 bg-white shadow-2xl overflow-hidden">
-          <header className="bg-primary text-white px-4 py-3">
+        <section className="fixed bottom-24 right-5 z-[80] w-[92vw] max-w-[380px] overflow-hidden rounded-2xl border border-earth/20 bg-card shadow-2xl">
+          <header className="bg-primary px-4 py-3 text-primary-foreground">
             <h3 className="font-semibold">Yoga Assistant</h3>
-            <p className="text-xs text-white/80">Ask about classes and timings</p>
+            <p className="text-xs text-primary-foreground/80">Ask about classes and timings</p>
           </header>
 
           <div className="h-[320px] overflow-y-auto px-3 py-3 bg-cream/50">
@@ -118,7 +118,7 @@ export default function Chatbot() {
                 <div
                   key={`${message.role}-${index}`}
                   className={`max-w-[88%] px-3 py-2 rounded-xl text-sm leading-relaxed ${
-                    message.role === "user" ? "ml-auto bg-secondary text-white" : "bg-white border border-earth/20 text-foreground"
+                    message.role === "user" ? "ml-auto bg-secondary text-secondary-foreground" : "border border-earth/20 bg-background text-foreground"
                   }`}
                 >
                   {message.text}
@@ -127,7 +127,7 @@ export default function Chatbot() {
             </div>
           </div>
 
-          <div className="p-3 border-t border-earth/20 bg-white flex items-center gap-2">
+          <div className="flex items-center gap-2 border-t border-earth/20 bg-card p-3">
             <input
               value={input}
               onChange={(event) => setInput(event.target.value)}
@@ -143,7 +143,7 @@ export default function Chatbot() {
             <button
               type="button"
               onClick={sendMessage}
-              className="h-10 w-10 rounded-lg bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition-colors"
+              className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground transition-colors hover:bg-primary/90"
               aria-label="Send message"
             >
               <Send size={16} />
