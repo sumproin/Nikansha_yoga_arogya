@@ -23,6 +23,7 @@ export type Testimonial = {
   name: string;
   role: string;
   message: string;
+  profileImageUrl?: string | null;
   status: "pending" | "approved" | "rejected";
   approvedAt?: string | null;
 };
@@ -31,6 +32,7 @@ export type NewTestimonialPayload = {
   name: string;
   role: string;
   message: string;
+  profileImage?: File | null;
 };
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api";
@@ -40,10 +42,11 @@ type RequestOptions = RequestInit & {
 };
 
 async function request<T>(path: string, init?: RequestOptions): Promise<T> {
+  const isFormData = typeof FormData !== "undefined" && init?.body instanceof FormData;
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...init,
     headers: {
-      "Content-Type": "application/json",
+      ...(isFormData ? {} : { "Content-Type": "application/json" }),
       ...(init?.adminToken ? { Authorization: `Bearer ${init.adminToken}` } : {}),
       ...(init?.headers || {}),
     },
@@ -102,11 +105,20 @@ export const api = {
     request<Testimonial[]>("/testimonials?includePending=true", {
       adminToken,
     }),
-  createTestimonial: (payload: NewTestimonialPayload) =>
+  createTestimonial: (payload: NewTestimonialPayload) => {
+    const formData = new FormData();
+    formData.append("name", payload.name);
+    formData.append("role", payload.role);
+    formData.append("message", payload.message);
+    if (payload.profileImage) {
+      formData.append("profileImage", payload.profileImage);
+    }
+
     request<Testimonial>("/testimonials", {
       method: "POST",
-      body: JSON.stringify(payload),
-    }),
+      body: formData,
+    });
+  },
   updateTestimonialStatus: (id: string, status: "approved" | "rejected", adminToken: string) =>
     request<Testimonial>(`/testimonials/${id}/status`, {
       method: "PATCH",

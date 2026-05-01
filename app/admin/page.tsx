@@ -400,8 +400,19 @@ export default function AdminPage() {
                 <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
                   {pendingTestimonials.map((item) => (
                     <div key={item._id} className="p-4 rounded-xl border border-earth/20 bg-cream">
-                      <p className="font-semibold">{item.name}</p>
-                      <p className="text-xs uppercase tracking-wide text-primary">{item.role}</p>
+                      <div className="flex items-center gap-3">
+                        {item.profileImageUrl ? (
+                          <img src={item.profileImageUrl} alt={`${item.name} profile`} className="h-12 w-12 rounded-full object-cover border border-earth/20" />
+                        ) : (
+                          <div className="h-12 w-12 rounded-full bg-primary/15 text-primary flex items-center justify-center text-sm font-semibold">
+                            {item.name.slice(0, 1).toUpperCase()}
+                          </div>
+                        )}
+                        <div>
+                          <p className="font-semibold">{item.name}</p>
+                          <p className="text-xs uppercase tracking-wide text-primary">{item.role}</p>
+                        </div>
+                      </div>
                       <p className="text-sm mt-2 text-muted-foreground">{item.message}</p>
                       <div className="flex gap-2 mt-4">
                         <Button className="h-8 rounded-full px-4" onClick={() => handleTestimonialStatus(item._id, "approved")}>
@@ -434,9 +445,18 @@ export default function AdminPage() {
                   {testimonials.map((item) => (
                     <div key={item._id} className="p-4 rounded-xl border border-earth/20">
                       <div className="flex justify-between items-center gap-4">
-                        <div>
+                        <div className="flex items-center gap-3">
+                          {item.profileImageUrl ? (
+                            <img src={item.profileImageUrl} alt={`${item.name} profile`} className="h-10 w-10 rounded-full object-cover border border-earth/20" />
+                          ) : (
+                            <div className="h-10 w-10 rounded-full bg-primary/15 text-primary flex items-center justify-center text-sm font-semibold">
+                              {item.name.slice(0, 1).toUpperCase()}
+                            </div>
+                          )}
+                          <div>
                           <p className="font-semibold">{item.name}</p>
                           <p className="text-xs uppercase tracking-wide text-muted-foreground">{item.role}</p>
+                          </div>
                         </div>
                         <span
                           className={`text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full ${

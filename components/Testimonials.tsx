@@ -12,12 +12,14 @@ type TestimonialFormState = {
   name: string;
   role: string;
   message: string;
+  profileImage: File | null;
 };
 
 const initialFormState: TestimonialFormState = {
   name: "",
   role: "",
   message: "",
+  profileImage: null,
 };
 
 export default function Testimonials() {
@@ -137,6 +139,19 @@ export default function Testimonials() {
                     onChange={(event) => setForm((prev) => ({ ...prev, message: event.target.value }))}
                   />
                 </label>
+                <label className="text-sm flex flex-col gap-1 md:col-span-2">
+                  Profile Image (optional)
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={(event) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        profileImage: event.target.files?.[0] || null,
+                      }))
+                    }
+                  />
+                </label>
               </div>
               <Button type="submit" className="mt-5 rounded-full px-6" disabled={submitting}>
                 {submitting ? "Submitting..." : "Submit for Approval"}
@@ -157,15 +172,30 @@ export default function Testimonials() {
               {marqueeItems.map((item, index) => (
                 <article
                   key={`${item._id}-${index}`}
-                  className="relative mx-3 w-[320px] shrink-0 rounded-[2rem] border border-earth/15 bg-cream p-8 transition-colors duration-500 group hover:bg-primary/10 sm:w-[360px]"
+                  className="group relative mx-3 w-[320px] shrink-0 rounded-[2rem] border border-earth/15 bg-cream px-8 pb-10 pt-14 transition-colors duration-500 hover:bg-primary/10 sm:w-[360px]"
                 >
-                  <div className="absolute -top-4 -left-4 flex h-12 w-12 items-center justify-center rounded-full bg-card text-primary shadow-md transition-colors duration-500 group-hover:bg-primary group-hover:text-primary-foreground">
+                  <div className="absolute -top-4 -left-4 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-card text-primary shadow-md transition-colors duration-500 group-hover:bg-primary group-hover:text-primary-foreground">
                     <Quote size={20} />
                   </div>
-                  <p className="text-base text-muted-foreground mb-6 leading-relaxed italic">&quot;{item.message}&quot;</p>
-                  <div>
-                    <h4 className="font-serif font-bold text-xl">{item.name}</h4>
-                    <p className="text-sm text-primary/70 font-medium uppercase tracking-wider">{item.role}</p>
+
+                  {item.profileImageUrl ? (
+                    <div className="absolute -top-4 left-1/2 z-10 -translate-x-1/2">
+                      <div className="h-20 w-20 rounded-full border-2 border-card bg-card p-0.5 shadow-md">
+                        <img
+                          src={item.profileImageUrl}
+                          alt={`${item.name} profile`}
+                          className="h-full w-full rounded-full object-cover object-center"
+                        />
+                      </div>
+                    </div>
+                  ) : null}
+
+                  <div className={item.profileImageUrl ? "pt-12" : ""}>
+                    <p className="mb-6 text-base leading-relaxed text-muted-foreground italic">&quot;{item.message}&quot;</p>
+                    <div>
+                      <h4 className="font-serif text-xl font-bold">{item.name}</h4>
+                      <p className="text-sm font-medium tracking-wider text-primary/70 uppercase">{item.role}</p>
+                    </div>
                   </div>
                 </article>
               ))}
