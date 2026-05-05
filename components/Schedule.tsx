@@ -87,14 +87,14 @@ export default function Schedule() {
           <p className="text-center text-destructive mb-8">{error}</p>
         ) : null}
 
-        <Tabs value={activeDay} className="w-full flex flex-col justify-center items-center" onValueChange={(value) => setActiveDay(value as DayName)}>
-          <div className="flex flex-col justify-center mb-12 overflow-x-auto pb-4 no-scrollbar">
-            <TabsList className="bg-gradient-to-r from-cream to-card p-1 rounded-full h-auto flex flex-row gap-6 border border-earth/20 min-w-max shadow-sm">
+        <Tabs value={activeDay} className="flex w-full flex-col items-center justify-center" onValueChange={(value) => setActiveDay(value as DayName)}>
+          <div className="mb-8 w-full max-w-5xl pb-2 sm:mb-10">
+            <TabsList className="grid h-auto w-full grid-cols-2 gap-2 rounded-2xl border border-earth/20 bg-gradient-to-r from-cream to-card p-2 shadow-sm sm:grid-cols-3 lg:flex lg:flex-row lg:justify-center lg:rounded-full lg:p-1 lg:gap-3">
               {days.map((day) => (
                 <TabsTrigger
                   key={day}
                   value={day}
-                  className="rounded-full px-4 md:px-8 py-2 md:py-2.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-300 text-xs md:text-sm"
+                  className="rounded-xl px-3 py-2 text-[11px] leading-tight data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-300 sm:text-xs lg:rounded-full lg:px-6 lg:py-2.5 lg:text-sm"
                 >
                   {day}
                 </TabsTrigger>
@@ -128,17 +128,17 @@ export default function Schedule() {
                             transition={{ delay: idx * 0.08 }}
                             className={`bg-gradient-to-r from-cream/75 to-card p-5 md:p-8 rounded-2xl border border-earth/15 border-l-8 ${item.color} shadow-sm transition-all duration-300 hover:shadow-xl hover:from-card hover:to-card flex flex-col md:flex-row items-start md:items-center justify-between gap-5 md:gap-6 group`}
                           >
-                            <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-12 w-full text-left">
-                              <div className="flex items-center gap-2 md:gap-3 text-primary font-semibold min-w-[120px] md:min-w-[200px]">
+                            <div className="flex w-full min-w-0 flex-col gap-4 text-left md:flex-row md:items-center md:gap-12">
+                              <div className="flex min-w-[110px] items-center gap-2 text-primary font-semibold sm:min-w-[120px] md:min-w-[200px] md:gap-3">
                                 <Clock size={16} className="md:w-5 md:h-5" />
                                 <span className="text-sm md:text-base lg:text-lg">{item.time}</span>
                               </div>
 
-                              <div className="flex flex-col">
-                                <h3 className="text-xl md:text-2xl font-serif font-bold group-hover:text-primary transition-colors">
+                              <div className="min-w-0">
+                                <h3 className="text-xl font-serif font-bold transition-colors group-hover:text-primary md:text-2xl">
                                   {item.className}
                                 </h3>
-                                <div className="flex flex-wrap items-center justify-start gap-2 md:gap-4 mt-2 text-xs md:text-sm text-muted-foreground">
+                                <div className="mt-2 flex flex-wrap items-center justify-start gap-2 text-xs text-muted-foreground md:gap-4 md:text-sm">
                                   <div className="flex items-center gap-1.5">
                                     <User size={12} className="text-earth md:w-3.5 md:h-3.5" />
                                     <span>{item.instructor}</span>

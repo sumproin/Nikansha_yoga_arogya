@@ -14,6 +14,8 @@ type ContactForm = {
   message: string;
 };
 
+type ContactErrors = Partial<Record<keyof ContactForm, string>>;
+
 const initialForm: ContactForm = {
   fullName: "",
   email: "",
@@ -23,24 +25,106 @@ const initialForm: ContactForm = {
 
 const googleMapsLink = "https://maps.app.goo.gl/F43tUAZDya6dp9Fq7";
 const mapEmbedSrc = "https://maps.google.com/maps?q=F-1605%20Rishabh%20Cloud%209%2C%20Indirapuram%2C%20Ghaziabad&t=&z=15&ie=UTF8&iwloc=&output=embed";
+const nameRegex = /^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/;
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function normalizePhone(value: string) {
+  return value.replace(/\D/g, "").slice(0, 10);
+}
+
+function countWords(value: string) {
+  return value
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
+}
+
+function validateField(field: keyof ContactForm, value: string) {
+  const trimmedValue = value.trim();
+
+  if (!trimmedValue) {
+    return "This field is required.";
+  }
+
+  if (field === "fullName") {
+    if (trimmedValue.length < 2) {
+      return "Name must be at least 2 characters.";
+    }
+    if (!nameRegex.test(trimmedValue)) {
+      return "Name cannot contain numbers.";
+    }
+  }
+
+  if (field === "email" && !emailRegex.test(trimmedValue)) {
+    return "Please enter a valid email address.";
+  }
+
+  if (field === "phone" && normalizePhone(trimmedValue).length !== 10) {
+    return "Contact number must be exactly 10 digits.";
+  }
+
+  if (field === "message" && countWords(trimmedValue) < 5) {
+    return "Message must be at least 5 words.";
+  }
+
+  return null;
+}
+
+function validateForm(values: ContactForm): ContactErrors {
+  const nextErrors: ContactErrors = {};
+  const fields: Array<keyof ContactForm> = ["fullName", "email", "phone", "message"];
+
+  fields.forEach((field) => {
+    const fieldError = validateField(field, values[field]);
+    if (fieldError) {
+      nextErrors[field] = fieldError;
+    }
+  });
+
+  return nextErrors;
+}
 
 export default function Contact() {
   const [form, setForm] = useState<ContactForm>(initialForm);
+  const [fieldErrors, setFieldErrors] = useState<ContactErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
+  function handleFieldBlur(field: keyof ContactForm) {
+    const fieldError = validateField(field, form[field]);
+    setFieldErrors((prev) => ({
+      ...prev,
+      [field]: fieldError ?? undefined,
+    }));
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setSubmitting(true);
     setError(null);
     setSuccess(null);
+
+    const nextErrors = validateForm(form);
+    setFieldErrors(nextErrors);
+
+    if (Object.keys(nextErrors).length > 0) {
+      setError("Please fix the highlighted fields and try again.");
+      return;
+    }
+
+    setSubmitting(true);
 
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          ...form,
+          fullName: form.fullName.trim(),
+          email: form.email.trim(),
+          phone: normalizePhone(form.phone),
+          message: form.message.trim(),
+        }),
       });
 
       if (!response.ok) {
@@ -50,6 +134,7 @@ export default function Contact() {
 
       setSuccess("Your message has been sent successfully.");
       setForm(initialForm);
+      setFieldErrors({});
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : "Failed to send message.");
     } finally {
@@ -72,7 +157,7 @@ export default function Contact() {
             </motion.span>
             <h2 className="text-4xl font-serif mb-8">Begin Your Journey Today.</h2>
 
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            <form className="space-y-6" onSubmit={handleSubmit} noValidate>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-muted-foreground ml-1">Full Name</label>
@@ -80,9 +165,18 @@ export default function Contact() {
                     required
                     placeholder="John Doe"
                     value={form.fullName}
-                    onChange={(event) => setForm((prev) => ({ ...prev, fullName: event.target.value }))}
+                    onChange={(event) => {
+                      const nextName = event.target.value.replace(/[0-9]/g, "");
+                      setForm((prev) => ({ ...prev, fullName: nextName }));
+                      if (fieldErrors.fullName) {
+                        setFieldErrors((prev) => ({ ...prev, fullName: validateField("fullName", nextName) ?? undefined }));
+                      }
+                    }}
+                    onBlur={() => handleFieldBlur("fullName")}
+                    aria-invalid={Boolean(fieldErrors.fullName)}
                     className="h-12 rounded-xl border border-earth/20 bg-cream/60 focus-visible:ring-primary"
                   />
+                  {fieldErrors.fullName ? <p className="text-xs text-destructive ml-1">{fieldErrors.fullName}</p> : null}
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-muted-foreground ml-1">Email Address</label>
@@ -91,9 +185,18 @@ export default function Contact() {
                     type="email"
                     placeholder="john@example.com"
                     value={form.email}
-                    onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))}
+                    onChange={(event) => {
+                      const nextEmail = event.target.value;
+                      setForm((prev) => ({ ...prev, email: nextEmail }));
+                      if (fieldErrors.email) {
+                        setFieldErrors((prev) => ({ ...prev, email: validateField("email", nextEmail) ?? undefined }));
+                      }
+                    }}
+                    onBlur={() => handleFieldBlur("email")}
+                    aria-invalid={Boolean(fieldErrors.email)}
                     className="h-12 rounded-xl border border-earth/20 bg-cream/60 focus-visible:ring-primary"
                   />
+                  {fieldErrors.email ? <p className="text-xs text-destructive ml-1">{fieldErrors.email}</p> : null}
                 </div>
               </div>
               <div className="space-y-2">
@@ -101,23 +204,42 @@ export default function Contact() {
                 <Input
                   required
                   type="tel"
-                  inputMode="tel"
+                  inputMode="numeric"
+                  maxLength={10}
+                  pattern="[0-9]{10}"
                   placeholder="+91 98765 43210"
                   value={form.phone}
-                  onChange={(event) => setForm((prev) => ({ ...prev, phone: event.target.value }))}
+                  onChange={(event) => {
+                    const nextPhone = normalizePhone(event.target.value);
+                    setForm((prev) => ({ ...prev, phone: nextPhone }));
+                    if (fieldErrors.phone) {
+                      setFieldErrors((prev) => ({ ...prev, phone: validateField("phone", nextPhone) ?? undefined }));
+                    }
+                  }}
+                  onBlur={() => handleFieldBlur("phone")}
+                  aria-invalid={Boolean(fieldErrors.phone)}
                   className="h-12 rounded-xl border border-earth/20 bg-cream/60 focus-visible:ring-primary"
                 />
+                {fieldErrors.phone ? <p className="text-xs text-destructive ml-1">{fieldErrors.phone}</p> : null}
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium text-muted-foreground ml-1">Your Message</label>
                 <Textarea
                   required
-                  minLength={10}
                   placeholder="How can we help you?"
                   value={form.message}
-                  onChange={(event) => setForm((prev) => ({ ...prev, message: event.target.value }))}
+                  onChange={(event) => {
+                    const nextMessage = event.target.value;
+                    setForm((prev) => ({ ...prev, message: nextMessage }));
+                    if (fieldErrors.message) {
+                      setFieldErrors((prev) => ({ ...prev, message: validateField("message", nextMessage) ?? undefined }));
+                    }
+                  }}
+                  onBlur={() => handleFieldBlur("message")}
+                  aria-invalid={Boolean(fieldErrors.message)}
                   className="min-h-[150px] rounded-xl border border-earth/20 bg-cream/60 focus-visible:ring-primary"
                 />
+                {fieldErrors.message ? <p className="text-xs text-destructive ml-1">{fieldErrors.message}</p> : null}
               </div>
               <Button
                 type="submit"

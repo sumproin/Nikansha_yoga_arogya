@@ -45,6 +45,7 @@ export default function AdminPage() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loadingTestimonials, setLoadingTestimonials] = useState(false);
   const [testimonialError, setTestimonialError] = useState<string | null>(null);
+  const [deletingTestimonialId, setDeletingTestimonialId] = useState<string | null>(null);
   const [reviewNote, setReviewNote] = useState("");
   const [refreshing, setRefreshing] = useState(false);
   const [lastSyncedAt, setLastSyncedAt] = useState<string | null>(null);
@@ -197,12 +198,19 @@ export default function AdminPage() {
 
   async function handleDeleteTestimonial(id: string) {
     if (!token) return;
+
+    const shouldDelete = window.confirm("Delete this testimonial permanently?");
+    if (!shouldDelete) return;
+
     setTestimonialError(null);
+    setDeletingTestimonialId(id);
     try {
       await api.deleteTestimonial(id, token);
       await refreshAll(token);
     } catch (error) {
       setTestimonialError(error instanceof Error ? error.message : "Failed to delete testimonial.");
+    } finally {
+      setDeletingTestimonialId(null);
     }
   }
 
@@ -421,8 +429,13 @@ export default function AdminPage() {
                         <Button variant="secondary" className="h-8 rounded-full px-4" onClick={() => handleTestimonialStatus(item._id, "rejected")}>
                           Reject
                         </Button>
-                        <Button variant="destructive" className="h-8 rounded-full px-4" onClick={() => handleDeleteTestimonial(item._id)}>
-                          Delete
+                        <Button
+                          variant="destructive"
+                          className="h-8 rounded-full px-4"
+                          onClick={() => handleDeleteTestimonial(item._id)}
+                          disabled={deletingTestimonialId === item._id}
+                        >
+                          {deletingTestimonialId === item._id ? "Deleting..." : "Delete"}
                         </Button>
                       </div>
                     </div>
@@ -471,6 +484,33 @@ export default function AdminPage() {
                         </span>
                       </div>
                       <p className="text-sm text-muted-foreground mt-2">{item.message}</p>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {item.status !== "approved" ? (
+                          <Button
+                            className="h-8 rounded-full px-4"
+                            onClick={() => handleTestimonialStatus(item._id, "approved")}
+                          >
+                            Approve
+                          </Button>
+                        ) : null}
+                        {item.status !== "rejected" ? (
+                          <Button
+                            variant="secondary"
+                            className="h-8 rounded-full px-4"
+                            onClick={() => handleTestimonialStatus(item._id, "rejected")}
+                          >
+                            Reject
+                          </Button>
+                        ) : null}
+                        <Button
+                          variant="destructive"
+                          className="h-8 rounded-full px-4"
+                          onClick={() => handleDeleteTestimonial(item._id)}
+                          disabled={deletingTestimonialId === item._id}
+                        >
+                          {deletingTestimonialId === item._id ? "Deleting..." : "Delete"}
+                        </Button>
+                      </div>
                     </div>
                   ))}
                   {!loadingTestimonials && testimonials.length === 0 ? <p className="text-muted-foreground">No testimonials found.</p> : null}

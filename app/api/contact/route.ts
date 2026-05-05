@@ -10,6 +10,16 @@ type ContactPayload = {
   message?: string;
 };
 
+const nameRegex = /^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/;
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function countWords(value: string) {
+  return value
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
+}
+
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as ContactPayload;
@@ -19,9 +29,29 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: "fullName, email, phone and message are required." }, { status: 400 });
     }
 
-    const phoneRegex = /^[+\d][\d\s\-().]{6,19}$/;
-    if (!phoneRegex.test(phone.trim())) {
-      return NextResponse.json({ message: "Please enter a valid contact number." }, { status: 400 });
+    const cleanName = fullName.trim();
+    const cleanEmail = email.trim();
+    const cleanPhone = phone.replace(/\D/g, "");
+    const cleanMessage = message.trim();
+
+    if (cleanName.length < 2) {
+      return NextResponse.json({ message: "Name must be at least 2 characters." }, { status: 400 });
+    }
+
+    if (!nameRegex.test(cleanName)) {
+      return NextResponse.json({ message: "Name cannot contain numbers." }, { status: 400 });
+    }
+
+    if (!emailRegex.test(cleanEmail)) {
+      return NextResponse.json({ message: "Please enter a valid email address." }, { status: 400 });
+    }
+
+    if (cleanPhone.length !== 10) {
+      return NextResponse.json({ message: "Contact number must be exactly 10 digits." }, { status: 400 });
+    }
+
+    if (countWords(cleanMessage) < 5) {
+      return NextResponse.json({ message: "Message must be at least 5 words." }, { status: 400 });
     }
 
     const smtpHost = process.env.SMTP_HOST;
@@ -51,23 +81,23 @@ export async function POST(request: Request) {
     await transporter.sendMail({
       from: contactFromEmail,
       to: contactToEmail,
-      replyTo: email,
-      subject: `New Contact Form Message: ${email || "General Inquiry"}`,
+      replyTo: cleanEmail,
+      subject: `New Contact Form Message: ${cleanEmail || "General Inquiry"}`,
       text: [
-        `Name: ${fullName}`,
-        `Email: ${email}`,
-        `Contact Number: ${phone}`,
+        `Name: ${cleanName}`,
+        `Email: ${cleanEmail}`,
+        `Contact Number: ${cleanPhone}`,
         "",
         "Message:",
-        message,
+        cleanMessage,
       ].join("\n"),
       html: `
         <h2>New Contact Form Message</h2>
-        <p><strong>Name:</strong> ${fullName}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Contact Number:</strong> ${phone}</p>
+        <p><strong>Name:</strong> ${cleanName}</p>
+        <p><strong>Email:</strong> ${cleanEmail}</p>
+        <p><strong>Contact Number:</strong> ${cleanPhone}</p>
         <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, "<br/>")}</p>
+        <p>${cleanMessage.replace(/\n/g, "<br/>")}</p>
       `,
     });
 

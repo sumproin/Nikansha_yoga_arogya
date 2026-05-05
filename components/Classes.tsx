@@ -1,19 +1,17 @@
 "use client";
 
 import { motion } from "motion/react";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Clock, Sparkles, Zap } from "lucide-react";
+import { Clock } from "lucide-react";
 
 type ServiceClass = {
   title: string;
   level: string;
   duration: string;
   focus: string;
+  description: string;
   image: string;
   color: string;
   textColor: string;
-  buttonClass: string;
 };
 
 const classes: ServiceClass[] = [
@@ -22,70 +20,70 @@ const classes: ServiceClass[] = [
     level: "All Levels",
     duration: "60 min",
     focus: "Foundations & posture alignment",
+    description: "Ideal for beginners and returning practitioners to build balance, flexibility, and mindful breathing habits.",
     image: "https://images.unsplash.com/photo-1552196563-55cd4e45efb3?auto=format&fit=crop&w=1200&q=80",
     color: "bg-primary/12",
     textColor: "text-primary",
-    buttonClass: "hover:bg-primary/10 hover:text-primary",
   },
   {
     title: "Vinyasa Flow",
     level: "All Levels",
     duration: "60 min",
     focus: "Breath-linked dynamic flow",
+    description: "A rhythmic sequence that improves stamina and focus while keeping the practice energetic and uplifting.",
     image: "https://images.unsplash.com/photo-1695795634692-567cec15ad95?auto=format&fit=crop&w=1200&q=80",
     color: "bg-teal/15",
     textColor: "text-teal",
-    buttonClass: "hover:bg-teal/12 hover:text-teal",
   },
   {
     title: "Meditation",
     level: "Beginner Friendly",
     duration: "45 min",
     focus: "Mindfulness & inner calm",
+    description: "Gentle guided sessions designed to reduce stress, improve mental clarity, and create emotional stability.",
     image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80",
     color: "bg-earth/15",
     textColor: "text-earth",
-    buttonClass: "hover:bg-earth/12 hover:text-earth",
   },
   {
     title: "Garbh Sanskar & Prenatal Yoga",
     level: "Prenatal",
     duration: "60 min",
     focus: "Mother wellness & conscious bonding",
+    description: "Supportive prenatal routines that nurture physical comfort, breath awareness, and mother-baby connection.",
     image: "https://images.unsplash.com/photo-1710897872810-363b7a8d3f95?auto=format&fit=crop&w=1200&q=80",
     color: "bg-lavender/14",
     textColor: "text-lavender",
-    buttonClass: "hover:bg-lavender/12 hover:text-lavender",
   },
   {
     title: "Postnatal Yoga",
     level: "Postpartum",
     duration: "60 min",
     focus: "Recovery, strength & flexibility",
+    description: "Rebuild core stability, posture, and mobility with mindful movements tailored for postpartum recovery.",
     image: "https://images.unsplash.com/photo-1570657891791-e39a9d185540?auto=format&fit=crop&w=1200&q=80",
     color: "bg-saffron/15",
     textColor: "text-saffron",
-    buttonClass: "hover:bg-saffron/12 hover:text-saffron",
   },
   {
     title: "Face Yoga",
     level: "All Levels",
     duration: "40 min",
     focus: "Facial toning & stress release",
+    description: "Targeted exercises and relaxation techniques that soften tension and support natural facial vitality.",
     image: "https://images.unsplash.com/photo-1697274715660-cf41497d7e69?auto=format&fit=crop&w=1200&q=80",
     color: "bg-primary/10",
     textColor: "text-primary",
-    buttonClass: "hover:bg-primary/10 hover:text-primary",
   },
   {
     title: "Therapeutic Yoga",
     level: "Personalized",
     duration: "60 min",
     focus: "Pain care & lifestyle support",
+    description: "Customized sessions focused on chronic pain relief, mobility improvement, and long-term wellness support.",
     image: "https://images.unsplash.com/photo-1593811167565-4672e6c8ce4c?auto=format&fit=crop&w=1200&q=80",
     color: "bg-earth/12",
     textColor: "text-earth",
-    buttonClass: "hover:bg-earth/12 hover:text-earth",
   },
 ];
 
@@ -211,14 +209,11 @@ export default function Classes() {
               </div>
               
               <p className="text-sm leading-relaxed text-stone-600 mb-6">{item.focus}</p>
-              
-              <button className={`relative w-full group/btn overflow-hidden rounded-full border-2 ${item.textColor} ${item.buttonClass} bg-transparent px-6 py-2.5 text-sm font-semibold transition-all duration-300 hover:shadow-lg`}>
-                <span className="relative z-10 flex items-center justify-center gap-2">
-                  <Sparkles size={16} className="group-hover/btn:rotate-12 transition-transform" />
-                  Join This Class
-                </span>
-                <div className={`absolute inset-0 ${item.color.replace('bg-', 'bg-')} opacity-0 group-hover/btn:opacity-10 transition-opacity duration-300`} />
-              </button>
+
+              <div className="rounded-2xl border border-amber-200/60 bg-amber-50/60 px-4 py-3">
+                <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-amber-700/90">Why choose this class</p>
+                <p className="text-sm leading-relaxed text-stone-700/90">{item.description}</p>
+              </div>
             </div>
           </div>
         </motion.div>

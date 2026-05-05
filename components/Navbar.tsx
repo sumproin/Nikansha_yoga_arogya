@@ -45,7 +45,7 @@ export default function Navbar() {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className="fixed inset-x-0 top-0 z-[70]"
+      className="fixed inset-x-0 top-0 z-[100]"
     >
       <div
         className={`absolute inset-0 h-[86px] border-b backdrop-blur-md transition-colors duration-300 lg:h-[118px] ${
