@@ -16,16 +16,16 @@ export default function Footer() {
               NIKANSHA YOGAAROGYA STUDIO & WELLNESS is a modern sanctuary dedicated to the art of yoga and mindful living. Join us to awaken your soul and transform your life.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/20 bg-card text-primary transition-all hover:bg-primary hover:text-primary-foreground">
+              <a href="#" aria-label="Instagram" className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/20 bg-card text-primary transition-all hover:bg-primary hover:text-primary-foreground">
                 <Instagram size={20} />
               </a>
-              <a href="#" className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/20 bg-card text-primary transition-all hover:bg-primary hover:text-primary-foreground">
+              <a href="#" aria-label="Facebook" className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/20 bg-card text-primary transition-all hover:bg-primary hover:text-primary-foreground">
                 <Facebook size={20} />
               </a>
-              <a href="#" className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/20 bg-card text-primary transition-all hover:bg-primary hover:text-primary-foreground">
+              <a href="#" aria-label="Twitter" className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/20 bg-card text-primary transition-all hover:bg-primary hover:text-primary-foreground">
                 <Twitter size={20} />
               </a>
-              <a href="#" className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/20 bg-card text-primary transition-all hover:bg-primary hover:text-primary-foreground">
+              <a href="#" aria-label="YouTube" className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/20 bg-card text-primary transition-all hover:bg-primary hover:text-primary-foreground">
                 <Youtube size={20} />
               </a>
             </div>
@@ -62,7 +62,7 @@ export default function Footer() {
                 placeholder="Your email"
                 className="w-full rounded-full border border-earth/20 bg-card px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
               />
-              <button className="rounded-full bg-primary p-2 text-primary-foreground transition-all hover:bg-primary/90" type="button">
+              <button aria-label="Subscribe to newsletter" className="rounded-full bg-primary p-2 text-primary-foreground transition-all hover:bg-primary/90" type="button">
                 <Leaf size={18} />
               </button>
             </form>
