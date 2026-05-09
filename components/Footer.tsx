@@ -69,9 +69,17 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="pt-12 border-t text-center text-sm text-muted-foreground">
+        <div className="pt-12 border-t text-center text-sm flex flex-col items-center gap-4 justify-center">
           <p>Copyright {new Date().getFullYear()} NIKANSHA YOGAAROGYA STUDIO & WELLNESS. All rights reserved. Designed with love and mindfulness.</p>
+           <a
+              href="/admin"
+              aria-label="Admin login"
+              className="inline-flex items-center rounded-full border border-earth/30 bg-card/70 px-3 py-1.5 text-xs font-medium tracking-[0.08em] text-primary/80 transition-colors hover:text-primary"
+            >
+              Admin
+            </a>
         </div>
+        
       </div>
     </footer>
   );
