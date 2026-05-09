@@ -59,7 +59,7 @@ export default function Navbar() {
       <div className="relative z-[2] mx-auto flex h-[86px] max-w-[1420px] items-center justify-center px-4 lg:h-[118px] lg:px-[26px]">
         <a
           href="#home"
-          className={`absolute relative ${isScrolled ? "top-1 h-[110px] w-[186px]" : "top-10 h-[140px] w-[228px]"} transition-all duration-300 left-6 hidden  overflow-hidden rounded-full border border-[#d2a55c94] bg-[#1c1714] shadow-[0_10px_35px_rgba(0,0,0,0.34)] lg:flex`}
+          className={`absolute ${isScrolled ? "top-1 h-[110px] w-[186px]" : "top-10 h-[140px] w-[228px]"} transition-all duration-300 left-6 hidden  overflow-hidden rounded-full border border-[#d2a55c94] bg-[#1c1714] shadow-[0_10px_35px_rgba(0,0,0,0.34)] lg:flex`}
           onClick={(e) => scrollToSection(e, "#home")}
           aria-label="Go to home section"
         >
