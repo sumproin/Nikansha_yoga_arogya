@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion } from "motion/react";
 import { CircleUserRound, Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -58,15 +59,11 @@ export default function Navbar() {
       <div className="relative z-[2] mx-auto flex h-[86px] max-w-[1420px] items-center justify-center px-4 lg:h-[118px] lg:px-[26px]">
         <a
           href="#home"
-          className={`absolute ${isScrolled ? "top-1 h-[110px] w-[186px]" : "top-10 h-[140px] w-[228px]"} transition-all duration-300 left-6 hidden  overflow-hidden rounded-full border border-[#d2a55c94] bg-[#1c1714] shadow-[0_10px_35px_rgba(0,0,0,0.34)] lg:flex`}
+          className={`absolute relative ${isScrolled ? "top-1 h-[110px] w-[186px]" : "top-10 h-[140px] w-[228px]"} transition-all duration-300 left-6 hidden  overflow-hidden rounded-full border border-[#d2a55c94] bg-[#1c1714] shadow-[0_10px_35px_rgba(0,0,0,0.34)] lg:flex`}
           onClick={(e) => scrollToSection(e, "#home")}
           aria-label="Go to home section"
         >
-          <img
-            src="/mainlogo.png"
-            alt="Nikansha Yogaarogya logo"
-            className="h-full w-full scale-105 object-cover"
-          />
+          <Image src="/mainlogo.png" alt="Nikansha Yogaarogya logo" fill sizes="(min-width: 1024px) 228px, 0px" priority className="h-full w-full scale-105 object-cover" />
         </a>
 
         <div className="hidden items-center gap-8 xl:gap-10 lg:flex">
@@ -109,10 +106,10 @@ export default function Navbar() {
           <a
             href="#home"
             onClick={(e) => scrollToSection(e, "#home")}
-            className="inline-flex h-[54px] w-[54px] overflow-hidden rounded-full border border-[#d2a55c94] bg-[#1c1714]"
+            className="relative inline-flex h-[54px] w-[54px] overflow-hidden rounded-full border border-[#d2a55c94] bg-[#1c1714]"
             aria-label="Go to home section"
           >
-            <img src="/mainlogo.png" alt="Nikansha Yogaarogya logo" className="h-full w-full scale-110 object-cover" />
+            <Image src="/mainlogo.png" alt="Nikansha Yogaarogya logo" fill sizes="54px" priority className="h-full w-full scale-110 object-cover" />
           </a>
 
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -161,3 +158,4 @@ export default function Navbar() {
     </motion.nav>
   );
 }
+

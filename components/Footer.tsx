@@ -1,6 +1,7 @@
 "use client";
 
 import { Leaf, Instagram, Facebook, Twitter, Youtube } from "lucide-react";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -9,11 +10,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           <div className="space-y-6">
             <a href="/" className="flex items-center gap-2 group">
-              <img
-                src="/mainlogo2.png"
-                alt="Nikansha Yogaarogya logo"
-                className="w-60 h-36 rounded-full object-cover border border-primary/20"
-              />
+              <Image src="/mainlogo2.png" alt="Nikansha Yogaarogya logo" width={240} height={144} sizes="(max-width: 768px) 180px, 240px" loading="lazy" className="w-60 h-36 rounded-full object-cover border border-primary/20" />
             </a>
             <p className="text-muted-foreground leading-relaxed">
               NIKANSHA YOGAAROGYA STUDIO & WELLNESS is a modern sanctuary dedicated to the art of yoga and mindful living. Join us to awaken your soul and transform your life.
@@ -79,3 +76,4 @@ export default function Footer() {
     </footer>
   );
 }
+

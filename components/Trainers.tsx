@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { Award, HeartPulse, Leaf, Sparkles } from "lucide-react";
+import Image from "next/image";
 
 const specialties = [
   "Hatha Yoga",
@@ -49,12 +50,8 @@ export default function Trainers() {
         >
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start">
             <div className="lg:col-span-2">
-              <div className="aspect-[4/5] rounded-[2rem] overflow-hidden border-4 border-cream shadow-lg">
-                <img
-                  src="/trainimg.jpeg"
-                  alt="Yogacharya Nikansha"
-                  className="w-full h-full object-cover"
-                />
+              <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden border-4 border-cream shadow-lg">
+                <Image src="/trainimg.jpeg" alt="Yogacharya Nikansha" fill sizes="(max-width: 1024px) 100vw, 38vw" loading="lazy" className="w-full h-full object-cover" />
               </div>
               <div className="mt-6 flex flex-wrap gap-2">
                 {specialties.map((item) => (
@@ -124,3 +121,4 @@ export default function Trainers() {
     </section>
   );
 }
+

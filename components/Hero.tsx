@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
 import { CalendarDays, CircleArrowDown, Flower2, HeartHandshake, Leaf, Sparkles, Users } from "lucide-react";
 import gsap from "gsap";
@@ -43,7 +44,7 @@ export default function Hero() {
   return (
     <section id="home" ref={ref} className="relative min-h-svh overflow-hidden bg-[#0c0906] text-[#fbf6ef]">
       <motion.div style={{ y, scale }} className="absolute inset-0">
-        <img src="/yogabg.webp" alt="Woman practicing yoga in studio" className="h-full w-full object-cover object-center-top saturate-[0.86] contrast-[0.94]" />
+        <Image src="/yogabg.webp" alt="Woman practicing yoga in studio" fill priority sizes="100vw" className="h-full w-full object-cover object-center-top saturate-[0.86] contrast-[0.94]" />
       </motion.div>
       <div className="absolute inset-0 z-[1] bg-[linear-gradient(104deg,rgba(6,5,4,0.84)_0%,rgba(11,8,5,0.72)_36%,rgba(16,12,8,0.56)_58%,rgba(14,11,7,0.8)_100%)]" />
       {/* <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_78%_42%,rgba(210,165,92,0.16),transparent_38%),radial-gradient(circle_at_5%_44%,rgba(0,0,0,0.35),transparent_40%)]" /> */}
@@ -95,11 +96,7 @@ export default function Hero() {
           <div className="absolute inset-0 rounded-full border-2 border-[rgba(215,170,99,0.2)] " />
 
           {/* Logo */}
-          <img
-            src="/mainlogo.png"
-            alt=""
-            className="h-[60%] w-[60%] object-contain opacity-[0.2] saturate-[0.7]"
-          />
+          <Image src="/mainlogo.png" alt="" width={320} height={320} sizes="(min-width: 1280px) 320px, 0px" loading="lazy" className="h-[60%] w-[60%] object-contain opacity-[0.2] saturate-[0.7]" />
 
         </div>
       </div>
@@ -137,4 +134,5 @@ export default function Hero() {
     </section>
   );
 }
+
 
