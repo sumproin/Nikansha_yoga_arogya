@@ -94,7 +94,7 @@ export default function Schedule() {
                 <TabsTrigger
                   key={day}
                   value={day}
-                  className="rounded-xl px-3 py-2 text-[11px] leading-tight data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-300 sm:text-xs lg:rounded-full lg:px-6 lg:py-2.5 lg:text-sm"
+                  className="rounded-xl px-3 py-2 text-[11px] leading-tight data-active:bg-[#d6ab66] data-active:text-amber-950 data-active:shadow-md transition-all duration-300 sm:text-xs lg:rounded-full lg:px-6 lg:py-2.5 lg:text-sm"
                 >
                   {day}
                 </TabsTrigger>
