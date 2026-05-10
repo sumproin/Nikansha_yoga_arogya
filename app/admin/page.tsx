@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { ImagePlus, LogOut, MessageSquareQuote, RefreshCw, Sparkles, Table } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { api, type DayName, type ScheduleEntry, type Testimonial } from "@/lib/api";
+import { api, type DayName, type GalleryItem, type ScheduleEntry, type Testimonial } from "@/lib/api";
 
 const ADMIN_TOKEN_KEY = "nikansha_admin_token";
 const days: DayName[] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -23,10 +23,7 @@ const initialScheduleForm: ScheduleFormState = {
   color: "border-l-teal",
 };
 
-const initialLogin = {
-  username: "",
-  password: "",
-};
+const initialLogin = { username: "", password: "" };
 
 export default function AdminPage() {
   const [token, setToken] = useState<string | null>(null);
@@ -46,14 +43,18 @@ export default function AdminPage() {
   const [loadingTestimonials, setLoadingTestimonials] = useState(false);
   const [testimonialError, setTestimonialError] = useState<string | null>(null);
   const [deletingTestimonialId, setDeletingTestimonialId] = useState<string | null>(null);
-  const [reviewNote, setReviewNote] = useState("");
+
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+  const [loadingGallery, setLoadingGallery] = useState(false);
+  const [galleryError, setGalleryError] = useState<string | null>(null);
+  const [galleryFiles, setGalleryFiles] = useState<File[]>([]);
+  const [uploadingGallery, setUploadingGallery] = useState(false);
+  const [deletingGalleryId, setDeletingGalleryId] = useState<string | null>(null);
+
   const [refreshing, setRefreshing] = useState(false);
   const [lastSyncedAt, setLastSyncedAt] = useState<string | null>(null);
 
-  const pendingTestimonials = useMemo(
-    () => testimonials.filter((item) => item.status === "pending"),
-    [testimonials]
-  );
+  const pendingTestimonials = useMemo(() => testimonials.filter((item) => item.status === "pending"), [testimonials]);
 
   useEffect(() => {
     async function restoreSession() {
@@ -84,7 +85,7 @@ export default function AdminPage() {
   async function refreshAll(adminToken: string) {
     setRefreshing(true);
     try {
-      await Promise.all([loadSchedule(), loadTestimonials(adminToken)]);
+      await Promise.all([loadSchedule(), loadTestimonials(adminToken), loadGallery()]);
       setLastSyncedAt(new Date().toLocaleTimeString());
     } finally {
       setRefreshing(false);
@@ -95,8 +96,7 @@ export default function AdminPage() {
     setLoadingSchedule(true);
     setScheduleError(null);
     try {
-      const data = await api.getSchedule();
-      setScheduleEntries(data);
+      setScheduleEntries(await api.getSchedule());
     } catch (error) {
       setScheduleError(error instanceof Error ? error.message : "Failed to load schedule.");
     } finally {
@@ -108,12 +108,23 @@ export default function AdminPage() {
     setLoadingTestimonials(true);
     setTestimonialError(null);
     try {
-      const data = await api.getAllTestimonialsForAdmin(adminToken);
-      setTestimonials(data);
+      setTestimonials(await api.getAllTestimonialsForAdmin(adminToken));
     } catch (error) {
       setTestimonialError(error instanceof Error ? error.message : "Failed to load testimonials.");
     } finally {
       setLoadingTestimonials(false);
+    }
+  }
+
+  async function loadGallery() {
+    setLoadingGallery(true);
+    setGalleryError(null);
+    try {
+      setGalleryItems(await api.getGalleryItems());
+    } catch (error) {
+      setGalleryError(error instanceof Error ? error.message : "Failed to load gallery.");
+    } finally {
+      setLoadingGallery(false);
     }
   }
 
@@ -172,7 +183,6 @@ export default function AdminPage() {
 
   async function deleteScheduleEntry(id: string) {
     if (!token) return;
-    setScheduleError(null);
     try {
       await api.deleteScheduleEntry(id, token);
       if (editingScheduleId === id) {
@@ -187,7 +197,6 @@ export default function AdminPage() {
 
   async function handleTestimonialStatus(id: string, status: "approved" | "rejected") {
     if (!token) return;
-    setTestimonialError(null);
     try {
       await api.updateTestimonialStatus(id, status, token);
       await refreshAll(token);
@@ -197,12 +206,8 @@ export default function AdminPage() {
   }
 
   async function handleDeleteTestimonial(id: string) {
-    if (!token) return;
+    if (!token || !window.confirm("Delete this testimonial permanently?")) return;
 
-    const shouldDelete = window.confirm("Delete this testimonial permanently?");
-    if (!shouldDelete) return;
-
-    setTestimonialError(null);
     setDeletingTestimonialId(id);
     try {
       await api.deleteTestimonial(id, token);
@@ -211,6 +216,46 @@ export default function AdminPage() {
       setTestimonialError(error instanceof Error ? error.message : "Failed to delete testimonial.");
     } finally {
       setDeletingTestimonialId(null);
+    }
+  }
+
+  async function handleGalleryUpload(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!token) return;
+    if (galleryFiles.length === 0) {
+      setGalleryError("At least one media file is required.");
+      return;
+    }
+
+    setUploadingGallery(true);
+    setGalleryError(null);
+    try {
+      await api.createGalleryItems(
+        {
+          media: galleryFiles,
+        },
+        token
+      );
+      setGalleryFiles([]);
+      await refreshAll(token);
+    } catch (error) {
+      setGalleryError(error instanceof Error ? error.message : "Failed to upload gallery media.");
+    } finally {
+      setUploadingGallery(false);
+    }
+  }
+
+  async function handleDeleteGalleryItem(id: string) {
+    if (!token || !window.confirm("Delete this gallery item permanently?")) return;
+
+    setDeletingGalleryId(id);
+    try {
+      await api.deleteGalleryItem(id, token);
+      await refreshAll(token);
+    } catch (error) {
+      setGalleryError(error instanceof Error ? error.message : "Failed to delete gallery item.");
+    } finally {
+      setDeletingGalleryId(null);
     }
   }
 
@@ -225,30 +270,21 @@ export default function AdminPage() {
 
   if (!token) {
     return (
-      <main className="min-h-screen bg-cream px-6 py-12">
-        <div className="max-w-lg mx-auto bg-card rounded-3xl shadow-lg border border-earth/20 p-8">
-          <h1 className="font-serif text-4xl mb-2">Admin Login</h1>
-          <p className="text-muted-foreground mb-6">Sign in to manage timetable routines and testimonial approvals.</p>
+      <main className="min-h-screen bg-[radial-gradient(circle_at_top,#fff7e8,transparent_55%),linear-gradient(135deg,#f6eee2_0%,#fef9f1_100%)] px-6 py-12">
+        <div className="mx-auto max-w-lg rounded-3xl border border-earth/20 bg-card/95 p-8 shadow-2xl">
+          <h1 className="mb-2 font-serif text-4xl">Admin Login</h1>
+          <p className="mb-6 text-muted-foreground">Sign in to manage schedule, testimonials, and gallery uploads.</p>
 
-          {authError ? <p className="text-destructive text-sm mb-4">{authError}</p> : null}
+          {authError ? <p className="mb-4 text-sm text-destructive">{authError}</p> : null}
 
           <form onSubmit={handleLogin} className="space-y-4">
-            <label className="text-sm flex flex-col gap-1">
+            <label className="flex flex-col gap-1 text-sm">
               Username
-              <Input
-                required
-                value={login.username}
-                onChange={(event) => setLogin((prev) => ({ ...prev, username: event.target.value }))}
-              />
+              <Input required value={login.username} onChange={(event) => setLogin((prev) => ({ ...prev, username: event.target.value }))} />
             </label>
-            <label className="text-sm flex flex-col gap-1">
+            <label className="flex flex-col gap-1 text-sm">
               Password
-              <Input
-                required
-                type="password"
-                value={login.password}
-                onChange={(event) => setLogin((prev) => ({ ...prev, password: event.target.value }))}
-              />
+              <Input required type="password" value={login.password} onChange={(event) => setLogin((prev) => ({ ...prev, password: event.target.value }))} />
             </label>
             <Button type="submit" className="w-full rounded-full" disabled={loggingIn}>
               {loggingIn ? "Signing in..." : "Login"}
@@ -260,266 +296,579 @@ export default function AdminPage() {
   }
 
   return (
-    <main className="min-h-screen bg-cream px-6 py-10">
-      <div className="max-w-7xl mx-auto">
-        <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-          <div>
-            <h1 className="font-serif text-4xl">Admin Panel</h1>
-            <p className="text-muted-foreground">Manage routine timetable and approve testimonials.</p>
-            {lastSyncedAt ? <p className="text-xs text-muted-foreground mt-1">Last synced: {lastSyncedAt}</p> : null}
-          </div>
-          <div className="flex gap-2">
-            <Button variant="outline" className="rounded-full" onClick={() => refreshAll(token)} disabled={refreshing}>
-              {refreshing ? "Refreshing..." : "Refresh Data"}
-            </Button>
-            <Button variant="outline" className="rounded-full" onClick={logout}>
-              Logout
-            </Button>
+    <main className="min-h-screen bg-gradient-to-br from-amber-50/40 via-white to-orange-50/30 px-4 py-8 md:px-6 md:py-10">
+      <div className="mx-auto max-w-7xl">
+        {/* Header Card - Redesigned with glass morphism */}
+        <div className="group relative mb-10 overflow-hidden rounded-3xl bg-white/80 backdrop-blur-md shadow-xl shadow-amber-900/5 transition-all duration-300 hover:shadow-2xl border border-amber-100/50">
+          {/* Decorative gradient bar */}
+          <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-[#d9b173] via-orange-400 to-rose-400"></div>
+
+          <div className="relative p-8">
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+              <div className="space-y-3">
+                <div className="inline-flex">
+                  <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#d9b173]/10 to-[#d9b173]/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-amber-700 border border-amber-200/30 backdrop-blur-sm">
+                    <Sparkles size={14} className="text-[#d9b173]" />
+                    Admin Workspace
+                  </span>
+                </div>
+                <h1 className="font-serif text-5xl font-bold tracking-tight bg-gradient-to-r from-amber-900 to-amber-700 bg-clip-text text-transparent">
+                  Nikansha Control
+                </h1>
+                <p className="text-amber-700/70 max-w-md">
+                  Manage schedule, testimonials, and media gallery from one unified dashboard.
+                </p>
+                {lastSyncedAt && (
+                  <div className="flex items-center gap-2 text-xs text-[#d9b173]/70">
+                    <div className="h-1.5 w-1.5 rounded-full bg-emerald-500"></div>
+                    Last synced: {lastSyncedAt}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  className="rounded-full border-amber-200 bg-white/60 hover:bg-amber-50 hover:border-amber-300 transition-all duration-200 shadow-sm"
+                  onClick={() => refreshAll(token)}
+                  disabled={refreshing}
+                >
+                  <RefreshCw size={16} className={refreshing ? "animate-spin" : ""} />
+                  {refreshing ? "Refreshing..." : "Refresh Data"}
+                </Button>
+                <Button
+                  variant="outline"
+                  className="rounded-full border-rose-200 text-rose-600 hover:bg-rose-50 hover:border-rose-300 transition-all duration-200"
+                  onClick={logout}
+                >
+                  <LogOut size={16} /> Logout
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
 
         <Tabs defaultValue="schedule" className="w-full flex flex-col">
-          <TabsList className="mb-6 rounded-full">
-            <TabsTrigger value="schedule">Timetable Routine</TabsTrigger>
-            <TabsTrigger value="testimonials">Testimonials ({pendingTestimonials.length} Pending)</TabsTrigger>
+          <TabsList className="w-full mb-8 h-auto rounded-2xl bg-white/60 backdrop-blur-sm border border-amber-100 p-1.5 shadow-sm">
+            <TabsTrigger
+              value="schedule"
+              className="gap-2 data-active:bg-gradient-to-r data-active:from-[#d9b173] data-active:to-[#d9b173] data-active:text-white transition-all duration-200"
+            >
+              <Table size={16} /> Timetable
+            </TabsTrigger>
+            <TabsTrigger
+              value="testimonials"
+              className="gap-2 data-active:bg-gradient-to-r data-active:from-[#d9b173] data-active:to-[#d9b173] data-active:text-white transition-all duration-200"
+            >
+              <MessageSquareQuote size={16} />
+              Testimonials
+              {pendingTestimonials.length > 0 && (
+                <span className="ml-1 rounded-full bg-rose-500 px-2 py-0.5 text-xs text-white">
+                  {pendingTestimonials.length}
+                </span>
+              )}
+            </TabsTrigger>
+            <TabsTrigger
+              value="gallery"
+              className="gap-2 data-active:bg-gradient-to-r data-active:from-[#d9b173] data-active:to-[#d9b173] data-active:text-white transition-all duration-200"
+            >
+              <ImagePlus size={16} /> Gallery
+            </TabsTrigger>
           </TabsList>
 
+          {/* Schedule Tab */}
           <TabsContent value="schedule">
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-              <div className="bg-card rounded-3xl border border-earth/20 p-6">
-                <h2 className="font-serif text-2xl mb-2">{editingScheduleId ? "Edit Routine" : "Add Routine"}</h2>
-                <p className="text-sm text-muted-foreground mb-5">Create and maintain timetable entries from this panel.</p>
-                {scheduleError ? <p className="text-sm text-destructive mb-4">{scheduleError}</p> : null}
+            <div className="grid grid-cols-1 gap-8 xl:grid-cols-2">
+              {/* Add/Edit Form */}
+              <section className="rounded-3xl bg-white/80 backdrop-blur-sm p-8 shadow-lg shadow-amber-900/5 border border-amber-100 transition-all duration-300 hover:shadow-xl">
+                <div className="mb-6">
+                  <h2 className="font-serif text-3xl font-semibold text-amber-900">
+                    {editingScheduleId ? "Edit Routine" : "Create Routine"}
+                  </h2>
+                  <p className="text-amber-600/70 text-sm mt-1">
+                    {editingScheduleId ? "Update the existing class schedule" : "Add new classes to your weekly timetable"}
+                  </p>
+                </div>
 
-                <form onSubmit={handleScheduleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <label className="text-sm flex flex-col gap-1">
-                    Day
-                    <select
-                      className="h-10 rounded-lg border border-input bg-transparent px-3"
-                      value={scheduleForm.day}
-                      onChange={(event) => setScheduleForm((prev) => ({ ...prev, day: event.target.value as DayName }))}
+                {scheduleError && (
+                  <div className="mb-6 rounded-xl bg-rose-50 border border-rose-200 p-4">
+                    <p className="text-sm text-rose-600">{scheduleError}</p>
+                  </div>
+                )}
+
+                <form onSubmit={handleScheduleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-amber-800">Day</label>
+                      <select
+                        className="w-full rounded-xl border-amber-200 bg-white shadow-sm focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 transition-all duration-200 px-4 py-2.5"
+                        value={scheduleForm.day}
+                        onChange={(event) => setScheduleForm((prev) => ({ ...prev, day: event.target.value as DayName }))}
+                      >
+                        {days.map((day) => <option key={day} value={day}>{day}</option>)}
+                      </select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-amber-800">Time</label>
+                      <Input
+                        required
+                        placeholder="e.g., 10:00 AM - 11:30 AM"
+                        className="rounded-xl border-amber-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20"
+                        value={scheduleForm.time}
+                        onChange={(event) => setScheduleForm((prev) => ({ ...prev, time: event.target.value }))}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-amber-800">Class Name</label>
+                      <Input
+                        required
+                        placeholder="e.g., Vinyasa Flow"
+                        className="rounded-xl border-amber-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20"
+                        value={scheduleForm.className}
+                        onChange={(event) => setScheduleForm((prev) => ({ ...prev, className: event.target.value }))}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-amber-800">Instructor</label>
+                      <Input
+                        required
+                        placeholder="Full name"
+                        className="rounded-xl border-amber-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20"
+                        value={scheduleForm.instructor}
+                        onChange={(event) => setScheduleForm((prev) => ({ ...prev, instructor: event.target.value }))}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-amber-800">Room / Studio</label>
+                      <Input
+                        required
+                        placeholder="e.g., Studio A, Main Hall"
+                        className="rounded-xl border-amber-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20"
+                        value={scheduleForm.room}
+                        onChange={(event) => setScheduleForm((prev) => ({ ...prev, room: event.target.value }))}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-amber-800">Level</label>
+                      <Input
+                        placeholder="Beginner / Intermediate / Advanced"
+                        className="rounded-xl border-amber-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20"
+                        value={scheduleForm.level}
+                        onChange={(event) => setScheduleForm((prev) => ({ ...prev, level: event.target.value }))}
+                      />
+                    </div>
+
+                    <div className="space-y-2 md:col-span-2">
+                      <label className="text-sm font-medium text-amber-800">Accent Color</label>
+                      <select
+                        className="w-full rounded-xl border-amber-200 bg-white shadow-sm focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 transition-all duration-200 px-4 py-2.5"
+                        value={scheduleForm.color}
+                        onChange={(event) => setScheduleForm((prev) => ({ ...prev, color: event.target.value }))}
+                      >
+                        {colorOptions.map((color) => (
+                          <option key={color} value={color} className="capitalize">{color.replace('border-l-', '')}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3 pt-4">
+                    <Button
+                      type="submit"
+                      className="rounded-full bg-gradient-to-r from-[#d9b173] to-[#d9b173] hover:from-amber-600 hover:to-orange-600 shadow-md hover:shadow-lg transition-all duration-200 px-8"
+                      disabled={savingSchedule}
                     >
-                      {days.map((day) => (
-                        <option key={day} value={day}>
-                          {day}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-
-                  <label className="text-sm flex flex-col gap-1">
-                    Time
-                    <Input required value={scheduleForm.time} onChange={(event) => setScheduleForm((prev) => ({ ...prev, time: event.target.value }))} />
-                  </label>
-
-                  <label className="text-sm flex flex-col gap-1">
-                    Class Name
-                    <Input required value={scheduleForm.className} onChange={(event) => setScheduleForm((prev) => ({ ...prev, className: event.target.value }))} />
-                  </label>
-
-                  <label className="text-sm flex flex-col gap-1">
-                    Instructor
-                    <Input required value={scheduleForm.instructor} onChange={(event) => setScheduleForm((prev) => ({ ...prev, instructor: event.target.value }))} />
-                  </label>
-
-                  <label className="text-sm flex flex-col gap-1">
-                    Room
-                    <Input required value={scheduleForm.room} onChange={(event) => setScheduleForm((prev) => ({ ...prev, room: event.target.value }))} />
-                  </label>
-
-                  <label className="text-sm flex flex-col gap-1">
-                    Level
-                    <Input value={scheduleForm.level} onChange={(event) => setScheduleForm((prev) => ({ ...prev, level: event.target.value }))} />
-                  </label>
-
-                  <label className="text-sm flex flex-col gap-1 md:col-span-2">
-                    Accent Color
-                    <select
-                      className="h-10 rounded-lg border border-input bg-transparent px-3"
-                      value={scheduleForm.color}
-                      onChange={(event) => setScheduleForm((prev) => ({ ...prev, color: event.target.value }))}
-                    >
-                      {colorOptions.map((color) => (
-                        <option key={color} value={color}>
-                          {color}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-
-                  <div className="md:col-span-2 flex gap-3">
-                    <Button type="submit" className="rounded-full" disabled={savingSchedule}>
                       {savingSchedule ? "Saving..." : editingScheduleId ? "Update Routine" : "Add Routine"}
                     </Button>
-                    {editingScheduleId ? (
+                    {editingScheduleId && (
                       <Button
                         type="button"
                         variant="outline"
-                        className="rounded-full"
-                        onClick={() => {
-                          setEditingScheduleId(null);
-                          setScheduleForm(initialScheduleForm);
-                        }}
+                        className="rounded-full border-amber-200 hover:bg-amber-50"
+                        onClick={() => { setEditingScheduleId(null); setScheduleForm(initialScheduleForm); }}
                       >
-                        Cancel
+                        Cancel Edit
                       </Button>
-                    ) : null}
+                    )}
                   </div>
                 </form>
-              </div>
+              </section>
 
-              <div className="bg-card rounded-3xl border border-earth/20 p-6">
-                <h2 className="font-serif text-2xl mb-5">Current Timetable</h2>
-                {loadingSchedule ? <p className="text-muted-foreground">Loading schedule...</p> : null}
-                <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">
-                  {scheduleEntries.map((entry) => (
-                    <div key={entry._id} className={`p-4 rounded-xl border border-earth/20 border-l-4 ${entry.color}`}>
-                      <p className="font-semibold">{entry.className}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {entry.day} | {entry.time}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {entry.instructor} | {entry.room} | {entry.level}
-                      </p>
-                      <div className="flex gap-2 mt-3">
-                        <Button variant="outline" className="rounded-full h-8 px-4" onClick={() => startScheduleEdit(entry)}>
-                          Edit
-                        </Button>
-                        <Button variant="destructive" className="rounded-full h-8 px-4" onClick={() => deleteScheduleEntry(entry._id)}>
-                          Delete
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                  {!loadingSchedule && scheduleEntries.length === 0 ? <p className="text-muted-foreground">No routines added yet.</p> : null}
+              {/* Schedule List */}
+              <section className="rounded-3xl bg-white/80 backdrop-blur-sm p-8 shadow-lg shadow-amber-900/5 border border-amber-100 transition-all duration-300 hover:shadow-xl">
+                <div className="mb-6">
+                  <h2 className="font-serif text-3xl font-semibold text-amber-900">Current Timetable</h2>
+                  <p className="text-amber-600/70 text-sm mt-1">
+                    {scheduleEntries.length} class{scheduleEntries.length !== 1 ? 'es' : ''} scheduled
+                  </p>
                 </div>
-              </div>
+
+                {loadingSchedule ? (
+                  <div className="flex items-center justify-center py-12">
+                    <div className="h-8 w-8 animate-spin rounded-full border-4 border-amber-200 border-t-[#d9b173]"></div>
+                  </div>
+                ) : (
+                  <div className="max-h-[600px] space-y-3 overflow-y-auto pr-2 custom-scrollbar">
+                    {scheduleEntries.map((entry) => (
+                      <article
+                        key={entry._id}
+                        className={`group relative overflow-hidden rounded-xl border border-amber-100 bg-white p-5 transition-all duration-200 hover:shadow-md hover:border-amber-200 ${entry.color}`}
+                      >
+                        <div className="absolute top-0 right-0 h-20 w-20 bg-gradient-to-br from-amber-100/0 to-amber-100/20 rounded-bl-3xl"></div>
+
+                        <div className="relative">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <h3 className="text-xl font-semibold text-amber-900">{entry.className}</h3>
+                              <div className="mt-1 flex flex-wrap gap-3 text-sm text-amber-600">
+                                <span className="flex items-center gap-1">📅 {entry.day}</span>
+                                <span className="flex items-center gap-1">⏰ {entry.time}</span>
+                              </div>
+                            </div>
+                            {entry.level && (
+                              <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-700">
+                                {entry.level}
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="mt-3 flex flex-wrap gap-4 text-sm text-amber-600/80">
+                            <span>👨‍🏫 {entry.instructor}</span>
+                            <span>📍 {entry.room}</span>
+                          </div>
+
+                          <div className="mt-4 flex gap-2">
+                            <Button
+                              variant="outline"
+                              className="h-9 rounded-full border-amber-200 bg-white hover:bg-amber-50 hover:border-amber-300 text-sm"
+                              onClick={() => startScheduleEdit(entry)}
+                            >
+                              Edit
+                            </Button>
+                            <Button
+                              variant="destructive"
+                              className="h-9 rounded-full bg-rose-500 hover:bg-rose-600 text-white text-sm "
+                              onClick={() => deleteScheduleEntry(entry._id)}
+                            >
+                              Delete
+                            </Button>
+                          </div>
+                        </div>
+                      </article>
+                    ))}
+
+                    {!loadingSchedule && scheduleEntries.length === 0 && (
+                      <div className="rounded-xl bg-amber-50 border border-amber-100 p-8 text-center">
+                        <p className="text-amber-600">No classes scheduled yet. Create your first routine above!</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </section>
             </div>
           </TabsContent>
 
+          {/* Testimonials Tab */}
           <TabsContent value="testimonials">
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-              <div className="bg-card rounded-3xl border border-earth/20 p-6">
-                <h2 className="font-serif text-2xl mb-2">Pending Approvals</h2>
-                <p className="text-sm text-muted-foreground mb-5">Approve to publish testimonial on website instantly.</p>
-                {testimonialError ? <p className="text-sm text-destructive mb-4">{testimonialError}</p> : null}
-                {loadingTestimonials ? <p className="text-muted-foreground">Loading testimonials...</p> : null}
-
-                <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
-                  {pendingTestimonials.map((item) => (
-                    <div key={item._id} className="p-4 rounded-xl border border-earth/20 bg-cream">
-                      <div className="flex items-center gap-3">
-                        {item.profileImageUrl ? (
-                          <img src={item.profileImageUrl} alt={`${item.name} profile`} className="h-12 w-12 rounded-full object-cover border border-earth/20" />
-                        ) : (
-                          <div className="h-12 w-12 rounded-full bg-primary/15 text-primary flex items-center justify-center text-sm font-semibold">
-                            {item.name.slice(0, 1).toUpperCase()}
-                          </div>
-                        )}
-                        <div>
-                          <p className="font-semibold">{item.name}</p>
-                          <p className="text-xs uppercase tracking-wide text-primary">{item.role}</p>
-                        </div>
-                      </div>
-                      <p className="text-sm mt-2 text-muted-foreground">{item.message}</p>
-                      <div className="flex gap-2 mt-4">
-                        <Button className="h-8 rounded-full px-4" onClick={() => handleTestimonialStatus(item._id, "approved")}>
-                          Approve
-                        </Button>
-                        <Button variant="secondary" className="h-8 rounded-full px-4" onClick={() => handleTestimonialStatus(item._id, "rejected")}>
-                          Reject
-                        </Button>
-                        <Button
-                          variant="destructive"
-                          className="h-8 rounded-full px-4"
-                          onClick={() => handleDeleteTestimonial(item._id)}
-                          disabled={deletingTestimonialId === item._id}
-                        >
-                          {deletingTestimonialId === item._id ? "Deleting..." : "Delete"}
-                        </Button>
-                      </div>
+            <div className="grid grid-cols-1 gap-8 xl:grid-cols-2">
+              {/* Pending Approvals */}
+              <section className="rounded-3xl bg-white/80 backdrop-blur-sm p-8 shadow-lg shadow-amber-900/5 border border-amber-100 transition-all duration-300 hover:shadow-xl">
+                <div className="mb-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="font-serif text-3xl font-semibold text-amber-900">Pending Reviews</h2>
+                      <p className="text-amber-600/70 text-sm mt-1">Approve or reject testimonials from students</p>
                     </div>
-                  ))}
-                  {!loadingTestimonials && pendingTestimonials.length === 0 ? (
-                    <p className="text-muted-foreground">No testimonials pending approval.</p>
-                  ) : null}
+                    {pendingTestimonials.length > 0 && (
+                      <span className="rounded-full bg-amber-100 px-3 py-1 text-sm font-semibold text-amber-700">
+                        {pendingTestimonials.length} pending
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
 
-              <div className="bg-card rounded-3xl border border-earth/20 p-6">
-                <h2 className="font-serif text-2xl mb-5">All Testimonials</h2>
-                <Textarea
-                  value={reviewNote}
-                  onChange={(event) => setReviewNote(event.target.value)}
-                  placeholder="Optional admin notes for your internal tracking..."
-                  className="mb-4"
-                />
-                <div className="space-y-3 max-h-[560px] overflow-y-auto pr-2">
+                {testimonialError && (
+                  <div className="mb-6 rounded-xl bg-rose-50 border border-rose-200 p-4">
+                    <p className="text-sm text-rose-600">{testimonialError}</p>
+                  </div>
+                )}
+
+                {loadingTestimonials ? (
+                  <div className="flex items-center justify-center py-12">
+                    <div className="h-8 w-8 animate-spin rounded-full border-4 border-amber-200 border-t-[#d9b173]"></div>
+                  </div>
+                ) : (
+                  <div className="max-h-[600px] space-y-4 overflow-y-auto pr-2 custom-scrollbar">
+                    {pendingTestimonials.map((item) => (
+                      <article key={item._id} className="group rounded-xl border border-amber-100 bg-gradient-to-br from-amber-50/30 to-white p-5 transition-all duration-200 hover:shadow-md">
+                        <div className="flex items-start gap-4">
+                          {item.profileImageUrl ? (
+                            <img
+                              src={item.profileImageUrl}
+                              alt={`${item.name} profile`}
+                              className="h-14 w-14 rounded-full border-2 border-amber-200 object-cover shadow-sm"
+                            />
+                          ) : (
+                            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-orange-400 text-lg font-semibold text-white shadow-sm">
+                              {item.name.slice(0, 1).toUpperCase()}
+                            </div>
+                          )}
+
+                          <div className="flex-1">
+                            <div className="flex items-start justify-between">
+                              <div>
+                                <h3 className="font-semibold text-amber-900">{item.name}</h3>
+                                <p className="text-xs font-medium uppercase tracking-wide text-amber-600">{item.role}</p>
+                              </div>
+                            </div>
+                            <p className="mt-3 text-sm text-amber-700/80 leading-relaxed">"{item.message}"</p>
+
+                            <div className="mt-4 flex gap-2">
+                              <Button
+                                className="h-9 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white shadow-sm px-5 text-sm"
+                                onClick={() => handleTestimonialStatus(item._id, "approved")}
+                              >
+                                ✓ Approve
+                              </Button>
+                              <Button
+                                variant="secondary"
+                                className="h-9 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-700 px-5 text-sm"
+                                onClick={() => handleTestimonialStatus(item._id, "rejected")}
+                              >
+                                ✗ Reject
+                              </Button>
+                              <Button
+                                variant="destructive"
+                                className="h-9 rounded-full bg-rose-500 hover:bg-rose-600 text-white px-5 text-sm"
+                                onClick={() => handleDeleteTestimonial(item._id)}
+                                disabled={deletingTestimonialId === item._id}
+                              >
+                                {deletingTestimonialId === item._id ? "..." : "Delete"}
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      </article>
+                    ))}
+
+                    {!loadingTestimonials && pendingTestimonials.length === 0 && (
+                      <div className="rounded-xl bg-emerald-50 border border-emerald-100 p-8 text-center">
+                        <p className="text-emerald-600">✨ All caught up! No testimonials waiting for review.</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </section>
+
+              {/* All Testimonials */}
+              <section className="rounded-3xl bg-white/80 backdrop-blur-sm p-8 shadow-lg shadow-amber-900/5 border border-amber-100 transition-all duration-300 hover:shadow-xl">
+                <div className="mb-6">
+                  <h2 className="font-serif text-3xl font-semibold text-amber-900">History</h2>
+                  <p className="text-amber-600/70 text-sm mt-1">All submitted testimonials and their status</p>
+                </div>
+
+                <div className="max-h-[600px] space-y-3 overflow-y-auto pr-2 custom-scrollbar">
                   {testimonials.map((item) => (
-                    <div key={item._id} className="p-4 rounded-xl border border-earth/20">
-                      <div className="flex justify-between items-center gap-4">
+                    <article key={item._id} className="rounded-xl border border-amber-100 bg-white p-4 transition-all duration-200 hover:shadow-sm">
+                      <div className="flex items-center justify-between gap-4">
                         <div className="flex items-center gap-3">
                           {item.profileImageUrl ? (
-                            <img src={item.profileImageUrl} alt={`${item.name} profile`} className="h-10 w-10 rounded-full object-cover border border-earth/20" />
+                            <img
+                              src={item.profileImageUrl}
+                              alt={`${item.name} profile`}
+                              className="h-10 w-10 rounded-full border border-amber-200 object-cover"
+                            />
                           ) : (
-                            <div className="h-10 w-10 rounded-full bg-primary/15 text-primary flex items-center justify-center text-sm font-semibold">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-sm font-semibold text-amber-600">
                               {item.name.slice(0, 1).toUpperCase()}
                             </div>
                           )}
                           <div>
-                          <p className="font-semibold">{item.name}</p>
-                          <p className="text-xs uppercase tracking-wide text-muted-foreground">{item.role}</p>
+                            <p className="font-semibold text-amber-900">{item.name}</p>
+                            <p className="text-xs uppercase tracking-wide text-[#d9b173]">{item.role}</p>
                           </div>
                         </div>
-                        <span
-                          className={`text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full ${
-                            item.status === "approved"
-                              ? "bg-secondary/15 text-secondary"
-                              : item.status === "pending"
-                                ? "bg-primary/15 text-primary"
-                                : "bg-destructive/15 text-destructive"
-                          }`}
-                        >
+
+                        <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider shadow-sm ${item.status === "approved"
+                            ? "bg-emerald-100 text-emerald-700"
+                            : item.status === "pending"
+                              ? "bg-amber-100 text-amber-700"
+                              : "bg-rose-100 text-rose-700"
+                          }`}>
                           {item.status}
                         </span>
                       </div>
-                      <p className="text-sm text-muted-foreground mt-2">{item.message}</p>
+
+                      <p className="mt-2 text-sm text-amber-700/80 line-clamp-2">{item.message}</p>
+
                       <div className="mt-3 flex flex-wrap gap-2">
-                        {item.status !== "approved" ? (
+                        {item.status !== "approved" && (
                           <Button
-                            className="h-8 rounded-full px-4"
+                            className="h-8 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white px-4 text-xs"
                             onClick={() => handleTestimonialStatus(item._id, "approved")}
                           >
                             Approve
                           </Button>
-                        ) : null}
-                        {item.status !== "rejected" ? (
+                        )}
+                        {item.status !== "rejected" && (
                           <Button
                             variant="secondary"
-                            className="h-8 rounded-full px-4"
+                            className="h-8 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-700 px-4 text-xs"
                             onClick={() => handleTestimonialStatus(item._id, "rejected")}
                           >
                             Reject
                           </Button>
-                        ) : null}
+                        )}
                         <Button
                           variant="destructive"
-                          className="h-8 rounded-full px-4"
+                          className="h-8 rounded-full bg-rose-500 hover:bg-rose-600 text-white px-4 text-xs"
                           onClick={() => handleDeleteTestimonial(item._id)}
                           disabled={deletingTestimonialId === item._id}
                         >
-                          {deletingTestimonialId === item._id ? "Deleting..." : "Delete"}
+                          {deletingTestimonialId === item._id ? "..." : "Delete"}
                         </Button>
                       </div>
-                    </div>
+                    </article>
                   ))}
-                  {!loadingTestimonials && testimonials.length === 0 ? <p className="text-muted-foreground">No testimonials found.</p> : null}
+
+                  {!loadingTestimonials && testimonials.length === 0 && (
+                    <div className="rounded-xl bg-amber-50 border border-amber-100 p-8 text-center">
+                      <p className="text-amber-600">No testimonials found.</p>
+                    </div>
+                  )}
                 </div>
-              </div>
+              </section>
+            </div>
+          </TabsContent>
+
+          {/* Gallery Tab */}
+          <TabsContent value="gallery">
+            <div className="grid grid-cols-1 gap-8 xl:grid-cols-2">
+              {/* Upload Form */}
+              <section className="rounded-3xl bg-white/80 backdrop-blur-sm p-8 shadow-lg shadow-amber-900/5 border border-amber-100 transition-all duration-300 hover:shadow-xl">
+                <div className="mb-6">
+                  <h2 className="font-serif text-3xl font-semibold text-amber-900">Add Media</h2>
+                  <p className="text-amber-600/70 text-sm mt-1">Upload photos or videos to showcase your studio</p>
+                </div>
+
+                {galleryError && (
+                  <div className="mb-6 rounded-xl bg-rose-50 border border-rose-200 p-4">
+                    <p className="text-sm text-rose-600">{galleryError}</p>
+                  </div>
+                )}
+
+                <form onSubmit={handleGalleryUpload} className="space-y-5">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-amber-800">Media File</label>
+                    <div className="rounded-xl border-2 border-dashed border-amber-200 bg-amber-50/30 p-6 transition-all duration-200 hover:border-amber-300 hover:bg-amber-50/50">
+                      <Input
+                        type="file"
+                        accept="image/*,video/*"
+                        multiple
+                        required
+                        onChange={(event) => setGalleryFiles(Array.from(event.target.files || []))}
+                        className="cursor-pointer file:mr-4 file:rounded-full file:border-0 file:bg-[#d9b173] file:px-4 file:py-2 file:text-sm file:text-white hover:file:bg-amber-600"
+                      />
+                      <p className="mt-2 text-xs text-[#d9b173]">Supports JPG, PNG, GIF, MP4. You can select multiple files at once.</p>
+                    </div>
+                  </div>
+
+                  <Button
+                    type="submit"
+                    className="w-full rounded-xl bg-gradient-to-r from-[#d9b173] to-[#d9b173] hover:from-amber-600 hover:to-orange-600 shadow-md hover:shadow-lg transition-all duration-200 py-6 text-base"
+                    disabled={uploadingGallery}
+                  >
+                    {uploadingGallery ? "Uploading..." : `Upload ${galleryFiles.length || ""} File${galleryFiles.length === 1 ? "" : "s"} to Gallery`}
+                  </Button>
+                </form>
+              </section>
+
+              {/* Gallery Grid */}
+              <section className="rounded-3xl bg-white/80 backdrop-blur-sm p-8 shadow-lg shadow-amber-900/5 border border-amber-100 transition-all duration-300 hover:shadow-xl">
+                <div className="mb-6">
+                  <h2 className="font-serif text-3xl font-semibold text-amber-900">Media Gallery</h2>
+                  <p className="text-amber-600/70 text-sm mt-1">
+                    {galleryItems.length} item{galleryItems.length !== 1 ? 's' : ''} in collection
+                  </p>
+                </div>
+
+                {loadingGallery ? (
+                  <div className="flex items-center justify-center py-12">
+                    <div className="h-8 w-8 animate-spin rounded-full border-4 border-amber-200 border-t-[#d9b173]"></div>
+                  </div>
+                ) : (
+                  <div className="max-h-[620px] space-y-4 overflow-y-auto pr-2 custom-scrollbar">
+                    <div className="grid grid-cols-1 gap-4">
+                      {galleryItems.map((item) => (
+                        <article key={item._id} className="group rounded-xl border border-amber-100 bg-white overflow-hidden transition-all duration-200 hover:shadow-md">
+                          <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-amber-100 to-orange-100">
+                            {item.mediaType === "image" ? (
+                              <img
+                                src={item.mediaUrl}
+                                alt="Gallery media"
+                                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                              />
+                            ) : (
+                              <video
+                                src={item.mediaUrl}
+                                controls
+                                className="h-full w-full object-cover"
+                                preload="metadata"
+                              />
+                            )}
+                          </div>
+                          <div className="p-4">
+                            <div className="mt-1">
+                              <Button
+                                variant="destructive"
+                                className="h-9 rounded-full bg-rose-500 hover:bg-rose-600 text-white px-5 text-sm"
+                                onClick={() => handleDeleteGalleryItem(item._id)}
+                                disabled={deletingGalleryId === item._id}
+                              >
+                                {deletingGalleryId === item._id ? "Deleting..." : "Delete"}
+                              </Button>
+                            </div>
+                          </div>
+                        </article>
+                      ))}
+
+                      {!loadingGallery && galleryItems.length === 0 && (
+                        <div className="rounded-xl bg-amber-50 border border-amber-100 p-12 text-center">
+                          <p className="text-amber-600">Your gallery is empty. Start by uploading some photos!</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </section>
             </div>
           </TabsContent>
         </Tabs>
       </div>
+
+      <style jsx>{`
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #fef3c7;
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #fbbf24;
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #f59e0b;
+    }
+  `}</style>
     </main>
   );
 }
+
+

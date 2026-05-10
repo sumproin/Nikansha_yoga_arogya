@@ -10,8 +10,8 @@ const navLinks = [
   { name: "Home", href: "#home" },
   { name: "About", href: "#about" },
   { name: "Classes", href: "#classes" },
-  { name: "Schedule", href: "#schedule" },
   { name: "Trainers", href: "#trainers" },
+  { name: "Gallery", href: "#gallery" },
   { name: "Testimonials", href: "#testimonials" },
   { name: "Contact", href: "#contact" },
 ];
@@ -49,17 +49,16 @@ export default function Navbar() {
       className="fixed inset-x-0 top-0 z-[100]"
     >
       <div
-        className={`absolute inset-0 h-[86px] border-b backdrop-blur-md transition-colors duration-300 lg:h-[118px] ${
-          isScrolled
+        className={`absolute inset-0 h-[86px] border-b backdrop-blur-md transition-colors duration-300 lg:h-[118px] ${isScrolled
             ? "border-[#d2a55c4d] bg-[#0a0807e6]"
             : "border-[#d2a55c38] bg-[#0a0807bd]"
-        }`}
+          }`}
       />
 
       <div className="relative z-[2] mx-auto flex h-[86px] max-w-[1420px] items-center justify-center px-4 lg:h-[118px] lg:px-[26px]">
         <a
           href="#home"
-          className={`absolute ${isScrolled ? "top-1 h-[110px] w-[186px]" : "top-10 h-[140px] w-[228px]"} transition-all duration-300 left-6 hidden  overflow-hidden rounded-full border border-[#d2a55c94] bg-[#1c1714] shadow-[0_10px_35px_rgba(0,0,0,0.34)] lg:flex`}
+          className={`absolute top-1 h-[110px] w-[186px] transition-all duration-300 left-6 hidden  overflow-hidden rounded-full border border-[#d2a55c94] bg-[#1c1714] shadow-[0_10px_35px_rgba(0,0,0,0.34)] lg:flex`}
           onClick={(e) => scrollToSection(e, "#home")}
           aria-label="Go to home section"
         >
@@ -72,15 +71,13 @@ export default function Navbar() {
               key={link.name}
               type="button"
               onClick={(e) => scrollToSection(e, link.href)}
-              className={`group cursor-pointer relative border-0 bg-transparent p-0 text-sm font-normal leading-none tracking-[0.01em] transition-colors ${
-                index === 0 ? "text-[#d7aa63]" : "text-white/90 hover:text-[#d7aa63]"
-              }`}
+              className={`group cursor-pointer relative border-0 bg-transparent p-0 text-sm font-normal leading-none tracking-[0.01em] transition-colors ${index === 0 ? "text-[#d7aa63]" : "text-white/90 hover:text-[#d7aa63]"
+                }`}
             >
               {link.name}
               <span
-                className={`absolute -bottom-[10px] left-0 h-[2px] bg-[#d7aa63] transition-all ${
-                  index === 0 ? "w-full" : "w-0 group-hover:w-full"
-                }`}
+                className={`absolute -bottom-[10px] left-0 h-[2px] bg-[#d7aa63] transition-all ${index === 0 ? "w-full" : "w-0 group-hover:w-full"
+                  }`}
               />
             </button>
           ))}

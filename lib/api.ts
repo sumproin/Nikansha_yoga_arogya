@@ -35,6 +35,14 @@ export type NewTestimonialPayload = {
   profileImage?: File | null;
 };
 
+export type GalleryItem = {
+  _id: string;
+  mediaType: "image" | "video";
+  mediaUrl: string;
+  cloudinaryPublicId: string;
+  createdAt: string;
+};
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api";
 
 type RequestOptions = RequestInit & {
@@ -127,6 +135,22 @@ export const api = {
     }),
   deleteTestimonial: (id: string, adminToken: string) =>
     request<void>(`/testimonials/${id}`, {
+      method: "DELETE",
+      adminToken,
+    }),
+  getGalleryItems: () => request<GalleryItem[]>("/gallery"),
+  createGalleryItems: (payload: { media: File[] }, adminToken: string) => {
+    const formData = new FormData();
+    payload.media.forEach((file) => formData.append("media", file));
+
+    return request<GalleryItem[]>("/gallery", {
+      method: "POST",
+      body: formData,
+      adminToken,
+    });
+  },
+  deleteGalleryItem: (id: string, adminToken: string) =>
+    request<void>(`/gallery/${id}`, {
       method: "DELETE",
       adminToken,
     }),

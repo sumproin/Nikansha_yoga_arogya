@@ -7,6 +7,7 @@ type ContactPayload = {
   fullName?: string;
   email?: string;
   phone?: string;
+  selectedClasses?: string[];
   message?: string;
 };
 
@@ -23,15 +24,16 @@ function countWords(value: string) {
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as ContactPayload;
-    const { fullName, email, phone, message } = body;
+    const { fullName, email, phone, selectedClasses, message } = body;
 
-    if (!fullName || !email || !phone || !message) {
-      return NextResponse.json({ message: "fullName, email, phone and message are required." }, { status: 400 });
+    if (!fullName || !email || !phone || !message || !selectedClasses) {
+      return NextResponse.json({ message: "fullName, email, phone, selectedClasses and message are required." }, { status: 400 });
     }
 
     const cleanName = fullName.trim();
     const cleanEmail = email.trim();
     const cleanPhone = phone.replace(/\D/g, "");
+    const cleanSelectedClasses = selectedClasses.map((item) => item.trim()).filter(Boolean);
     const cleanMessage = message.trim();
 
     if (cleanName.length < 2) {
@@ -52,6 +54,9 @@ export async function POST(request: Request) {
 
     if (countWords(cleanMessage) < 5) {
       return NextResponse.json({ message: "Message must be at least 5 words." }, { status: 400 });
+    }
+    if (cleanSelectedClasses.length === 0) {
+      return NextResponse.json({ message: "Please select at least one class." }, { status: 400 });
     }
 
     const smtpHost = process.env.SMTP_HOST;
@@ -87,6 +92,7 @@ export async function POST(request: Request) {
         `Name: ${cleanName}`,
         `Email: ${cleanEmail}`,
         `Contact Number: ${cleanPhone}`,
+        `Selected Classes: ${cleanSelectedClasses.join(", ")}`,
         "",
         "Message:",
         cleanMessage,
@@ -96,6 +102,7 @@ export async function POST(request: Request) {
         <p><strong>Name:</strong> ${cleanName}</p>
         <p><strong>Email:</strong> ${cleanEmail}</p>
         <p><strong>Contact Number:</strong> ${cleanPhone}</p>
+        <p><strong>Selected Classes:</strong> ${cleanSelectedClasses.join(", ")}</p>
         <p><strong>Message:</strong></p>
         <p>${cleanMessage.replace(/\n/g, "<br/>")}</p>
       `,

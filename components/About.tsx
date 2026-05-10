@@ -97,7 +97,7 @@ export default function About() {
         </svg>
 
         {/* Floating golden particles */}
-        <div className="absolute top-1/4 left-1/3 w-1 h-1 bg-amber-500/30 rounded-full animate-pulse" />
+        <div className="absolute top-1/4 left-1/3 w-1 h-1 bg-[#d6ab66]/30 rounded-full animate-pulse" />
         <div className="absolute bottom-1/3 right-1/4 w-1.5 h-1.5 bg-amber-600/20 rounded-full animate-pulse delay-1000" />
         <div className="absolute top-2/3 right-1/3 w-0.5 h-0.5 bg-amber-400/40 rounded-full animate-pulse delay-700" />
       </div>
@@ -151,12 +151,12 @@ export default function About() {
             </motion.div>
 
             {/* Decorative corner elements */}
-            <div className="absolute -left-4 -top-4 w-16 h-16 border-l-2 border-t-2 border-amber-500/40 rounded-tl-2xl" />
-            <div className="absolute -right-4 -bottom-4 w-16 h-16 border-r-2 border-b-2 border-amber-500/40 rounded-br-2xl" />
+            <div className="absolute -left-4 -top-4 w-16 h-16 border-l-2 border-t-2 border-[#d6ab66]/40 rounded-tl-2xl" />
+            <div className="absolute -right-4 -bottom-4 w-16 h-16 border-r-2 border-b-2 border-[#d6ab66]/40 rounded-br-2xl" />
 
             {/* Background blur circles */}
             <div className="absolute -left-6 -top-6 h-32 w-32 rounded-full bg-amber-600/10 blur-3xl animate-pulse" />
-            <div className="absolute -right-6 -bottom-6 h-40 w-40 rounded-full bg-amber-500/5 blur-3xl" />
+            <div className="absolute -right-6 -bottom-6 h-40 w-40 rounded-full bg-[#d6ab66]/5 blur-3xl" />
           </div>
 
           {/* Text Content Section */}
@@ -200,7 +200,7 @@ export default function About() {
 
             <div className="space-y-6">
               {values.map((value) => (
-                <div key={value.title} className="group value-item flex gap-5 rounded-xl p-4 transition-all duration-300 hover:bg-amber-500/5 hover:shadow-lg hover:shadow-amber-900/5">
+                <div key={value.title} className="group value-item flex gap-5 rounded-xl p-4 transition-all duration-300 hover:bg-[#d6ab66]/5 hover:shadow-lg hover:shadow-amber-900/5">
                   <div className="relative flex h-14 w-14 shrink-0 items-center justify-center">
                     {/* Golden circle background */}
                     <div className="absolute inset-0 rounded-full bg-gradient-to-br from-amber-600/10 to-amber-700/5 transition-all duration-300 group-hover:from-amber-600/20 group-hover:to-amber-700/10" />
@@ -225,7 +225,7 @@ export default function About() {
             <div className="mt-10 flex items-center gap-3">
               <div className="flex-1 h-px bg-gradient-to-r from-transparent via-amber-400/30 to-transparent" />
               <div className="w-1.5 h-1.5 rounded-full bg-amber-600/40" />
-              <div className="w-2 h-2 rounded-full bg-amber-500/30" />
+              <div className="w-2 h-2 rounded-full bg-[#d6ab66]/30" />
               <div className="w-1 h-1 rounded-full bg-amber-600/20" />
               <div className="flex-1 h-px bg-gradient-to-r from-transparent via-amber-400/30 to-transparent" />
             </div>

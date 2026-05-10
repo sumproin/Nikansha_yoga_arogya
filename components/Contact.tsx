@@ -1,25 +1,29 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MapPin, Phone, Mail } from "lucide-react";
+import { yogaClassOptions } from "@/lib/classes";
 
 type ContactForm = {
   fullName: string;
   email: string;
   phone: string;
+  selectedClasses: string[];
   message: string;
 };
 
 type ContactErrors = Partial<Record<keyof ContactForm, string>>;
+type ContactTextField = "fullName" | "email" | "phone" | "message";
 
 const initialForm: ContactForm = {
   fullName: "",
   email: "",
   phone: "",
+  selectedClasses: [],
   message: "",
 };
 
@@ -39,7 +43,7 @@ function countWords(value: string) {
     .filter(Boolean).length;
 }
 
-function validateField(field: keyof ContactForm, value: string) {
+function validateField(field: ContactTextField, value: string) {
   const trimmedValue = value.trim();
 
   if (!trimmedValue) {
@@ -72,7 +76,7 @@ function validateField(field: keyof ContactForm, value: string) {
 
 function validateForm(values: ContactForm): ContactErrors {
   const nextErrors: ContactErrors = {};
-  const fields: Array<keyof ContactForm> = ["fullName", "email", "phone", "message"];
+  const fields: ContactTextField[] = ["fullName", "email", "phone", "message"];
 
   fields.forEach((field) => {
     const fieldError = validateField(field, values[field]);
@@ -80,8 +84,18 @@ function validateForm(values: ContactForm): ContactErrors {
       nextErrors[field] = fieldError;
     }
   });
+  if (values.selectedClasses.length === 0) {
+    nextErrors.selectedClasses = "Please select at least one class.";
+  }
 
   return nextErrors;
+}
+
+function toggleClassSelection(selectedClasses: string[], className: string) {
+  if (selectedClasses.includes(className)) {
+    return selectedClasses.filter((item) => item !== className);
+  }
+  return [...selectedClasses, className];
 }
 
 export default function Contact() {
@@ -91,7 +105,22 @@ export default function Contact() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  function handleFieldBlur(field: keyof ContactForm) {
+  useEffect(() => {
+    function handlePrefill(event: Event) {
+      const customEvent = event as CustomEvent<{ classes?: string[] }>;
+      const classes = (customEvent.detail?.classes || []).filter((item): item is string => typeof item === "string");
+      if (classes.length === 0) return;
+      setForm((prev) => ({
+        ...prev,
+        selectedClasses: Array.from(new Set([...prev.selectedClasses, ...classes])),
+      }));
+    }
+
+    window.addEventListener("prefill-classes", handlePrefill as EventListener);
+    return () => window.removeEventListener("prefill-classes", handlePrefill as EventListener);
+  }, []);
+
+  function handleFieldBlur(field: ContactTextField) {
     const fieldError = validateField(field, form[field]);
     setFieldErrors((prev) => ({
       ...prev,
@@ -123,6 +152,7 @@ export default function Contact() {
           fullName: form.fullName.trim(),
           email: form.email.trim(),
           phone: normalizePhone(form.phone),
+          selectedClasses: form.selectedClasses,
           message: form.message.trim(),
         }),
       });
@@ -221,6 +251,61 @@ export default function Contact() {
                   className="h-12 rounded-xl border border-earth/20 bg-cream/60 focus-visible:ring-primary"
                 />
                 {fieldErrors.phone ? <p className="text-xs text-destructive ml-1">{fieldErrors.phone}</p> : null}
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-muted-foreground ml-1">Select Class (Multiple)</label>
+                <div className="rounded-xl border border-earth/20 bg-cream/60 p-3">
+                  <div className="mb-3 flex flex-wrap gap-2">
+                    {form.selectedClasses.length === 0 ? (
+                      <span className="text-xs text-muted-foreground">No classes selected yet.</span>
+                    ) : (
+                      form.selectedClasses.map((className) => (
+                        <button
+                          key={className}
+                          type="button"
+                          onClick={() =>
+                            setForm((prev) => ({
+                              ...prev,
+                              selectedClasses: prev.selectedClasses.filter((item) => item !== className),
+                            }))
+                          }
+                          className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/15 px-3 py-1 text-xs font-medium text-primary"
+                          aria-label={`Remove ${className}`}
+                        >
+                          <span className="text-primary/80">x</span>
+                          {className}
+                        </button>
+                      ))
+                    )}
+                  </div>
+
+                  <div className="max-h-44 space-y-2 overflow-y-auto pr-1">
+                    {yogaClassOptions.map((className) => {
+                      const isSelected = form.selectedClasses.includes(className);
+                      return (
+                        <button
+                          key={className}
+                          type="button"
+                          onClick={() =>
+                            setForm((prev) => ({
+                              ...prev,
+                              selectedClasses: toggleClassSelection(prev.selectedClasses, className),
+                            }))
+                          }
+                          className={`w-full rounded-lg border px-3 py-2 text-left text-sm transition-colors ${
+                            isSelected
+                              ? "border-primary/40 bg-primary/15 text-primary"
+                              : "border-earth/25 bg-card/70 text-foreground hover:bg-card"
+                          }`}
+                          aria-pressed={isSelected}
+                        >
+                          {className}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+                {fieldErrors.selectedClasses ? <p className="text-xs text-destructive ml-1">{fieldErrors.selectedClasses}</p> : null}
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium text-muted-foreground ml-1">Your Message</label>
