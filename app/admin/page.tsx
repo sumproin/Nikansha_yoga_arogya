@@ -765,16 +765,28 @@ export default function AdminPage() {
                 <form onSubmit={handleGalleryUpload} className="space-y-5">
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-amber-800">Media File</label>
-                    <div className="rounded-xl border-2 border-dashed border-amber-200 bg-amber-50/30 p-6 transition-all duration-200 hover:border-amber-300 hover:bg-amber-50/50">
-                      <Input
+                    <div className="rounded-xl border-2 flex flex-col items-center justify-center border-dashed border-amber-200 bg-amber-50/30 p-6 transition-all duration-200 hover:border-amber-300 hover:bg-amber-50/50">
+                      <input
+                        id="gallery-media-input"
                         type="file"
                         accept="image/*,video/*"
                         multiple
                         required
                         onChange={(event) => setGalleryFiles(Array.from(event.target.files || []))}
-                        className="cursor-pointer file:mr-4 file:rounded-full file:border-0 file:bg-[#d9b173] file:px-4 file:py-2 file:text-sm file:text-white hover:file:bg-amber-600"
+                        className="sr-only"
                       />
-                      <p className="mt-2 text-xs text-[#d9b173]">Supports JPG, PNG, GIF, MP4. You can select multiple files at once.</p>
+                      <label
+                        htmlFor="gallery-media-input"
+                        className="inline-flex cursor-pointer items-center justify-center rounded-full bg-[#d9b173] px-6 py-2 text-sm font-semibold text-white transition-colors hover:bg-amber-600"
+                      >
+                        Choose Files
+                      </label>
+                      <p className="mt-3 text-sm text-amber-700">
+                        {galleryFiles.length > 0
+                          ? `${galleryFiles.length} file${galleryFiles.length === 1 ? "" : "s"} selected`
+                          : "No file chosen"}
+                      </p>
+                      <p className="mt-2 text-amber-500 font-bold">Supports JPG, PNG, GIF, MP4. You can select multiple files at once. <span className="text-amber-500 font-bold">Note:</span> Large files may take longer to upload.(10MB max)</p>
                     </div>
                   </div>
 
@@ -870,5 +882,3 @@ export default function AdminPage() {
     </main>
   );
 }
-
-
