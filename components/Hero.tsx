@@ -115,7 +115,7 @@ export default function Hero() {
         <span>SCROLL TO EXPLORE</span>
       </motion.button>
 
-      {/* <div className="absolute inset-x-0 bottom-0 z-[3] border-t border-[#d7aa6385] bg-[rgba(13,10,8,0.85)] backdrop-blur-[3px]">
+      <div className="absolute inset-x-0 bottom-0 z-[3] border-t border-[#d7aa6385] bg-[rgba(13,10,8,0.85)] backdrop-blur-[3px]">
         <div className="mx-auto grid max-w-[1340px] grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
           {benefits.map((benefit, index) => {
             const Icon = benefit.icon;
@@ -130,7 +130,7 @@ export default function Hero() {
             );
           })}
         </div>
-      </div> */}
+      </div>
     </section>
   );
 }
