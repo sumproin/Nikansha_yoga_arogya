@@ -43,6 +43,12 @@ export type GalleryItem = {
   createdAt: string;
 };
 
+type NewGalleryItemPayload = {
+  mediaType: "image" | "video";
+  mediaUrl: string;
+  cloudinaryPublicId: string;
+};
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api";
 
 type RequestOptions = RequestInit & {
@@ -139,13 +145,10 @@ export const api = {
       adminToken,
     }),
   getGalleryItems: () => request<GalleryItem[]>("/gallery"),
-  createGalleryItems: (payload: { media: File[] }, adminToken: string) => {
-    const formData = new FormData();
-    payload.media.forEach((file) => formData.append("media", file));
-
+  createGalleryItems: (payload: { mediaItems: NewGalleryItemPayload[] }, adminToken: string) => {
     return request<GalleryItem[]>("/gallery", {
       method: "POST",
-      body: formData,
+      body: JSON.stringify(payload),
       adminToken,
     });
   },

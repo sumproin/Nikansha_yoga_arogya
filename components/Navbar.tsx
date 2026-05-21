@@ -19,6 +19,8 @@ const navLinks = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const navHeightMobile = "h-[45px]";
+  const navHeightDesktop = "lg:h-[55px]";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,27 +45,39 @@ export default function Navbar() {
   };
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className="fixed inset-x-0 top-0 z-[100]"
-    >
-      <div
-        className={`absolute inset-0 h-[86px] border-b backdrop-blur-md transition-colors duration-300 lg:h-[118px] ${isScrolled
-            ? "border-[#d2a55c4d] bg-[#0a0807e6]"
-            : "border-[#d2a55c38] bg-[#0a0807bd]"
-          }`}
-      />
-
-      <div className="relative z-[2] mx-auto flex h-[86px] max-w-[1420px] items-center justify-center px-4 lg:h-[118px] lg:px-[26px]">
+    <>
+      <a
+        href="#home"
+        className="fixed left-6 top-1 z-[101] hidden h-[110px] w-[186px] overflow-hidden rounded-full border border-[#d2a55c94] bg-[#1c1714] shadow-[0_10px_35px_rgba(0,0,0,0.34)] transition-all duration-300 lg:flex"
+        onClick={(e) => scrollToSection(e, "#home")}
+        aria-label="Go to home section"
+      >
+        <Image src="/mainlogo.png" alt="Nikansha Yogaarogya logo" fill sizes="(min-width: 1024px) 228px, 0px" priority className="h-full w-full scale-105 object-cover" />
+      </a>
+      <div className="fixed left-4 top-[7px] z-[101] lg:hidden">
         <a
           href="#home"
-          className={`absolute top-1 h-[110px] w-[186px] transition-all duration-300 left-6 hidden  overflow-hidden rounded-full border border-[#d2a55c94] bg-[#1c1714] shadow-[0_10px_35px_rgba(0,0,0,0.34)] lg:flex`}
           onClick={(e) => scrollToSection(e, "#home")}
+          className="relative inline-flex h-[60px] w-[90px] overflow-hidden rounded-full border border-[#d2a55c94] bg-[#1c1714]"
           aria-label="Go to home section"
         >
-          <Image src="/mainlogo.png" alt="Nikansha Yogaarogya logo" fill sizes="(min-width: 1024px) 228px, 0px" priority className="h-full w-full scale-105 object-cover" />
+          <Image src="/mainlogo.png" alt="Nikansha Yogaarogya logo" fill sizes="62px" priority className="h-full w-full scale-110 object-cover" />
         </a>
+      </div>
+
+      <motion.nav
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        className="fixed inset-x-0 top-0 z-[100]"
+      >
+        <div
+          className={`absolute inset-0 ${navHeightMobile} border-b backdrop-blur-md transition-colors duration-300 ${navHeightDesktop} ${isScrolled
+              ? "border-[#d2a55c4d] bg-[#0a0807e6]"
+              : "border-[#d2a55c38] bg-[#0a0807bd]"
+            }`}
+        />
+
+        <div className={`relative z-[2] mx-auto flex ${navHeightMobile} max-w-[1420px] items-center justify-center px-4 ${navHeightDesktop} lg:px-[26px]`}>
 
         <div className="hidden items-center gap-8 xl:gap-10 lg:flex">
           {navLinks.map((link, index) => (
@@ -93,29 +107,19 @@ export default function Navbar() {
                 window.scrollTo({ top, behavior: "smooth" });
               }
             }}
-            className="cursor-pointer rounded-2xl border-0 bg-[#d7aa63] px-7 py-3.5 text-[17px] font-semibold text-[#15110d] transition hover:brightness-105"
+            className="cursor-pointer rounded-3xl border-0 bg-[#d7aa63] px-4 py-1.5 text-[17px] font-semibold text-[#15110d] transition hover:brightness-105"
           >
             Book a Class
           </button>
         </div>
-
-        <div className="flex w-full items-center justify-between lg:hidden">
-          <a
-            href="#home"
-            onClick={(e) => scrollToSection(e, "#home")}
-            className="relative inline-flex h-[54px] w-[54px] overflow-hidden rounded-full border border-[#d2a55c94] bg-[#1c1714]"
-            aria-label="Go to home section"
-          >
-            <Image src="/mainlogo.png" alt="Nikansha Yogaarogya logo" fill sizes="54px" priority className="h-full w-full scale-110 object-cover" />
-          </a>
-
+        <div className="flex w-full items-center justify-end lg:hidden">
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger className="inline-flex h-[42px] w-[42px] items-center justify-center rounded-full border border-[#d2a55c66] bg-[#0a0807a6] text-[#f5e9d8]" aria-label="Open menu">
-              <Menu className="w-6 h-6" />
+            <SheetTrigger className="inline-flex h-[28px] w-[28px] items-center justify-center rounded-full border border-[#d2a55c66] bg-[#0a0807a6] text-[#f5e9d8]" aria-label="Open menu">
+              <Menu className="h-4 w-4" />
               <span className="sr-only">Open menu</span>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[min(330px,86vw)] border-l border-[#d2a55c4d] bg-[#120f0d] pt-11 text-[#f8f3eb]">
-              <div className="flex flex-col gap-4 px-4">
+            <SheetContent side="right" className="w-[min(330px,86vw)] border-l border-[#d2a55c4d] bg-[#120f0d] pt-20 text-[#f8f3eb]">
+              <div className="flex flex-col gap-4 px-8">
                 {navLinks.map((link) => (
                   <button
                     key={link.name}
@@ -124,7 +128,7 @@ export default function Navbar() {
                       scrollToSection(e, link.href);
                       setIsOpen(false);
                     }}
-                    className="border-0 bg-transparent text-left font-serif text-[30px] text-[#f8f3eb]"
+                    className="border-0 bg-transparent text-left font-serif text-[20px] text-[#f8f3eb]"
                   >
                     {link.name}
                   </button>
@@ -139,7 +143,7 @@ export default function Navbar() {
                     }
                     setIsOpen(false);
                   }}
-                  className="mt-2 rounded-[14px] border-0 bg-[#d7aa63] px-5 py-4 text-[17px] font-semibold text-[#18130e]"
+                  className="mt-2 rounded-[10px] border-0 bg-[#d7aa63] px-4 py-2 text-[12px] font-semibold text-[#18130e]"
                 >
                   Book a Class
                 </button>
@@ -151,8 +155,9 @@ export default function Navbar() {
             </SheetContent>
           </Sheet>
         </div>
-      </div>
-    </motion.nav>
+
+        </div>
+      </motion.nav>
+    </>
   );
 }
-

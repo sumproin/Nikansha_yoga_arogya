@@ -27,8 +27,8 @@ const initialForm: ContactForm = {
   message: "",
 };
 
-const googleMapsLink = "https://maps.app.goo.gl/F43tUAZDya6dp9Fq7";
-const mapEmbedSrc = "https://maps.google.com/maps?q=F-1605%20Rishabh%20Cloud%209%2C%20Indirapuram%2C%20Ghaziabad&t=&z=15&ie=UTF8&iwloc=&output=embed";
+const googleMapsLink = "https://maps.app.goo.gl/P1haXtED7Z9HZmRi7";
+const mapEmbedSrc = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.5307296237943!2d77.3726379!3d28.6438234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfba3df7c96f3%3A0xd0c446bdaebf8881!2sNikansha%20Yoga%20Arogya!5e0!3m2!1sen!2sin!4v1779324448599!5m2!1sen!2sin";
 const nameRegex = /^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

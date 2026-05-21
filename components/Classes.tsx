@@ -38,7 +38,7 @@ const classes: ServiceClass[] = [
   {
     title: "Meditation",
     level: "Beginner Friendly",
-    duration: "45 min",
+    duration: "60 min",
     focus: "Mindfulness & inner calm",
     description: "Gentle guided sessions designed to reduce stress, improve mental clarity, and create emotional stability.",
     image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80",
@@ -68,10 +68,10 @@ const classes: ServiceClass[] = [
   {
     title: "Face Yoga",
     level: "All Levels",
-    duration: "40 min",
+    duration: "60 min",
     focus: "Facial toning & stress release",
     description: "Targeted exercises and relaxation techniques that soften tension and support natural facial vitality.",
-    image: "https://images.unsplash.com/photo-1697274715660-cf41497d7e69?auto=format&fit=crop&w=1200&q=80",
+    image: "https://houseofbeautyindia.com/cdn/shop/articles/ee9553c8f0b75a926f3ed89c08e520cb_30f29412-9a3d-445a-9109-18afbdbb5e5f.jpg?v=1755859052&width=800",
     color: "bg-primary/10",
     textColor: "text-primary",
   },

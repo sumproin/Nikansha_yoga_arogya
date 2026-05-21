@@ -133,14 +133,14 @@ export default function About() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              className="absolute -bottom-10 -right-10 z-20 hidden max-w-xs rounded-2xl bg-white/95 backdrop-blur-sm shadow-xl shadow-amber-900/15 md:block border border-amber-200/50"
+              className="absolute -bottom-10 -right-4 md:-right-10 z-20 w-[320px] md:max-w-xs rounded-2xl bg-white/95 backdrop-blur-sm shadow-xl shadow-amber-900/15  border border-amber-200/50"
             >
-              <div className="relative p-8">
+              <div className="relative p-4 md:p-8">
                 {/* Golden quotation marks */}
                 <svg className="absolute top-4 left-4 w-8 h-8 text-amber-400/30" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M10,11 L7,11 C7,8.2 9.2,6 12,6 L12,8 C10.3,8 9,9.3 9,11 L10,11 L10,17 L4,17 L4,11 L10,11 Z M20,11 L17,11 C17,8.2 19.2,6 22,6 L22,8 C20.3,8 19,9.3 19,11 L20,11 L20,17 L14,17 L14,11 L20,11 Z" />
                 </svg>
-                <p className="mb-3 pt-6 font-serif text-xl italic text-stone-700 relative z-10">
+                <p className="mb-3 pt-6 font-serif text-lg md:text-xl italic text-stone-700 relative z-10">
                   "Yoga is the journey of the self, through the self, to the self."
                 </p>
                 <div className="flex items-center gap-2">

@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { api, type DayName, type GalleryItem, type ScheduleEntry, type Testimonial } from "@/lib/api";
 
 const ADMIN_TOKEN_KEY = "nikansha_admin_token";
+const CLOUDINARY_CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+const CLOUDINARY_UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 const days: DayName[] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const colorOptions = ["border-l-teal", "border-l-saffron", "border-l-lavender", "border-l-earth"];
 
@@ -230,9 +232,41 @@ export default function AdminPage() {
     setUploadingGallery(true);
     setGalleryError(null);
     try {
+      if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_UPLOAD_PRESET) {
+        throw new Error("Missing Cloudinary config. Set NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME and NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET.");
+      }
+
+      const uploadedMedia = [];
+      for (const file of galleryFiles) {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+        formData.append("resource_type", file.type.startsWith("video/") ? "video" : "image");
+
+        const cloudinaryResponse = await fetch(
+          `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/${file.type.startsWith("video/") ? "video" : "image"}/upload`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        if (!cloudinaryResponse.ok) {
+          const cloudinaryError = await cloudinaryResponse.json().catch(() => ({}));
+          throw new Error(cloudinaryError?.error?.message || "Cloudinary upload failed.");
+        }
+
+        const cloudinaryData = await cloudinaryResponse.json();
+        uploadedMedia.push({
+          mediaType: file.type.startsWith("video/") ? "video" as const : "image" as const,
+          mediaUrl: cloudinaryData.secure_url as string,
+          cloudinaryPublicId: cloudinaryData.public_id as string,
+        });
+      }
+
       await api.createGalleryItems(
         {
-          media: galleryFiles,
+          mediaItems: uploadedMedia,
         },
         token
       );
@@ -786,7 +820,7 @@ export default function AdminPage() {
                           ? `${galleryFiles.length} file${galleryFiles.length === 1 ? "" : "s"} selected`
                           : "No file chosen"}
                       </p>
-                      <p className="mt-2 text-amber-500 font-bold">Supports JPG, PNG, GIF, MP4. You can select multiple files at once. <span className="text-amber-500 font-bold">Note:</span> Large files may take longer to upload.(10MB max)</p>
+                      <p className="mt-2 text-amber-500 font-bold">Supports JPG, PNG, GIF, MP4. You can select multiple files at once. <span className="text-amber-500 font-bold">Note:</span> Large files may take longer to upload (limited by Cloudinary upload preset and plan).</p>
                     </div>
                   </div>
 
