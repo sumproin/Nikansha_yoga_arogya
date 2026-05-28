@@ -50,7 +50,7 @@ export default function Hero() {
       {/* <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_78%_42%,rgba(210,165,92,0.16),transparent_38%),radial-gradient(circle_at_5%_44%,rgba(0,0,0,0.35),transparent_40%)]" /> */}
       <div className="absolute inset-x-0 bottom-0 z-[1] h-[290px] bg-gradient-to-t from-[rgba(11,8,6,0.92)] to-[rgba(11,8,6,0.03)]" />
 
-      <div className="relative z-[2] mx-auto flex max-w-[1340px] items-end justify-between gap-6 px-4 pb-[324px] pt-[124px] lg:px-[26px] lg:pb-[294px] lg:pt-[128px] xl:pb-[258px] xl:pt-[98px]">
+      <div className="relative z-[2] mx-auto flex max-w-[1340px] items-end justify-between gap-6 px-4 pb-[324px] pt-[124px] lg:px-[26px] lg:pb-[194px] lg:pt-[148px] xl:pb-[158px] xl:pt-[58px]">
         <div className="hero-content max-w-[690px]">
           <div className="mb-6 inline-flex items-center gap-3">
             <span className="text-sm font-semibold tracking-[0.16em] text-[#d7aa63] lg:text-sm">FIND YOUR INNER PEACE</span>
@@ -63,7 +63,8 @@ export default function Hero() {
             Nikansha <span className="block text-[#d7aa63]">YogaArogya</span>
           </h1>
 
-          <p className="mt-4 font-serif text-[clamp(1.15rem,6vw,3.15rem)] leading-none text-[#f1ece5]">&amp; Wellness Studio</p>
+          <p className="mt-4 font-serif text-[clamp(0.15rem,4vw,2rem)] leading-none text-[#f1ece5]">Studio & Wellness
+          </p>
           <span className="mt-2 block w-[180px] border-b border-[#d7aa6394]" />
 
           <p className="mt-6 max-w-full text-base leading-[1.52] text-[rgba(245,241,234,0.92)] lg:max-w-[82%] lg:text-[clamp(0.65rem,1.8vw,1.15rem)] xl:max-w-[610px] xl:text-[clamp(0.7rem,1vw,1.35rem)]">
@@ -107,7 +108,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.15, duration: 0.8 }}
-        className="absolute bottom-[200px] left-1/2 z-[3] flex -translate-x-1/2 flex-col items-center gap-2 border-0 bg-transparent text-xs tracking-[0.12em] text-[#d7aa63] lg:bottom-[264px] lg:text-[13px] xl:bottom-[228px]"
+        className="absolute bottom-[100px] left-1/2 z-[3] flex -translate-x-1/2 flex-col items-center gap-2 border-0 bg-transparent text-xs tracking-[0.12em] text-[#d7aa63] lg:bottom-[104px] lg:text-[13px] xl:bottom-[98px]"
       >
         <motion.span animate={{ y: [0, 7, 0] }} transition={{ repeat: Infinity, duration: 2 }}>
           <CircleArrowDown size={30} />
