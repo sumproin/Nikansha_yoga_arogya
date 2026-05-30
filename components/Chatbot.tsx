@@ -41,6 +41,19 @@ export default function Chatbot() {
     });
   }, []);
 
+  useEffect(() => {
+    if (!open) return;
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [open]);
+
   function getBotReply(question: string): string {
     const normalized = question.toLowerCase();
     const askedDay = dayNames.find((day) => normalized.includes(day));
@@ -106,9 +119,21 @@ export default function Chatbot() {
       </button>
 
       {open ? (
-        <section className="fixed bottom-24 right-5 z-[80] w-[92vw] max-w-[380px] overflow-hidden rounded-2xl border border-earth/20 bg-card shadow-2xl">
+        <>
+        <button
+          type="button"
+          className="fixed inset-0 z-[79] cursor-default bg-black/20 backdrop-blur-[1px]"
+          aria-label="Close chatbot"
+          onClick={() => setOpen(false)}
+        />
+        <section
+          className="fixed bottom-24 right-5 z-[80] w-[92vw] max-w-[380px] overflow-hidden rounded-2xl border border-earth/20 bg-card shadow-2xl"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="yoga-assistant-title"
+        >
           <header className="bg-primary px-4 py-3 text-primary-foreground">
-            <h3 className="font-semibold">Yoga Assistant</h3>
+            <h3 id="yoga-assistant-title" className="font-semibold">Yoga Assistant</h3>
             <p className="text-xs text-primary-foreground/80">Ask about classes and timings</p>
           </header>
 
@@ -150,6 +175,7 @@ export default function Chatbot() {
             </button>
           </div>
         </section>
+        </>
       ) : null}
     </>
   );

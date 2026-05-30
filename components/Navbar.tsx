@@ -136,7 +136,7 @@ export default function Navbar() {
                 <button
                   type="button"
                   onClick={() => {
-                    const target = document.querySelector("#schedule");
+                    const target = document.querySelector("#contact");
                     if (target) {
                       const top = (target as HTMLElement).getBoundingClientRect().top + window.scrollY - 96;
                       window.scrollTo({ top, behavior: "smooth" });

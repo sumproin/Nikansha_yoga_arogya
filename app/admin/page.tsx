@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState, type FormEvent } from "react";
-import { ImagePlus, LogOut, MessageSquareQuote, RefreshCw, Sparkles, Table } from "lucide-react";
+import { ImagePlus, LogOut, MessageSquareQuote, RefreshCw, Sparkles } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -382,14 +382,8 @@ export default function AdminPage() {
           </div>
         </div>
 
-        <Tabs defaultValue="schedule" className="w-full flex flex-col">
+        <Tabs defaultValue="testimonials" className="w-full flex flex-col">
           <TabsList className="w-full mb-8 h-auto rounded-2xl bg-white/60 backdrop-blur-sm border border-amber-100 p-1.5 shadow-sm">
-            <TabsTrigger
-              value="schedule"
-              className="gap-2 data-active:bg-gradient-to-r data-active:from-[#d9b173] data-active:to-[#d9b173] data-active:text-white transition-all duration-200"
-            >
-              <Table size={16} /> Timetable
-            </TabsTrigger>
             <TabsTrigger
               value="testimonials"
               className="gap-2 data-active:bg-gradient-to-r data-active:from-[#d9b173] data-active:to-[#d9b173] data-active:text-white transition-all duration-200"
@@ -410,202 +404,7 @@ export default function AdminPage() {
             </TabsTrigger>
           </TabsList>
 
-          {/* Schedule Tab */}
-          <TabsContent value="schedule">
-            <div className="grid grid-cols-1 gap-8 xl:grid-cols-2">
-              {/* Add/Edit Form */}
-              <section className="rounded-3xl bg-white/80 backdrop-blur-sm p-8 shadow-lg shadow-amber-900/5 border border-amber-100 transition-all duration-300 hover:shadow-xl">
-                <div className="mb-6">
-                  <h2 className="font-serif text-3xl font-semibold text-amber-900">
-                    {editingScheduleId ? "Edit Routine" : "Create Routine"}
-                  </h2>
-                  <p className="text-amber-600/70 text-sm mt-1">
-                    {editingScheduleId ? "Update the existing class schedule" : "Add new classes to your weekly timetable"}
-                  </p>
-                </div>
-
-                {scheduleError && (
-                  <div className="mb-6 rounded-xl bg-rose-50 border border-rose-200 p-4">
-                    <p className="text-sm text-rose-600">{scheduleError}</p>
-                  </div>
-                )}
-
-                <form onSubmit={handleScheduleSubmit} className="space-y-4">
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-amber-800">Day</label>
-                      <select
-                        className="w-full rounded-xl border-amber-200 bg-white shadow-sm focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 transition-all duration-200 px-4 py-2.5"
-                        value={scheduleForm.day}
-                        onChange={(event) => setScheduleForm((prev) => ({ ...prev, day: event.target.value as DayName }))}
-                      >
-                        {days.map((day) => <option key={day} value={day}>{day}</option>)}
-                      </select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-amber-800">Time</label>
-                      <Input
-                        required
-                        placeholder="e.g., 10:00 AM - 11:30 AM"
-                        className="rounded-xl border-amber-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20"
-                        value={scheduleForm.time}
-                        onChange={(event) => setScheduleForm((prev) => ({ ...prev, time: event.target.value }))}
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-amber-800">Class Name</label>
-                      <Input
-                        required
-                        placeholder="e.g., Vinyasa Flow"
-                        className="rounded-xl border-amber-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20"
-                        value={scheduleForm.className}
-                        onChange={(event) => setScheduleForm((prev) => ({ ...prev, className: event.target.value }))}
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-amber-800">Instructor</label>
-                      <Input
-                        required
-                        placeholder="Full name"
-                        className="rounded-xl border-amber-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20"
-                        value={scheduleForm.instructor}
-                        onChange={(event) => setScheduleForm((prev) => ({ ...prev, instructor: event.target.value }))}
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-amber-800">Room / Studio</label>
-                      <Input
-                        required
-                        placeholder="e.g., Studio A, Main Hall"
-                        className="rounded-xl border-amber-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20"
-                        value={scheduleForm.room}
-                        onChange={(event) => setScheduleForm((prev) => ({ ...prev, room: event.target.value }))}
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-amber-800">Level</label>
-                      <Input
-                        placeholder="Beginner / Intermediate / Advanced"
-                        className="rounded-xl border-amber-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20"
-                        value={scheduleForm.level}
-                        onChange={(event) => setScheduleForm((prev) => ({ ...prev, level: event.target.value }))}
-                      />
-                    </div>
-
-                    <div className="space-y-2 md:col-span-2">
-                      <label className="text-sm font-medium text-amber-800">Accent Color</label>
-                      <select
-                        className="w-full rounded-xl border-amber-200 bg-white shadow-sm focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 transition-all duration-200 px-4 py-2.5"
-                        value={scheduleForm.color}
-                        onChange={(event) => setScheduleForm((prev) => ({ ...prev, color: event.target.value }))}
-                      >
-                        {colorOptions.map((color) => (
-                          <option key={color} value={color} className="capitalize">{color.replace('border-l-', '')}</option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-3 pt-4">
-                    <Button
-                      type="submit"
-                      className="rounded-full bg-gradient-to-r from-[#d9b173] to-[#d9b173] hover:from-amber-600 hover:to-orange-600 shadow-md hover:shadow-lg transition-all duration-200 px-8"
-                      disabled={savingSchedule}
-                    >
-                      {savingSchedule ? "Saving..." : editingScheduleId ? "Update Routine" : "Add Routine"}
-                    </Button>
-                    {editingScheduleId && (
-                      <Button
-                        type="button"
-                        variant="outline"
-                        className="rounded-full border-amber-200 hover:bg-amber-50"
-                        onClick={() => { setEditingScheduleId(null); setScheduleForm(initialScheduleForm); }}
-                      >
-                        Cancel Edit
-                      </Button>
-                    )}
-                  </div>
-                </form>
-              </section>
-
-              {/* Schedule List */}
-              <section className="rounded-3xl bg-white/80 backdrop-blur-sm p-8 shadow-lg shadow-amber-900/5 border border-amber-100 transition-all duration-300 hover:shadow-xl">
-                <div className="mb-6">
-                  <h2 className="font-serif text-3xl font-semibold text-amber-900">Current Timetable</h2>
-                  <p className="text-amber-600/70 text-sm mt-1">
-                    {scheduleEntries.length} class{scheduleEntries.length !== 1 ? 'es' : ''} scheduled
-                  </p>
-                </div>
-
-                {loadingSchedule ? (
-                  <div className="flex items-center justify-center py-12">
-                    <div className="h-8 w-8 animate-spin rounded-full border-4 border-amber-200 border-t-[#d9b173]"></div>
-                  </div>
-                ) : (
-                  <div className="max-h-[600px] space-y-3 overflow-y-auto pr-2 custom-scrollbar">
-                    {scheduleEntries.map((entry) => (
-                      <article
-                        key={entry._id}
-                        className={`group relative overflow-hidden rounded-xl border border-amber-100 bg-white p-5 transition-all duration-200 hover:shadow-md hover:border-amber-200 ${entry.color}`}
-                      >
-                        <div className="absolute top-0 right-0 h-20 w-20 bg-gradient-to-br from-amber-100/0 to-amber-100/20 rounded-bl-3xl"></div>
-
-                        <div className="relative">
-                          <div className="flex items-start justify-between">
-                            <div>
-                              <h3 className="text-xl font-semibold text-amber-900">{entry.className}</h3>
-                              <div className="mt-1 flex flex-wrap gap-3 text-sm text-amber-600">
-                                <span className="flex items-center gap-1">📅 {entry.day}</span>
-                                <span className="flex items-center gap-1">⏰ {entry.time}</span>
-                              </div>
-                            </div>
-                            {entry.level && (
-                              <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-700">
-                                {entry.level}
-                              </span>
-                            )}
-                          </div>
-
-                          <div className="mt-3 flex flex-wrap gap-4 text-sm text-amber-600/80">
-                            <span>👨‍🏫 {entry.instructor}</span>
-                            <span>📍 {entry.room}</span>
-                          </div>
-
-                          <div className="mt-4 flex gap-2">
-                            <Button
-                              variant="outline"
-                              className="h-9 rounded-full border-amber-200 bg-white hover:bg-amber-50 hover:border-amber-300 text-sm"
-                              onClick={() => startScheduleEdit(entry)}
-                            >
-                              Edit
-                            </Button>
-                            <Button
-                              variant="destructive"
-                              className="h-9 rounded-full bg-rose-500 hover:bg-rose-600 text-white text-sm "
-                              onClick={() => deleteScheduleEntry(entry._id)}
-                            >
-                              Delete
-                            </Button>
-                          </div>
-                        </div>
-                      </article>
-                    ))}
-
-                    {!loadingSchedule && scheduleEntries.length === 0 && (
-                      <div className="rounded-xl bg-amber-50 border border-amber-100 p-8 text-center">
-                        <p className="text-amber-600">No classes scheduled yet. Create your first routine above!</p>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </section>
-            </div>
-          </TabsContent>
+          {/* Schedule tab hidden per QA request. */}
 
           {/* Testimonials Tab */}
           <TabsContent value="testimonials">

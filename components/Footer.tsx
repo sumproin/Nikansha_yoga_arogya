@@ -2,6 +2,39 @@
 
 import { Leaf, Instagram, Facebook, Twitter, Youtube } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import type { MouseEvent } from "react";
+
+const quickLinks = [
+  { label: "About Us", href: "/#about" },
+  { label: "Classes & Schedule", href: "/#classes" },
+  { label: "Weekly Timetable", href: "/#classes" },
+  { label: "Our Trainers", href: "/#trainers" },
+  { label: "Workshops", href: "/resources#workshops" },
+];
+
+const resourceLinks = [
+  { label: "Yoga Blog", href: "/resources#yoga-blog" },
+  { label: "Beginner's Guide", href: "/resources#beginners-guide" },
+  { label: "Meditation Tips", href: "/resources#meditation-tips" },
+  { label: "Privacy Policy", href: "/resources#privacy-policy" },
+  { label: "Terms of Service", href: "/resources#terms-of-service" },
+];
+
+function handleSafeLinkClick(event: MouseEvent<HTMLAnchorElement>, href: string) {
+  try {
+    const url = new URL(href, window.location.origin);
+    const allowedProtocol = ["http:", "https:", "mailto:", "tel:"].includes(url.protocol);
+
+    if (!allowedProtocol) {
+      event.preventDefault();
+      window.location.href = "/resources";
+    }
+  } catch {
+    event.preventDefault();
+    window.location.href = "/resources";
+  }
+}
 
 export default function Footer() {
   return (
@@ -34,22 +67,26 @@ export default function Footer() {
           <div>
             <h4 className="font-serif font-bold text-xl mb-8">Quick Links</h4>
             <ul className="space-y-4 text-muted-foreground">
-              <li><a href="#about" className="hover:text-primary transition-colors">About Us</a></li>
-              <li><a href="#classes" className="hover:text-primary transition-colors">Classes & Schedule</a></li>
-              <li><a href="#schedule" className="hover:text-primary transition-colors">Weekly Timetable</a></li>
-              <li><a href="#trainers" className="hover:text-primary transition-colors">Our Trainers</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Workshops</a></li>
+              {quickLinks.map((link) => (
+                <li key={`${link.label}-${link.href}`}>
+                  <Link href={link.href} onClick={(event) => handleSafeLinkClick(event, link.href)} className="hover:text-primary transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div>
             <h4 className="font-serif font-bold text-xl mb-8">Resources</h4>
             <ul className="space-y-4 text-muted-foreground">
-              <li><a href="#" className="hover:text-primary transition-colors">Yoga Blog</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Beginner&apos;s Guide</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Meditation Tips</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Terms of Service</a></li>
+              {resourceLinks.map((link) => (
+                <li key={`${link.label}-${link.href}`}>
+                  <Link href={link.href} onClick={(event) => handleSafeLinkClick(event, link.href)} className="hover:text-primary transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 

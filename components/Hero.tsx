@@ -82,11 +82,11 @@ export default function Hero() {
             </button>
             <button
               type="button"
-              onClick={() => scrollToSection("#schedule")}
+              onClick={() => scrollToSection("#classes")}
               className="inline-flex w-full items-center cursor-pointer justify-center gap-2 rounded-full border border-[#d7aa63d1] bg-[rgba(4,3,2,0.26)] px-5 py-3 text-lg text-[#f6f2eb] transition hover:-translate-y-px hover:bg-[rgba(4,3,2,0.44)] lg:w-auto"
             >
               <CalendarDays size={20} />
-              View Schedule
+              View Classes
             </button>
           </div>
         </div>
