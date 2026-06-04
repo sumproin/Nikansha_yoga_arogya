@@ -1,6 +1,6 @@
 "use client";
 
-import { Leaf, Instagram, Facebook, Twitter, Youtube } from "lucide-react";
+import { Leaf, Instagram, Facebook, Twitter, Youtube, Phone, Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import type { MouseEvent } from "react";
@@ -20,6 +20,8 @@ const resourceLinks = [
   { label: "Privacy Policy", href: "/resources#privacy-policy" },
   { label: "Terms of Service", href: "/resources#terms-of-service" },
 ];
+
+const studioPhoneNumbers = ["+91 9217746084", "+91 9907370722"];
 
 function handleSafeLinkClick(event: MouseEvent<HTMLAnchorElement>, href: string) {
   try {
@@ -92,6 +94,26 @@ export default function Footer() {
 
           <div>
             <h4 className="font-serif font-bold text-xl mb-8">Newsletter</h4>
+            <div className="mb-6 space-y-3 text-muted-foreground">
+              <div className="flex items-start gap-3">
+                <Phone size={18} className="mt-0.5 shrink-0 text-primary" />
+                <div className="space-y-1">
+                  {studioPhoneNumbers.map((phoneNumber) => (
+                    <a
+                      key={phoneNumber}
+                      href={`tel:${phoneNumber.replace(/\D/g, "")}`}
+                      className="block transition-colors hover:text-primary"
+                    >
+                      {phoneNumber}
+                    </a>
+                  ))}
+                </div>
+              </div>
+              <a href="mailto:nikansha@zohomail.in" className="flex items-center gap-3 transition-colors hover:text-primary">
+                <Mail size={18} className="shrink-0 text-primary" />
+                nikansha@zohomail.in
+              </a>
+            </div>
             <p className="text-muted-foreground mb-6">Subscribe to receive studio updates, wellness tips, and special offers.</p>
             <form className="flex gap-2">
               <input

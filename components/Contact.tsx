@@ -29,6 +29,7 @@ const initialForm: ContactForm = {
 
 const googleMapsLink = "https://maps.app.goo.gl/1u3Qxt2YK7R4z6wA8";
 const mapEmbedSrc = "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d884.485215359713!2d77.3854641!3d28.6457252!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cf0046d5c7355%3A0x181531bff642ab6e!2sF%2C%20Cloud9%2C%20Rishabh%2C%20Judges%20Enclave%2C%20Ahinsa%20Khand%202%2C%20Indirapuram%2C%20Ghaziabad%2C%20Uttar%20Pradesh%20201014!5e1!3m2!1sen!2sin!4v1779988585572!5m2!1sen!2sin";
+const studioPhoneNumbers = ["+91 9217746084", "+91 9907370722"];
 const nameRegex = /^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -364,7 +365,17 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="font-bold text-lg mb-1">Call Us</h4>
-                    <p className="text-[#ebdcc8]/80">+91 9217746084</p>
+                    <div className="space-y-1 text-[#ebdcc8]/80">
+                      {studioPhoneNumbers.map((phoneNumber) => (
+                        <a
+                          key={phoneNumber}
+                          href={`tel:${phoneNumber.replace(/\D/g, "")}`}
+                          className="block underline-offset-4 hover:underline"
+                        >
+                          {phoneNumber}
+                        </a>
+                      ))}
+                    </div>
                   </div>
                 </div>
                 <div className="flex items-start gap-6">
