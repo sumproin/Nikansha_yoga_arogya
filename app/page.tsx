@@ -10,12 +10,12 @@ import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
 import Gallery from "@/components/Gallery";
 import type { Metadata } from "next";
-import { brandName, seoKeywords, siteUrl, studioAddress, studioName } from "./seo";
+import { brandName, seoKeywords, shortBrandName, siteUrl, studioAddress, studioName } from "./seo";
 
 export const metadata: Metadata = {
-  title: "Nikansha Yoga Official Website",
+  title: "Nikansha Yoga Arogya Official Website",
   description:
-    "Official website of Nikansha Yoga, Nikansha Yogaarogya Studio & Wellness. Book yoga classes in Ghaziabad and online sessions for Hatha Yoga, Vinyasa, meditation, pranayama, prenatal yoga, postnatal yoga, face yoga, and therapeutic yoga.",
+    "Official website of Nikansha Yoga Arogya, also searched as Nikansha Yoga. Book yoga classes in Ghaziabad and online sessions for Hatha Yoga, Vinyasa, meditation, pranayama, prenatal yoga, postnatal yoga, face yoga, and therapeutic yoga.",
   keywords: seoKeywords,
   alternates: {
     canonical: "/",
@@ -26,8 +26,9 @@ export default function Home() {
   const localBusinessJsonLd = {
     "@context": "https://schema.org",
     "@type": ["HealthAndBeautyBusiness", "SportsActivityLocation"],
-    name: studioName,
-    alternateName: [brandName, "Nikansha Yogaarogya", "Nikansha YogaArogya"],
+    name: brandName,
+    legalName: studioName,
+    alternateName: [shortBrandName, studioName, "Nikansha Yogaarogya", "Nikansha YogaArogya"],
     url: siteUrl,
     image: `${siteUrl}/mainlogo.png`,
     description:
@@ -65,15 +66,33 @@ export default function Home() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: brandName,
-    alternateName: [studioName, "Nikansha Yogaarogya", "Nikansha YogaArogya"],
+    alternateName: [shortBrandName, studioName, "Nikansha Yogaarogya", "Nikansha YogaArogya"],
     url: siteUrl,
     inLanguage: "en-IN",
     publisher: {
       "@type": "Organization",
-      name: studioName,
-      alternateName: brandName,
+      name: brandName,
+      legalName: studioName,
+      alternateName: [shortBrandName, "Nikansha Yogaarogya", "Nikansha YogaArogya"],
       url: siteUrl,
       logo: `${siteUrl}/mainlogo.png`,
+    },
+  };
+
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: brandName,
+    legalName: studioName,
+    alternateName: [shortBrandName, "Nikansha Yogaarogya", "Nikansha YogaArogya"],
+    url: siteUrl,
+    logo: `${siteUrl}/mainlogo.png`,
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: "+919217746084",
+      contactType: "customer service",
+      areaServed: "IN",
+      availableLanguage: ["en", "hi"],
     },
   };
 
@@ -86,6 +105,10 @@ export default function Home() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
       />
       <Navbar />
       

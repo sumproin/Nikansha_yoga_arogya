@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
-import { siteUrl } from "./seo";
+import { brandName, shortBrandName, siteUrl, studioName } from "./seo";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -17,13 +17,13 @@ const cormorant = Cormorant_Garamond({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  applicationName: "Nikansha Yogaarogya Studio & Wellness",
+  applicationName: brandName,
   title: {
-    default: "Nikansha Yoga | Nikansha Yogaarogya Studio & Wellness",
-    template: "%s | Nikansha Yoga",
+    default: "Nikansha Yoga Arogya | Official Nikansha Yoga Website",
+    template: `%s | ${shortBrandName}`,
   },
   description:
-    "Nikansha Yoga, also known as Nikansha Yogaarogya Studio & Wellness, offers yoga classes in Ghaziabad and online sessions in Hatha Yoga, Vinyasa, meditation, pranayama, prenatal yoga, postnatal yoga, face yoga, and therapeutic yoga.",
+    "Official website of Nikansha Yoga Arogya, also known as Nikansha Yoga and Nikansha Yogaarogya Studio & Wellness, offering yoga classes in Ghaziabad and online sessions.",
   keywords: [
     "Nikansha Yoga",
     "Nikansha Yogaarogya",
@@ -44,9 +44,9 @@ export const metadata: Metadata = {
     "yoga for stress relief",
     "yoga for anxiety",
   ],
-  authors: [{ name: "Nikansha Yogaarogya Studio & Wellness" }],
-  creator: "Nikansha Yogaarogya Studio & Wellness",
-  publisher: "Nikansha Yogaarogya Studio & Wellness",
+  authors: [{ name: studioName }],
+  creator: studioName,
+  publisher: studioName,
   category: "Yoga Studio",
   alternates: {
     canonical: "/",
@@ -54,25 +54,25 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_IN",
-    siteName: "Nikansha Yogaarogya Studio & Wellness",
-    title: "Nikansha Yoga | Nikansha Yogaarogya Studio & Wellness",
+    siteName: brandName,
+    title: "Nikansha Yoga Arogya | Official Nikansha Yoga Website",
     description:
-      "Official website of Nikansha Yoga for yoga, meditation, pranayama, prenatal, postnatal, face yoga, and therapeutic yoga classes in Indirapuram, Ghaziabad and online.",
+      "Official website of Nikansha Yoga Arogya for yoga, meditation, pranayama, prenatal, postnatal, face yoga, and therapeutic yoga classes in Indirapuram, Ghaziabad and online.",
     url: "/",
     images: [
       {
         url: "/mainlogo.png",
         width: 1200,
         height: 630,
-        alt: "Nikansha Yogaarogya Studio & Wellness",
+        alt: "Nikansha Yoga Arogya official logo",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nikansha Yoga | Nikansha Yogaarogya Studio & Wellness",
+    title: "Nikansha Yoga Arogya | Official Website",
     description:
-      "Official Nikansha Yoga website for yoga classes in Ghaziabad and online wellness sessions for beginners, stress relief, prenatal care, meditation, and therapeutic yoga.",
+      "Official Nikansha Yoga Arogya website for yoga classes in Ghaziabad and online wellness sessions for beginners, stress relief, prenatal care, meditation, and therapeutic yoga.",
     images: ["/mainlogo.png"],
   },
   robots: {

@@ -48,7 +48,7 @@ export default function Footer() {
               <Image src="/mainlogo2.png" alt="Nikansha Yogaarogya logo" width={240} height={144} sizes="(max-width: 768px) 180px, 240px" loading="lazy" className="w-60 h-36 rounded-full object-cover border border-primary/20" />
             </a>
             <p className="text-muted-foreground leading-relaxed">
-              Nikansha Yoga, NIKANSHA YOGAAROGYA STUDIO & WELLNESS, is a yoga center in Indirapuram, Ghaziabad for yoga classes, online yoga, meditation, pranayama, prenatal care, face yoga, and therapeutic wellness.
+              Nikansha Yoga Arogya, NIKANSHA YOGAAROGYA STUDIO & WELLNESS, is a yoga center in Indirapuram, Ghaziabad for yoga classes, online yoga, meditation, pranayama, prenatal care, face yoga, and therapeutic wellness.
             </p>
             <div className="flex gap-4">
               <a href="#" aria-label="Instagram" className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/20 bg-card text-primary transition-all hover:bg-primary hover:text-primary-foreground">

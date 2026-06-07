@@ -1,7 +1,8 @@
 export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nikansha-yoga-arogya.vercel.app";
 
+export const brandName = "Nikansha Yoga Arogya";
+export const shortBrandName = "Nikansha Yoga";
 export const studioName = "Nikansha Yogaarogya Studio & Wellness";
-export const brandName = "Nikansha Yoga";
 
 export const studioAddress = {
   streetAddress: "Cloud9, Rishabh, Judges Enclave, Ahinsa Khand 2, Indirapuram",
@@ -12,9 +13,11 @@ export const studioAddress = {
 };
 
 export const seoKeywords = [
+  "Nikansha Yoga Arogya",
   "Nikansha Yoga",
   "Nikansha Yogaarogya",
   "Nikansha YogaArogya",
+  "Nikansha Yoga Arogya Ghaziabad",
   "Nikansha Yogaarogya Studio",
   "Nikansha Yoga Ghaziabad",
   "yoga classes in Ghaziabad",

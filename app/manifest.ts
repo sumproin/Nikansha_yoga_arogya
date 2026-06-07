@@ -1,12 +1,12 @@
 import type { MetadataRoute } from "next";
-import { brandName, siteUrl, studioName } from "./seo";
+import { brandName, shortBrandName, siteUrl, studioName } from "./seo";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: `${brandName} | ${studioName}`,
-    short_name: brandName,
+    short_name: shortBrandName,
     description:
-      "Official Nikansha Yoga website for yoga classes in Ghaziabad and online wellness sessions.",
+      "Official Nikansha Yoga Arogya website for yoga classes in Ghaziabad and online wellness sessions.",
     start_url: siteUrl,
     scope: siteUrl,
     display: "standalone",
