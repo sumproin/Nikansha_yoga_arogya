@@ -1,0 +1,28 @@
+import type { MetadataRoute } from "next";
+import { brandName, siteUrl, studioName } from "./seo";
+
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    name: `${brandName} | ${studioName}`,
+    short_name: brandName,
+    description:
+      "Official Nikansha Yoga website for yoga classes in Ghaziabad and online wellness sessions.",
+    start_url: siteUrl,
+    scope: siteUrl,
+    display: "standalone",
+    background_color: "#f8efe3",
+    theme_color: "#d7aa63",
+    icons: [
+      {
+        src: "/mainlogo.png",
+        sizes: "192x192",
+        type: "image/png",
+      },
+      {
+        src: "/mainlogo.png",
+        sizes: "512x512",
+        type: "image/png",
+      },
+    ],
+  };
+}

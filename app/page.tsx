@@ -10,12 +10,12 @@ import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
 import Gallery from "@/components/Gallery";
 import type { Metadata } from "next";
-import { seoKeywords, siteUrl, studioAddress, studioName } from "./seo";
+import { brandName, seoKeywords, siteUrl, studioAddress, studioName } from "./seo";
 
 export const metadata: Metadata = {
-  title: "Yoga Classes in Ghaziabad & Online Yoga Studio",
+  title: "Nikansha Yoga Official Website",
   description:
-    "Book yoga classes in Ghaziabad at Nikansha Yogaarogya Studio & Wellness. Learn Hatha Yoga, Vinyasa Flow, meditation, pranayama, prenatal yoga, postnatal yoga, face yoga, and therapeutic yoga online or in Indirapuram.",
+    "Official website of Nikansha Yoga, Nikansha Yogaarogya Studio & Wellness. Book yoga classes in Ghaziabad and online sessions for Hatha Yoga, Vinyasa, meditation, pranayama, prenatal yoga, postnatal yoga, face yoga, and therapeutic yoga.",
   keywords: seoKeywords,
   alternates: {
     canonical: "/",
@@ -27,6 +27,7 @@ export default function Home() {
     "@context": "https://schema.org",
     "@type": ["HealthAndBeautyBusiness", "SportsActivityLocation"],
     name: studioName,
+    alternateName: [brandName, "Nikansha Yogaarogya", "Nikansha YogaArogya"],
     url: siteUrl,
     image: `${siteUrl}/mainlogo.png`,
     description:
@@ -60,11 +61,31 @@ export default function Home() {
     sameAs: [],
   };
 
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: brandName,
+    alternateName: [studioName, "Nikansha Yogaarogya", "Nikansha YogaArogya"],
+    url: siteUrl,
+    inLanguage: "en-IN",
+    publisher: {
+      "@type": "Organization",
+      name: studioName,
+      alternateName: brandName,
+      url: siteUrl,
+      logo: `${siteUrl}/mainlogo.png`,
+    },
+  };
+
   return (
     <div className="relative min-h-screen selection:bg-primary/30 selection:text-primary-foreground">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
       />
       <Navbar />
       

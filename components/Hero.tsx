@@ -60,7 +60,7 @@ export default function Hero() {
           </div>
 
           <h1 className="font-serif text-[clamp(4.2rem,10vw,6.5rem)] font-medium leading-[0.92] tracking-[-0.015em] text-[#f7f3ed]">
-            Nikansha <span className="block text-[#d7aa63]">YogaArogya</span>
+            Nikansha Yoga <span className="block text-[#d7aa63]">Arogya</span>
           </h1>
 
           <p className="mt-4 font-serif text-[clamp(0.15rem,4vw,2rem)] leading-none text-[#f1ece5]">Studio & Wellness
@@ -68,7 +68,7 @@ export default function Hero() {
           <span className="mt-2 block w-[180px] border-b border-[#d7aa6394]" />
 
           <p className="mt-6 max-w-full text-base leading-[1.52] text-[rgba(245,241,234,0.92)] lg:max-w-[82%] lg:text-[clamp(0.65rem,1.8vw,1.15rem)] xl:max-w-[610px] xl:text-[clamp(0.7rem,1vw,1.35rem)]">
-            Experience yoga classes in Ghaziabad and online yoga sessions in a modern sanctuary for Hatha Yoga, meditation, pranayama, prenatal wellness, stress relief, and holistic healing.
+            Welcome to the official Nikansha Yoga website. Experience yoga classes in Ghaziabad and online yoga sessions in a modern sanctuary for Hatha Yoga, meditation, pranayama, prenatal wellness, stress relief, and holistic healing.
           </p>
 
           <div className="mt-8 flex w-[min(94vw,420px)] flex-col gap-4 lg:w-auto lg:flex-row lg:flex-wrap lg:items-center">

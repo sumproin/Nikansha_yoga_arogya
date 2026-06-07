@@ -19,12 +19,16 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   applicationName: "Nikansha Yogaarogya Studio & Wellness",
   title: {
-    default: "Nikansha Yogaarogya Studio & Wellness | Yoga Classes in Ghaziabad",
-    template: "%s | Nikansha Yogaarogya",
+    default: "Nikansha Yoga | Nikansha Yogaarogya Studio & Wellness",
+    template: "%s | Nikansha Yoga",
   },
   description:
-    "Join Nikansha Yogaarogya Studio & Wellness for yoga classes in Ghaziabad and online sessions in Hatha Yoga, Vinyasa, meditation, pranayama, prenatal yoga, postnatal yoga, face yoga, and therapeutic yoga.",
+    "Nikansha Yoga, also known as Nikansha Yogaarogya Studio & Wellness, offers yoga classes in Ghaziabad and online sessions in Hatha Yoga, Vinyasa, meditation, pranayama, prenatal yoga, postnatal yoga, face yoga, and therapeutic yoga.",
   keywords: [
+    "Nikansha Yoga",
+    "Nikansha Yogaarogya",
+    "Nikansha YogaArogya",
+    "Nikansha Yogaarogya Studio",
     "yoga classes in Ghaziabad",
     "best yoga classes in Ghaziabad",
     "yoga center in Ghaziabad",
@@ -51,9 +55,9 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_IN",
     siteName: "Nikansha Yogaarogya Studio & Wellness",
-    title: "Nikansha Yogaarogya Studio & Wellness | Yoga Classes in Ghaziabad",
+    title: "Nikansha Yoga | Nikansha Yogaarogya Studio & Wellness",
     description:
-      "Yoga, meditation, pranayama, prenatal, postnatal, face yoga, and therapeutic yoga classes in Indirapuram, Ghaziabad and online.",
+      "Official website of Nikansha Yoga for yoga, meditation, pranayama, prenatal, postnatal, face yoga, and therapeutic yoga classes in Indirapuram, Ghaziabad and online.",
     url: "/",
     images: [
       {
@@ -66,9 +70,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nikansha Yogaarogya Studio & Wellness | Yoga Classes in Ghaziabad",
+    title: "Nikansha Yoga | Nikansha Yogaarogya Studio & Wellness",
     description:
-      "Yoga classes in Ghaziabad and online wellness sessions for beginners, stress relief, prenatal care, meditation, and therapeutic yoga.",
+      "Official Nikansha Yoga website for yoga classes in Ghaziabad and online wellness sessions for beginners, stress relief, prenatal care, meditation, and therapeutic yoga.",
     images: ["/mainlogo.png"],
   },
   robots: {
