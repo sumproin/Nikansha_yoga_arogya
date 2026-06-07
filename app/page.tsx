@@ -10,15 +10,15 @@ import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
 import Gallery from "@/components/Gallery";
 import type { Metadata } from "next";
-import { brandName, seoKeywords, shortBrandName, siteUrl, studioAddress, studioName } from "./seo";
+import { brandAliases, brandName, seoKeywords, shortBrandName, siteUrl, studioAddress, studioEmail, studioName, studioPhones, yogaServices } from "./seo";
 
 export const metadata: Metadata = {
   title: "Nikansha Yoga Arogya Official Website",
   description:
-    "Official website of Nikansha Yoga Arogya, also searched as Nikansha Yoga. Book yoga classes in Ghaziabad and online sessions for Hatha Yoga, Vinyasa, meditation, pranayama, prenatal yoga, postnatal yoga, face yoga, and therapeutic yoga.",
+    "Official website of Nikansha Yoga Arogya at yogaarogya.in, also searched as Nikansha Yoga, Yogaarogya, and Yogarogya. Book yoga classes in Ghaziabad and online sessions.",
   keywords: seoKeywords,
   alternates: {
-    canonical: "/",
+    canonical: siteUrl,
   },
 };
 
@@ -28,13 +28,13 @@ export default function Home() {
     "@type": ["HealthAndBeautyBusiness", "SportsActivityLocation"],
     name: brandName,
     legalName: studioName,
-    alternateName: [shortBrandName, studioName, "Nikansha Yogaarogya", "Nikansha YogaArogya"],
+    alternateName: [shortBrandName, studioName, ...brandAliases],
     url: siteUrl,
     image: `${siteUrl}/mainlogo.png`,
     description:
       "Yoga studio and wellness center in Indirapuram, Ghaziabad offering Hatha Yoga, Vinyasa Flow, meditation, pranayama, prenatal yoga, postnatal yoga, face yoga, and therapeutic yoga.",
-    telephone: ["+919217746084", "+919907370722"],
-    email: "nikansha@zohomail.in",
+    telephone: studioPhones.map((phone) => phone.replace(/\s/g, "")),
+    email: studioEmail,
     address: {
       "@type": "PostalAddress",
       ...studioAddress,
@@ -47,18 +47,24 @@ export default function Home() {
     areaServed: ["Indirapuram", "Ghaziabad", "Noida", "Delhi NCR", "India"],
     priceRange: "$$",
     knowsAbout: [
-      "Hatha Yoga",
-      "Vinyasa Yoga",
-      "Meditation",
-      "Pranayama",
-      "Prenatal Yoga",
-      "Postnatal Yoga",
-      "Garbh Sanskar",
-      "Face Yoga",
-      "Therapeutic Yoga",
+      ...yogaServices.map((service) => service.name),
       "Yoga for stress relief",
+      "Yoga for anxiety",
       "Yoga for back pain",
     ],
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Nikansha Yoga Arogya Classes",
+      itemListElement: yogaServices.map((service) => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: service.name,
+          description: service.description,
+          areaServed: ["Ghaziabad", "Indirapuram", "Delhi NCR", "Online"],
+        },
+      })),
+    },
     sameAs: [],
   };
 
@@ -66,14 +72,14 @@ export default function Home() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: brandName,
-    alternateName: [shortBrandName, studioName, "Nikansha Yogaarogya", "Nikansha YogaArogya"],
+    alternateName: [shortBrandName, studioName, ...brandAliases],
     url: siteUrl,
     inLanguage: "en-IN",
     publisher: {
       "@type": "Organization",
       name: brandName,
       legalName: studioName,
-      alternateName: [shortBrandName, "Nikansha Yogaarogya", "Nikansha YogaArogya"],
+      alternateName: [shortBrandName, ...brandAliases],
       url: siteUrl,
       logo: `${siteUrl}/mainlogo.png`,
     },
@@ -84,7 +90,7 @@ export default function Home() {
     "@type": "Organization",
     name: brandName,
     legalName: studioName,
-    alternateName: [shortBrandName, "Nikansha Yogaarogya", "Nikansha YogaArogya"],
+    alternateName: [shortBrandName, ...brandAliases],
     url: siteUrl,
     logo: `${siteUrl}/mainlogo.png`,
     contactPoint: {

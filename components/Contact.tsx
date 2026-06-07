@@ -356,7 +356,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="font-bold text-lg mb-1">Our Sanctuary</h4>
-                    <p className="text-[#ebdcc8]/80">Cloud9, Rishabh, Judges Enclave, Ahinsa Khand 2 <br/> Indirapuram, Ghaziabad, Uttar Pradesh <br/> Pincode - 201014</p>
+                    <p className="text-[#ebdcc8]/80">Rishabh Cloud 9, F1605, Judges Enclave, Ahinsa Khand 2 <br/> Indirapuram, Ghaziabad, Uttar Pradesh <br/> Pincode - 201014</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-6">

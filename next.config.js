@@ -11,6 +11,22 @@ const nextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
   },
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "nikansha-yoga-arogya.vercel.app" }],
+        destination: "https://www.yogaarogya.in/:path*",
+        permanent: true,
+      },
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "yogaarogya.in" }],
+        destination: "https://www.yogaarogya.in/:path*",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

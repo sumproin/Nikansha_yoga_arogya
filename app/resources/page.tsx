@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { seoKeywords } from "../seo";
+import { seoKeywords, siteUrl } from "../seo";
 
 export const metadata: Metadata = {
   title: "Yoga Resources, Beginner Guide & Meditation Tips",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "yoga therapy for back pain Ghaziabad",
   ],
   alternates: {
-    canonical: "/resources",
+    canonical: `${siteUrl}/resources`,
   },
 };
 

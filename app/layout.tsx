@@ -19,11 +19,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   applicationName: brandName,
   title: {
-    default: "Nikansha Yoga Arogya | Official Nikansha Yoga Website",
+    default: "Nikansha Yoga Arogya | Official YogaArogya Website",
     template: `%s | ${shortBrandName}`,
   },
   description:
-    "Official website of Nikansha Yoga Arogya, also known as Nikansha Yoga and Nikansha Yogaarogya Studio & Wellness, offering yoga classes in Ghaziabad and online sessions.",
+    "Official website of Nikansha Yoga Arogya at yogaarogya.in, also known as Nikansha Yoga and Nikansha Yogaarogya Studio & Wellness, offering yoga classes in Ghaziabad and online sessions.",
   keywords: [
     "Nikansha Yoga",
     "Nikansha Yogaarogya",
@@ -104,16 +104,16 @@ export const metadata: Metadata = {
   publisher: studioName,
   category: "Yoga Studio",
   alternates: {
-    canonical: "/",
+    canonical: siteUrl,
   },
   openGraph: {
     type: "website",
     locale: "en_IN",
     siteName: brandName,
-    title: "Nikansha Yoga Arogya | Official Nikansha Yoga Website",
+    title: "Nikansha Yoga Arogya | Official YogaArogya Website",
     description:
       "Official website of Nikansha Yoga Arogya for yoga, meditation, pranayama, prenatal, postnatal, face yoga, and therapeutic yoga classes in Indirapuram, Ghaziabad and online.",
-    url: "/",
+    url: siteUrl,
     images: [
       {
         url: "/mainlogo.png",
@@ -125,7 +125,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nikansha Yoga Arogya | Official Website",
+    title: "Nikansha Yoga Arogya | Official YogaArogya Website",
     description:
       "Official Nikansha Yoga Arogya website for yoga classes in Ghaziabad and online wellness sessions for beginners, stress relief, prenatal care, meditation, and therapeutic yoga.",
     images: ["/mainlogo.png"],

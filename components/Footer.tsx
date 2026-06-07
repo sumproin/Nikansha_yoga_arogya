@@ -6,11 +6,12 @@ import Link from "next/link";
 import type { MouseEvent } from "react";
 
 const quickLinks = [
-  { label: "About Us", href: "/#about" },
-  { label: "Classes & Schedule", href: "/#classes" },
-  { label: "Weekly Timetable", href: "/#classes" },
+  { label: "About Us", href: "/about" },
+  { label: "Classes & Schedule", href: "/classes" },
+  { label: "Weekly Timetable", href: "/classes" },
   { label: "Our Trainers", href: "/#trainers" },
   { label: "Workshops", href: "/resources#workshops" },
+  { label: "Contact", href: "/contact" },
 ];
 
 const resourceLinks = [
