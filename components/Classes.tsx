@@ -19,8 +19,8 @@ const classes: ServiceClass[] = [
     title: "Hatha Yoga",
     level: "All Levels",
     duration: "60 min",
-    focus: "Foundations & posture alignment",
-    description: "Ideal for beginners and returning practitioners to build balance, flexibility, and mindful breathing habits.",
+    focus: "Foundations, posture alignment & breathwork",
+    description: "Ideal for beginners searching for online Hatha Yoga classes or yoga classes in Ghaziabad to build balance, flexibility, and mindful breathing habits.",
     image: "https://images.unsplash.com/photo-1552196563-55cd4e45efb3?auto=format&fit=crop&w=1200&q=80",
     color: "bg-primary/12",
     textColor: "text-primary",
@@ -30,7 +30,7 @@ const classes: ServiceClass[] = [
     level: "All Levels",
     duration: "60 min",
     focus: "Breath-linked dynamic flow",
-    description: "A rhythmic sequence that improves stamina and focus while keeping the practice energetic and uplifting.",
+    description: "A rhythmic online Vinyasa Yoga class style that improves stamina and focus while keeping the practice energetic and uplifting.",
     image: "https://images.unsplash.com/photo-1695795634692-567cec15ad95?auto=format&fit=crop&w=1200&q=80",
     color: "bg-teal/15",
     textColor: "text-teal",
@@ -39,8 +39,8 @@ const classes: ServiceClass[] = [
     title: "Meditation",
     level: "Beginner Friendly",
     duration: "60 min",
-    focus: "Mindfulness & inner calm",
-    description: "Gentle guided sessions designed to reduce stress, improve mental clarity, and create emotional stability.",
+    focus: "Mindfulness, pranayama & inner calm",
+    description: "Gentle meditation and pranayama classes designed to reduce stress, support anxiety relief, improve mental clarity, and create emotional stability.",
     image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80",
     color: "bg-earth/15",
     textColor: "text-earth",
@@ -50,7 +50,7 @@ const classes: ServiceClass[] = [
     level: "Prenatal",
     duration: "60 min",
     focus: "Mother wellness & conscious bonding",
-    description: "Supportive prenatal routines that nurture physical comfort, breath awareness, and mother-baby connection.",
+    description: "Supportive prenatal yoga and Garbh Sanskar classes online and in Ghaziabad that nurture physical comfort, breath awareness, and mother-baby connection.",
     image: "https://images.unsplash.com/photo-1710897872810-363b7a8d3f95?auto=format&fit=crop&w=1200&q=80",
     color: "bg-lavender/14",
     textColor: "text-lavender",
@@ -60,7 +60,7 @@ const classes: ServiceClass[] = [
     level: "Postpartum",
     duration: "60 min",
     focus: "Recovery, strength & flexibility",
-    description: "Rebuild core stability, posture, and mobility with mindful movements tailored for postpartum recovery.",
+    description: "Postnatal yoga classes to rebuild core stability, posture, and mobility with mindful movements tailored for postpartum recovery.",
     image: "https://images.unsplash.com/photo-1570657891791-e39a9d185540?auto=format&fit=crop&w=1200&q=80",
     color: "bg-saffron/15",
     textColor: "text-saffron",
@@ -70,7 +70,7 @@ const classes: ServiceClass[] = [
     level: "All Levels",
     duration: "60 min",
     focus: "Facial toning & stress release",
-    description: "Targeted exercises and relaxation techniques that soften tension and support natural facial vitality.",
+    description: "Face yoga classes online and in studio with targeted exercises and relaxation techniques that soften tension and support natural facial vitality.",
     image: "https://houseofbeautyindia.com/cdn/shop/articles/ee9553c8f0b75a926f3ed89c08e520cb_30f29412-9a3d-445a-9109-18afbdbb5e5f.jpg?v=1755859052&width=800",
     color: "bg-primary/10",
     textColor: "text-primary",
@@ -79,8 +79,8 @@ const classes: ServiceClass[] = [
     title: "Therapeutic Yoga",
     level: "Personalized",
     duration: "60 min",
-    focus: "Pain care & lifestyle support",
-    description: "Customized sessions focused on chronic pain relief, mobility improvement, and long-term wellness support.",
+    focus: "Pain care, back support & lifestyle balance",
+    description: "Therapeutic yoga for back pain, chronic pain relief, mobility improvement, and long-term wellness support through customized sessions.",
     image: "https://images.unsplash.com/photo-1593811167565-4672e6c8ce4c?auto=format&fit=crop&w=1200&q=80",
     color: "bg-earth/12",
     textColor: "text-earth",
@@ -145,7 +145,7 @@ export default function Classes() {
             transition={{ delay: 0.3 }}
             className="text-lg text-stone-600 max-w-2xl mx-auto"
           >
-            Explore all the core services offered at Nikansha Yogaarogya, from foundational yoga to therapeutic and prenatal support.
+            Explore yoga classes in Ghaziabad and online wellness sessions at Nikansha Yogaarogya, from foundational yoga and meditation to therapeutic, prenatal, postnatal, and face yoga support.
           </motion.p>
         </div>
 

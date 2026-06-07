@@ -393,7 +393,7 @@ export default function Contact() {
             </div>
 
             <div className="mt-12 border-t border-primary/20 pt-12">
-              <p className="text-sm text-[#ddc7aa]/70">Visit our studio in Indirapuram, Ghaziabad for personalized classes and wellness guidance.</p>
+              <p className="text-sm text-[#ddc7aa]/70">Visit our yoga center in Indirapuram, Ghaziabad for personalized yoga classes, meditation, pranayama, prenatal yoga, and therapeutic wellness guidance.</p>
             </div>
           </div>
         </div>

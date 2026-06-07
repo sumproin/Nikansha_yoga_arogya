@@ -68,7 +68,7 @@ export default function Hero() {
           <span className="mt-2 block w-[180px] border-b border-[#d7aa6394]" />
 
           <p className="mt-6 max-w-full text-base leading-[1.52] text-[rgba(245,241,234,0.92)] lg:max-w-[82%] lg:text-[clamp(0.65rem,1.8vw,1.15rem)] xl:max-w-[610px] xl:text-[clamp(0.7rem,1vw,1.35rem)]">
-            Experience the ancient art of yoga in a modern sanctuary. Join our community and embark on a journey of self-discovery and holistic wellness.
+            Experience yoga classes in Ghaziabad and online yoga sessions in a modern sanctuary for Hatha Yoga, meditation, pranayama, prenatal wellness, stress relief, and holistic healing.
           </p>
 
           <div className="mt-8 flex w-[min(94vw,420px)] flex-col gap-4 lg:w-auto lg:flex-row lg:flex-wrap lg:items-center">

@@ -193,7 +193,7 @@ export default function About() {
 
               <div className="relative mb-10 pl-4 border-l-3 border-amber-600/30">
                 <p className="text-lg leading-relaxed text-stone-600">
-                  At NIKANSHA YOGAAROGYA STUDIO & WELLNESS, we believe that yoga is more than just a workout - it is a way of life. Our studio is designed to be a retreat from the chaos of the world, a place where you can reconnect with your breath and rediscover your inner strength.
+                  At NIKANSHA YOGAAROGYA STUDIO & WELLNESS in Indirapuram, Ghaziabad, we believe that yoga is more than just a workout - it is a way of life. Our studio is designed for beginners, regular practitioners, expecting mothers, and anyone seeking mindful movement, breathwork, meditation, and therapeutic yoga support.
                 </p>
               </div>
             </motion.div>
