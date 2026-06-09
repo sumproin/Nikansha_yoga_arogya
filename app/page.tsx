@@ -10,6 +10,7 @@ import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
 import Gallery from "@/components/Gallery";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { brandAliases, brandName, seoKeywords, shortBrandName, siteUrl, studioAddress, studioEmail, studioName, studioPhones, yogaServices } from "./seo";
 
 export const metadata: Metadata = {
@@ -67,6 +68,29 @@ export default function Home() {
     },
     sameAs: [],
   };
+
+  const homepageLinks = [
+    {
+      label: "About",
+      href: "/about",
+      text: `Learn about ${brandName} and Nikansha Yogaarogya Studio & Wellness.`,
+    },
+    {
+      label: "Classes",
+      href: "/classes",
+      text: "Explore Hatha Yoga, Vinyasa, meditation, prenatal yoga, face yoga, and therapeutic yoga.",
+    },
+    {
+      label: "Resources",
+      href: "/resources",
+      text: "Read beginner yoga guidance, meditation tips, workshops, and studio policies.",
+    },
+    {
+      label: "Contact",
+      href: "/contact",
+      text: "Contact Nikansha Yoga Arogya for Ghaziabad and online yoga class enquiries.",
+    },
+  ];
 
   const websiteJsonLd = {
     "@context": "https://schema.org",
@@ -127,6 +151,25 @@ export default function Home() {
         <Gallery />
         <Testimonials />
         <Contact />
+         <section aria-label="Important website pages" className="bg-cream px-6 py-10">
+          <div className="mx-auto max-w-6xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">
+              Explore {shortBrandName}
+            </p>
+            <div className="mt-5 grid gap-4 md:grid-cols-4">
+              {homepageLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="rounded-xl border border-earth/15 bg-card p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-primary/50"
+                >
+                  <span className="font-serif text-2xl font-semibold text-earth">{link.label}</span>
+                  <span className="mt-3 block text-sm leading-6 text-muted-foreground">{link.text}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
       </main>
 
       <Footer />

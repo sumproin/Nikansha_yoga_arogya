@@ -57,6 +57,12 @@ export default function ClassesPage() {
               <article key={service.slug} id={service.slug} className="scroll-mt-28 rounded-xl border border-earth/15 bg-card p-6 shadow-sm">
                 <h2 className="font-serif text-2xl font-semibold text-earth">{service.name}</h2>
                 <p className="mt-3 leading-7 text-muted-foreground">{service.description}</p>
+                <Link
+                  href={`/classes/${service.slug}`}
+                  className="mt-5 inline-flex font-semibold text-primary underline-offset-4 hover:underline"
+                >
+                  View {service.name} details
+                </Link>
               </article>
             ))}
           </div>

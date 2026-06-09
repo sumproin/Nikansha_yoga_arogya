@@ -8,18 +8,18 @@ import type { MouseEvent } from "react";
 const quickLinks = [
   { label: "About Us", href: "/about" },
   { label: "Classes & Schedule", href: "/classes" },
-  { label: "Weekly Timetable", href: "/classes" },
+  { label: "Yoga in Ghaziabad", href: "/yoga-classes-ghaziabad" },
   { label: "Our Trainers", href: "/#trainers" },
-  { label: "Workshops", href: "/resources#workshops" },
+  { label: "Online Yoga", href: "/online-yoga-classes" },
   { label: "Contact", href: "/contact" },
 ];
 
 const resourceLinks = [
-  { label: "Yoga Blog", href: "/resources#yoga-blog" },
-  { label: "Beginner's Guide", href: "/resources#beginners-guide" },
-  { label: "Meditation Tips", href: "/resources#meditation-tips" },
-  { label: "Privacy Policy", href: "/resources#privacy-policy" },
-  { label: "Terms of Service", href: "/resources#terms-of-service" },
+  { label: "Hatha Yoga", href: "/classes/hatha-yoga" },
+  { label: "Meditation Classes", href: "/meditation-classes-ghaziabad" },
+  { label: "Prenatal Yoga", href: "/prenatal-yoga-ghaziabad" },
+  { label: "Therapeutic Yoga", href: "/therapeutic-yoga-ghaziabad" },
+  { label: "Yoga Resources", href: "/resources" },
 ];
 
 const studioPhoneNumbers = ["+91 9217746084", "+91 9907370722"];
