@@ -126,10 +126,10 @@ export const metadata: Metadata = {
     url: siteUrl,
     images: [
       {
-        url: "/mainlogo.png",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Nikansha Yoga Arogya official logo",
+        alt: "Nikansha Yoga Arogya official logo on brown background",
       },
     ],
   },
@@ -138,7 +138,7 @@ export const metadata: Metadata = {
     title: "Nikansha Yoga Arogya | Official YogaArogya Website",
     description:
       "Official Nikansha Yoga Arogya website for yoga classes in Ghaziabad and online wellness sessions for beginners, stress relief, prenatal care, meditation, and therapeutic yoga.",
-    images: ["/mainlogo.png"],
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,

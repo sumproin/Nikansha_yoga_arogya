@@ -31,7 +31,7 @@ export default function Home() {
     legalName: studioName,
     alternateName: [shortBrandName, studioName, ...brandAliases],
     url: siteUrl,
-    image: `${siteUrl}/mainlogo.png`,
+    image: `${siteUrl}/og-image.png`,
     description:
       "Yoga studio and wellness center in Indirapuram, Ghaziabad offering Hatha Yoga, Vinyasa Flow, meditation, pranayama, prenatal yoga, postnatal yoga, face yoga, and therapeutic yoga.",
     telephone: studioPhones.map((phone) => phone.replace(/\s/g, "")),
@@ -105,7 +105,7 @@ export default function Home() {
       legalName: studioName,
       alternateName: [shortBrandName, ...brandAliases],
       url: siteUrl,
-      logo: `${siteUrl}/mainlogo.png`,
+      logo: `${siteUrl}/icon-512.png`,
     },
   };
 
@@ -116,7 +116,7 @@ export default function Home() {
     legalName: studioName,
     alternateName: [shortBrandName, ...brandAliases],
     url: siteUrl,
-    logo: `${siteUrl}/mainlogo.png`,
+    logo: `${siteUrl}/icon-512.png`,
     contactPoint: {
       "@type": "ContactPoint",
       telephone: "+919217746084",
