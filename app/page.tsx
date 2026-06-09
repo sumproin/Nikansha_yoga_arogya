@@ -11,13 +11,13 @@ import Chatbot from "@/components/Chatbot";
 import Gallery from "@/components/Gallery";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { brandAliases, brandName, seoKeywords, shortBrandName, siteUrl, studioAddress, studioEmail, studioName, studioPhones, yogaServices } from "./seo";
+import { brandAliases, brandName, homepageKeywords, shortBrandName, siteUrl, studioAddress, studioEmail, studioName, studioPhones, yogaServices } from "./seo";
 
 export const metadata: Metadata = {
-  title: "Nikansha Yoga Arogya Official Website",
+  title: "Nikansha Yoga Arogya Official Website | Yoga Classes in Ghaziabad",
   description:
-    "Official website of Nikansha Yoga Arogya at yogaarogya.in, also searched as Nikansha Yoga, Yogaarogya, and Yogarogya. Book yoga classes in Ghaziabad and online sessions.",
-  keywords: seoKeywords,
+    "Official homepage of Nikansha Yoga Arogya at yogaarogya.in, also searched as Nikansha Yoga, Yogaarogya, and Yogarogya. Book yoga classes in Indirapuram, Ghaziabad and online yoga sessions for Hatha Yoga, meditation, pranayama, prenatal yoga, face yoga, and therapeutic wellness.",
+  keywords: homepageKeywords,
   alternates: {
     canonical: siteUrl,
   },
@@ -95,6 +95,7 @@ export default function Home() {
   const websiteJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": `${siteUrl}/#website`,
     name: brandName,
     alternateName: [shortBrandName, studioName, ...brandAliases],
     url: siteUrl,
@@ -107,6 +108,35 @@ export default function Home() {
       url: siteUrl,
       logo: `${siteUrl}/icon-512.png`,
     },
+  };
+
+  const homepageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${siteUrl}/#webpage`,
+    url: siteUrl,
+    name: "Nikansha Yoga Arogya Official Website",
+    alternateName: [
+      "Nikansha Yoga Arogya Homepage",
+      "Official Nikansha Yoga Website",
+      "Official Yogaarogya Website",
+      ...brandAliases,
+    ],
+    description:
+      "Official homepage of Nikansha Yoga Arogya for yoga classes in Indirapuram, Ghaziabad and online yoga sessions.",
+    isPartOf: {
+      "@id": `${siteUrl}/#website`,
+    },
+    primaryImageOfPage: {
+      "@type": "ImageObject",
+      url: `${siteUrl}/og-image.png`,
+    },
+    about: {
+      "@type": "Organization",
+      name: brandName,
+      url: siteUrl,
+    },
+    keywords: homepageKeywords.join(", "),
   };
 
   const organizationJsonLd = {
@@ -135,6 +165,10 @@ export default function Home() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageJsonLd) }}
       />
       <script
         type="application/ld+json"

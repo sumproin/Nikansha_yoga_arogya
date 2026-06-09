@@ -55,7 +55,7 @@ export default function Navbar() {
   return (
     <>
       <a
-        href="/#home"
+        href="/"
         className="fixed left-6 top-1 z-[101] hidden h-[110px] w-[186px] overflow-hidden rounded-full border border-[#d2a55c94] bg-[#1c1714] shadow-[0_10px_35px_rgba(0,0,0,0.34)] transition-all duration-300 lg:flex"
         onClick={(e) => scrollToSection(e, "#home")}
         aria-label="Go to home section"
@@ -64,7 +64,7 @@ export default function Navbar() {
       </a>
       <div className="fixed left-4 top-[7px] z-[101] lg:hidden">
         <a
-          href="/#home"
+          href="/"
           onClick={(e) => scrollToSection(e, "#home")}
           className="relative inline-flex h-[60px] w-[90px] overflow-hidden rounded-full border border-[#d2a55c94] bg-[#1c1714]"
           aria-label="Go to home section"
